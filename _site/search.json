@@ -7,13 +7,6 @@
     "text": "Welcome to ISSS608 Visual Analytics and Applications. In this website you will find my coursework prepared for this course."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
     "href": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
     "title": "Hands-on Exercise 1",
@@ -47,6 +40,13 @@
     "title": "Hands-on Exercise 1",
     "section": "1.6 Essential Grammatical Elements in ggplot2: Aesthetic mappings",
     "text": "1.6 Essential Grammatical Elements in ggplot2: Aesthetic mappings\n\nggplot(data=exam_data,\naes(x= MATHS))\n\n\n\n\n\n1.7.1 Geometric Objects: geom_bar\n\nggplot(data=exam_data,\naes(x=RACE)) +\ngeom_bar()\n\n\n\n\n\n\n1.7.2 Geometric Objects: geom_dotplot\n\nggplot(data=exam_data,\naes(x = MATHS)) +\ngeom_dotplot(dotsize = 0.5)\n\nBin width defaults to 1/30 of the range of the data. Pick better value with\n`binwidth`.\n\n\n\n\n\n\nggplot(data=exam_data,\naes(x = MATHS)) +\ngeom_dotplot(binwidth=2.5,\ndotsize = 0.5) +\nscale_y_continuous(NULL,\nbreaks = NULL)\n\n\n\n\n\n\n1.7.3 Geometric Objects: geom_histogram()\n\nggplot(data=exam_data,\naes(x = MATHS)) +\ngeom_histogram()\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n1.7.4 Modifying a geometric object by changing geom()\n\nggplot(data=exam_data,\naes(x= MATHS)) +\ngeom_histogram(bins=20,\ncolor=\"black\",\nfill=\"light blue\")\n\n\n\n\n\n\n1.7.5 Modifying a geometric object by changing aes()\n\nggplot(data=exam_data,\naes(x= MATHS,\nfill = GENDER)) +\ngeom_histogram(bins=20,\ncolor=\"grey30\")\n\n\n\n\n\n\n1.7.6 Geometric Objects: geom-density()\n\nggplot(data=exam_data,\naes(x = MATHS)) +\ngeom_density()\n\n\n\n\n\nggplot(data=exam_data,\naes(x = MATHS,\ncolour = GENDER)) +\ngeom_density()\n\n\n\n\n\n\n1.7.7 Geometric Objects: geom_boxplot\n\nggplot(data=exam_data,\naes(y = MATHS,\nx= GENDER)) +\ngeom_boxplot()\n\n\n\n\n\nggplot(data=exam_data,\naes(y = MATHS,\nx= GENDER)) +\ngeom_boxplot(notch=TRUE)\n\n\n\n\n\n\n1.7.8 Geometric Objects: geom_violin\n\nggplot(data=exam_data,\naes(y = MATHS,\nx= GENDER)) +\ngeom_violin()\n\n\n\n\n\n\n1.7.9 Geometric Objects: geom_point()\n\nggplot(data=exam_data,\naes(x= MATHS,\ny=ENGLISH)) +\ngeom_point()\n\n\n\n\n\n\n1.7.10 geom objects can be combined\n\nggplot(data=exam_data,\naes(y = MATHS,\nx= GENDER)) +\ngeom_boxplot() +\ngeom_point(position=\"jitter\",\nsize = 0.5)\n\n\n\n\n\n\n1.8.1 Working with stat()\n\nggplot(data=exam_data,\naes(y = MATHS, x= GENDER)) +\ngeom_boxplot()\n\n\n\n\n\n\n1.8.2 Working with stat - the stat_summary() method\n\nggplot(data=exam_data,\naes(y = MATHS, x= GENDER)) +\ngeom_boxplot() +\nstat_summary(geom = \"point\",\nfun.y=\"mean\",\ncolour =\"red\",\nsize=4)\n\nWarning: The `fun.y` argument of `stat_summary()` is deprecated as of ggplot2 3.3.0.\nℹ Please use the `fun` argument instead.\n\n\n\n\n\n\n\n1.8.3 Working with stat - the geom() method\n\nggplot(data=exam_data,\naes(y = MATHS, x= GENDER)) +\ngeom_boxplot() +\ngeom_point(stat=\"summary\",\nfun.y=\"mean\",\ncolour =\"red\",\nsize=4)\n\nWarning in geom_point(stat = \"summary\", fun.y = \"mean\", colour = \"red\", :\nIgnoring unknown parameters: `fun.y`\n\n\nNo summary function supplied, defaulting to `mean_se()`\n\n\n\n\n\n\n\n1.8.4 Adding a best fit curve on a scatterplot?\n\nggplot(data=exam_data,\naes(x= MATHS, y=ENGLISH)) +\ngeom_point() +\ngeom_smooth(size=0.5)\n\nWarning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.\nℹ Please use `linewidth` instead.\n\n\n`geom_smooth()` using method = 'loess' and formula = 'y ~ x'\n\n\n\n\n\n\nggplot(data=exam_data,\naes(x= MATHS,\ny=ENGLISH)) +\ngeom_point() +\ngeom_smooth(method=lm,\nsize=0.5)\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n1.9.1 Working with facet_wrap()\n\nggplot(data=exam_data,\naes(x= MATHS)) +\ngeom_histogram(bins=20) +\nfacet_wrap(~ CLASS)\n\n\n\n\n\n\n1.9.2 facet_grid() function\n\nggplot(data=exam_data,\naes(x= MATHS)) +\ngeom_histogram(bins=20) +\nfacet_grid(~ CLASS)\n\n\n\n\n\n\n1.10.1 Working with Coordinate\n\nggplot(data=exam_data,\naes(x=RACE)) +\ngeom_bar()\n\n\n\n\n\nggplot(data=exam_data,\naes(x=RACE)) +\ngeom_bar() +\ncoord_flip()\n\n\n\n\n\n\n1.10.2 Changing the y- and x-axis range\n\nggplot(data=exam_data,\naes(x= MATHS, y=ENGLISH)) +\ngeom_point() +\ngeom_smooth(method=lm, size=0.5)\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\nggplot(data=exam_data,\naes(x= MATHS, y=ENGLISH)) +\ngeom_point() +\ngeom_smooth(method=lm,\nsize=0.5) +\ncoord_cartesian(xlim=c(0,100),\nylim=c(0,100))\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n1.11.1 Working with theme\n\nggplot(data=exam_data,\naes(x=RACE)) +\ngeom_bar() +\ncoord_flip() +\ntheme_gray()\n\n\n\n\n\nggplot(data=exam_data,\naes(x=RACE)) +\ngeom_bar() +\ncoord_flip() +\ntheme_classic()\n\n\n\n\n\nggplot(data=exam_data,\naes(x=RACE)) +\ngeom_bar() +\ncoord_flip() +\ntheme_minimal()"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "In-Class Ex/In-Class_Ex01/In-Class_Ex01.html",

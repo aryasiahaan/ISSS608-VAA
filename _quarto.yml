@@ -18,7 +18,7 @@ website:
       text: Home
     - about.qmd
     
- format:
+format:
   html:
     theme: default
     css: styles.css
