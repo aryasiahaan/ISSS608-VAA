@@ -1,5 +1,47 @@
 [
   {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html",
+    "title": "Take-home Exercise 1",
+    "section": "",
+    "text": "Creating data visualisation beyond default"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#setting-the-scene",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#setting-the-scene",
+    "title": "Take-home Exercise 1",
+    "section": "Setting the Scene",
+    "text": "Setting the Scene\nThere are two major residential property market in Singapore, namely public and private housing. Public housing aims to meet the basic need of the general public with monthly household income less than or equal to S$14,000. For families with monthly household income more than S$14,000, they need to turn to the private residential market."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task",
+    "title": "Take-home Exercise 1",
+    "section": "The Task",
+    "text": "The Task\nAssuming the role of a graphical editor of a median company, you are requested to prepare minimum two and maximum three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#background",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#background",
+    "title": "Take-home Exercise 1",
+    "section": "1.1 Background",
+    "text": "1.1 Background"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-data",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-data",
+    "title": "Take-home Exercise 1",
+    "section": "1.2 The Data",
+    "text": "1.2 The Data"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task-1",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task-1",
+    "title": "Take-home Exercise 1",
+    "section": "1.3 The Task",
+    "text": "1.3 The Task"
+  },
+  {
     "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html",
     "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html",
     "title": "In-class Exercise 1",
@@ -89,47 +131,5 @@
     "title": "ISSS608 Visual Analytics and Applications",
     "section": "",
     "text": "Welcome to my portfolio for the ISSS608 Visual Analytics and Applications course, taught by Prof. Kam Tin Seong at Singapore Management University. This website showcases a compilation of the exercises and assignments I have undertaken and completed over the duration of the course."
-  },
-  {
-    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html",
-    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html",
-    "title": "Take-home Exercise 1",
-    "section": "",
-    "text": "Creating data visualisation beyond default"
-  },
-  {
-    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#setting-the-scene",
-    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#setting-the-scene",
-    "title": "Take-home Exercise 1",
-    "section": "Setting the Scene",
-    "text": "Setting the Scene\nThere are two major residential property market in Singapore, namely public and private housing. Public housing aims to meet the basic need of the general public with monthly household income less than or equal to S$14,000. For families with monthly household income more than S$14,000, they need to turn to the private residential market."
-  },
-  {
-    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task",
-    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task",
-    "title": "Take-home Exercise 1",
-    "section": "The Task",
-    "text": "The Task\nAssuming the role of a graphical editor of a median company, you are requested to prepare minimum two and maximum three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024."
-  },
-  {
-    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#background",
-    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#background",
-    "title": "Take-home Exercise 1",
-    "section": "1.1 Background",
-    "text": "1.1 Background"
-  },
-  {
-    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-data",
-    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-data",
-    "title": "Take-home Exercise 1",
-    "section": "1.2 The Data",
-    "text": "1.2 The Data"
-  },
-  {
-    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task-1",
-    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#the-task-1",
-    "title": "Take-home Exercise 1",
-    "section": "1.3 The Task",
-    "text": "1.3 The Task"
   }
 ]
