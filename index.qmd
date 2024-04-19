@@ -1,5 +1,8 @@
 ---
-title: "ISSS608-VAA"
+title: "ISSS608 Visual Analytics and Applications"
+author: "Arya Siahaan"
 ---
 
-Welcome to **ISSS608 Visual Analytics and Applications**. In this website you will find my coursework prepared for this course.
+Welcome to my portfolio for the **ISSS608 Visual Analytics and Applications** course, taught by Prof. Kam Tin Seong at Singapore Management University. This website showcases a compilation of the exercises and assignments I have undertaken and completed over the duration of the course.
+
+![](vaclass.png){width="715" height="594"}

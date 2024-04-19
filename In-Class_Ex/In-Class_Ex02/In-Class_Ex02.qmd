@@ -1,4 +1,0 @@
----
-title: "In-Class Exercise 2"
-author: "Arya Siahaan"
----

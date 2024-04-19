@@ -1,0 +1,21 @@
+---
+title: "Take-home Exercise 1"
+author: "Arya Siahaan"
+date: "April 19, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# **1 Overview**
+
+## **1.1 Background**
+
+## **1.2 The Data**
+
+## **1.3 The Task**
+
+# **2 Loading Packages**

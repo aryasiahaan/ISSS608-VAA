@@ -1,6 +1,13 @@
 ---
 title: "Hands-on Exercise 1"
 author: "Arya Siahaan"
+date: "April 13, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 # Getting Started

@@ -1,5 +1,5 @@
 ---
-title: "In-Class Exercise 1"
+title: "In-class Exercise 1"
 author: "Arya Siahaan"
 date: "April 13, 2024"
 date-modified: "last-modified"
