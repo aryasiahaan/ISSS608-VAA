@@ -10,22 +10,65 @@ execute:
   freeze: true
 ---
 
-***Creating data visualisation beyond default***
+## ***Creating data visualisation beyond default***
 
-## **Setting the Scene**
+### **Setting the Scene**
 
 There are two major residential property market in Singapore, namely public and private housing. Public housing aims to meet the basic need of the general public with monthly household income less than or equal to S\$14,000. For families with monthly household income more than S\$14,000, they need to turn to the private residential market.
 
-## **The Task**
+### **The Task**
 
-Assuming the role of a graphical editor of a median company, you are requested to prepare minimum two and maximum three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024.
+In this task, I am to assumed the role of a graphical editor of a median company, I have been requested to prepare a minimum of two and a maximum of three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024.
 
-# **1 Overview**
 
-## **1.1 Background**
 
-## **1.2 The Data**
+### **Getting Started**
 
-## **1.3 The Task**
+#### **Loading Packages**
 
-# **2 Loading Packages**
+The following code chunk utilises [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) function from the [pacman](https://github.com/trinker/pacman) package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) will load them. If they are not installed, it will first install them and then load them into the R environment.
+
+```{r}
+pacman::p_load(ggrepel, patchwork, 
+               ggthemes, hrbrthemes,
+               tidyverse) 
+```
+
+
+#### **Loading The Data**
+
+The dataset
+
+```{r}
+q12023 <- read_csv("data/ResidentialTransaction20240308160536.csv")
+q22023 <- read_csv("data/ResidentialTransaction20240308160736.csv")
+q32023 <- read_csv("data/ResidentialTransaction20240308161009.csv")
+q42023 <- read_csv("data/ResidentialTransaction20240308161109.csv")
+q12024 <- read_csv("data/ResidentialTransaction20240414220633.csv")
+```
+
+```{r}
+q12023 <- read_csv("data/ResidentialTransaction20240308160536.csv")
+```
+
+
+```{r}
+q22023 <- read_csv("data/ResidentialTransaction20240308160736.csv")
+```
+
+```{r}
+q32023 <- read_csv("data/ResidentialTransaction20240308161009.csv")
+```
+
+```{r}
+q42023 <- read_csv("data/ResidentialTransaction20240308161109.csv")
+```
+
+```{r}
+q12024 <- read_csv("data/ResidentialTransaction20240414220633.csv")
+```
+
+```{r}
+glimpse(q12024)
+```
+

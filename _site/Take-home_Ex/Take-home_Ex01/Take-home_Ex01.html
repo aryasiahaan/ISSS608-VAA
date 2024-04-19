@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -146,15 +180,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#setting-the-scene" id="toc-setting-the-scene" class="nav-link active" data-scroll-target="#setting-the-scene"><strong>Setting the Scene</strong></a></li>
-  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task"><strong>The Task</strong></a></li>
-  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><strong>1 Overview</strong></a>
+  <li><a href="#creating-data-visualisation-beyond-default" id="toc-creating-data-visualisation-beyond-default" class="nav-link active" data-scroll-target="#creating-data-visualisation-beyond-default"><strong><em>Creating data visualisation beyond default</em></strong></a>
   <ul class="collapse">
-  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background"><strong>1.1 Background</strong></a></li>
-  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data"><strong>1.2 The Data</strong></a></li>
-  <li><a href="#the-task-1" id="toc-the-task-1" class="nav-link" data-scroll-target="#the-task-1"><strong>1.3 The Task</strong></a></li>
+  <li><a href="#setting-the-scene" id="toc-setting-the-scene" class="nav-link" data-scroll-target="#setting-the-scene"><strong>Setting the Scene</strong></a></li>
+  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task"><strong>The Task</strong></a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><strong>Getting Started</strong></a></li>
   </ul></li>
-  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link" data-scroll-target="#loading-packages"><strong>2 Loading Packages</strong></a></li>
   </ul>
 </nav>
     </div>
@@ -196,31 +227,84 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p><strong><em>Creating data visualisation beyond default</em></strong></p>
-<section id="setting-the-scene" class="level2">
-<h2 class="anchored" data-anchor-id="setting-the-scene"><strong>Setting the Scene</strong></h2>
+<section id="creating-data-visualisation-beyond-default" class="level2">
+<h2 class="anchored" data-anchor-id="creating-data-visualisation-beyond-default"><strong><em>Creating data visualisation beyond default</em></strong></h2>
+<section id="setting-the-scene" class="level3">
+<h3 class="anchored" data-anchor-id="setting-the-scene"><strong>Setting the Scene</strong></h3>
 <p>There are two major residential property market in Singapore, namely public and private housing. Public housing aims to meet the basic need of the general public with monthly household income less than or equal to S$14,000. For families with monthly household income more than S$14,000, they need to turn to the private residential market.</p>
 </section>
-<section id="the-task" class="level2">
-<h2 class="anchored" data-anchor-id="the-task"><strong>The Task</strong></h2>
-<p>Assuming the role of a graphical editor of a median company, you are requested to prepare minimum two and maximum three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024.</p>
+<section id="the-task" class="level3">
+<h3 class="anchored" data-anchor-id="the-task"><strong>The Task</strong></h3>
+<p>In this task, I am to assumed the role of a graphical editor of a median company, I have been requested to prepare a minimum of two and a maximum of three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024.</p>
 </section>
-<section id="overview" class="level1">
-<h1><strong>1 Overview</strong></h1>
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background"><strong>1.1 Background</strong></h2>
+<section id="getting-started" class="level3">
+<h3 class="anchored" data-anchor-id="getting-started"><strong>Getting Started</strong></h3>
+<section id="loading-packages" class="level4">
+<h4 class="anchored" data-anchor-id="loading-packages"><strong>Loading Packages</strong></h4>
+<p>The following code chunk utilises <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> function from the <a href="https://github.com/trinker/pacman">pacman</a> package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> will load them. If they are not installed, it will first install them and then load them into the R environment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggrepel, patchwork, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               ggthemes, hrbrthemes,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="the-data" class="level2">
-<h2 class="anchored" data-anchor-id="the-data"><strong>1.2 The Data</strong></h2>
-</section>
-<section id="the-task-1" class="level2">
-<h2 class="anchored" data-anchor-id="the-task-1"><strong>1.3 The Task</strong></h2>
-</section>
-</section>
-<section id="loading-packages" class="level1">
-<h1><strong>2 Loading Packages</strong></h1>
+<section id="loading-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="loading-the-data"><strong>Loading The Data</strong></h4>
+<p>The dataset</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>q12023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160536.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>q22023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160736.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>q32023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161009.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>q42023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161109.csv"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>q12024 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240414220633.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>q12023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160536.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>q22023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160736.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>q32023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161009.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>q42023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161109.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q12024 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240414220633.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(q12024)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,902
+Columns: 21
+$ `Project Name`                &lt;chr&gt; "THE LANDMARK", "POLLEN COLLECTION", "SK…
+$ `Transacted Price ($)`        &lt;dbl&gt; 2726888, 3850000, 2346000, 2190000, 1954…
+$ `Area (SQFT)`                 &lt;dbl&gt; 1076.40, 1808.35, 1087.16, 807.30, 796.5…
+$ `Unit Price ($ PSF)`          &lt;dbl&gt; 2533, 2129, 2158, 2713, 2453, 2577, 838,…
+$ `Sale Date`                   &lt;chr&gt; "01 Jan 2024", "01 Jan 2024", "01 Jan 20…
+$ Address                       &lt;chr&gt; "173 CHIN SWEE ROAD #22-11", "34 POLLEN …
+$ `Type of Sale`                &lt;chr&gt; "New Sale", "New Sale", "New Sale", "New…
+$ `Type of Area`                &lt;chr&gt; "Strata", "Land", "Strata", "Strata", "S…
+$ `Area (SQM)`                  &lt;dbl&gt; 100.0, 168.0, 101.0, 75.0, 74.0, 123.0, …
+$ `Unit Price ($ PSM)`          &lt;dbl&gt; 27269, 22917, 23228, 29200, 26405, 27741…
+$ `Nett Price($)`               &lt;chr&gt; "-", "-", "-", "-", "-", "-", "-", "-", …
+$ `Property Type`               &lt;chr&gt; "Condominium", "Terrace House", "Apartme…
+$ `Number of Units`             &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ Tenure                        &lt;chr&gt; "99 yrs from 28/08/2020", "99 yrs from 0…
+$ `Completion Date`             &lt;chr&gt; "Uncompleted", "Uncompleted", "Uncomplet…
+$ `Purchaser Address Indicator` &lt;chr&gt; "Private", "N.A", "HDB", "N.A", "Private…
+$ `Postal Code`                 &lt;chr&gt; "169878", "807233", "469657", "118992", …
+$ `Postal District`             &lt;chr&gt; "03", "28", "16", "05", "21", "21", "28"…
+$ `Postal Sector`               &lt;chr&gt; "16", "80", "46", "11", "59", "58", "79"…
+$ `Planning Region`             &lt;chr&gt; "Central Region", "North East Region", "…
+$ `Planning Area`               &lt;chr&gt; "Outram", "Serangoon", "Bedok", "Queenst…</code></pre>
+</div>
+</div>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
