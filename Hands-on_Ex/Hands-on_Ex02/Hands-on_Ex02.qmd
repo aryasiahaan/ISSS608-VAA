@@ -10,7 +10,7 @@ execute:
   freeze: true
 ---
 
-# **2  Beyond ggplot2 Fundamentals**
+# **2 Beyond ggplot2 Fundamentals**
 
 ## **2.1 Overview**
 
@@ -100,5 +100,4 @@ ggplot(data=exam_data,
                   ylim=c(0,100)) +
   ggtitle("English scores versus Maths scores for Primary 3")
 ```
-  
 :::
