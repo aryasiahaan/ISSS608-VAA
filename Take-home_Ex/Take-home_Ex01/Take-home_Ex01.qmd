@@ -215,13 +215,13 @@ property_type_distribution <- combined_data %>%
   summarise(Transactions = n(), .groups = 'drop')
 
 # Now, we plot the distribution
-property_type_chart <- ggplot(property_type_distribution, aes(x = `Property Type`, y = Transactions)) +
-  geom_bar(stat = "identity", fill = "steelblue") + # All bars in 'steelblue'
+property_type_chart <- ggplot(property_type_distribution, aes(x = Transactions, y = reorder(`Property Type`, Transactions))) +
+  geom_bar(stat = "identity", fill = "steelblue", orientation = "y") + # All bars in 'steelblue'
   theme_minimal() +
   labs(title = "Sales Distribution based on Property Type",
-       x = "Property Type",
-       y = "Number of Transactions") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+       x = "Number of Transactions",
+       y = "Property Type") +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1),
         legend.position = "none") # Remove legend
 
 # Print the plot
