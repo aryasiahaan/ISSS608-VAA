@@ -1,0 +1,66 @@
+---
+title: "In-class_Ex02 Demo"
+author: "Arya Siahaan"
+date: "April 20, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: true
+  freeze: true
+---
+
+## **Getting Started**
+
+## Loading R packages
+
+```{r}
+pacman::p_load(tidyverse, ggdist, ggridges,
+               colorspace, ggthemes) 
+```
+
+# Importing the data
+
+```{r}
+exam_df <- read_csv("data/Exam_data.csv")
+```
+
+## **Visualising Distribution**
+
+## Histogram
+
+## **Visualising Distribution**
+
+## Probability density plot
+
+::: panel-tabset
+## The task
+
+```{r}
+#| echo: false
+ggplot(exam_df,
+       aes(x = ENGLISH)) +
+  geom_density(
+    color = "#1696d2",
+    adjust = .65,
+    alpha = .6
+  )
+```
+
+## The code
+
+```{r}
+#| eval: false
+ggplot(exam_df,
+       aes(x = ENGLISH)) +
+  geom_density(
+    color = "#1696d2",
+    adjust = .65,
+    alpha = .6
+  )
+```
+:::
+
+median_eng \<- median(exam_df$ENGLISH) mean_eng <- mean(exam_df$ENGLISH) std_eng \<\_ sd(exam_df\$ENGLISH)
+
+ggplot(exam_df, aes(x = ENGLISH)) geom_density( color = "#1696d2", adjust = .65, alpha = .6) + stat_function( fun = dnorm, args = list(mean = mean_eng, sd = std_eng), col = "grey30", size = 0.8) + geom_vline( aes(xintercept = mean_eng), colour="4d5887", linewidth = 0.6, linetype = "dashed") + annotate(geom = "text", x = mean_eng - 8 y = 0.04, label = paste0("Mean ENGLISH: ", round((mean_eng), 2)), ) ) )

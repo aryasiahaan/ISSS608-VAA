@@ -10,65 +10,214 @@ execute:
   freeze: true
 ---
 
-## ***Creating data visualisation beyond default***
+# Overview
 
-### **Setting the Scene**
+## Setting the Scene
 
-There are two major residential property market in Singapore, namely public and private housing. Public housing aims to meet the basic need of the general public with monthly household income less than or equal to S\$14,000. For families with monthly household income more than S\$14,000, they need to turn to the private residential market.
+There are two major residential property markets in Singapore, namely public and private housing. Public housing aims to meet the basic needs of the general public with a monthly household income of less than or equal to S\$14,000. For families with a monthly household income of more than S\$14,000, they need to turn to the private residential market.
 
-### **The Task**
+## The Task
 
-In this task, I am to assumed the role of a graphical editor of a median company, I have been requested to prepare a minimum of two and a maximum of three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024.
+In this task, I am to assume the role of a graphical editor of a median company. I have been requested to prepare a minimum of two and a maximum of three data visualisations to reveal the private residential market and its sub-markets in Singapore for the 1st quarter of 2024.
 
+# Getting Started
 
+## Loading Packages
 
-### **Getting Started**
+| Library                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|:------------------------------|-----------------------------------------|
+| [pacman](https://github.com/trinker/pacman)                   | Pacman is a package that makes it possible to perform tasks associated with add-on packages in a more convenient manner. It checks whether the add-on packages are installed or not. If not, it will automatically install and load them into the R environment. In this take-home exercise 1, the pacman package has been installed beforehand.                                                                                     |
+| [tidyverse](https://www.tidyverse.org/)                       | A collection of core packages designed for data science, used extensively for data preparation and wrangling. Content includes: ggplot2, dplyr, tidyr, readr, purr, tibble, stringr, forcats, scales, lubridate, etc.                                                                                                                                                                                                                |
+| [scales](https://scales.r-lib.org/)                           | This package is designed to enhance how data is presented in visualisation, particularly in ggplot2 plots. It provides tools for mapping data to aesthetic attributes like colours, shapes, and sizes more effectively. It also includes functions for formatting and transforming axes and legends in a chart. Even though this is part of the tidyverse package collection, it needs to be installed and loaded separately.        |
+| [lubridate](https://lubridate.tidyverse.org/)                 | It is a package to work with date-times and time-spans: fast and user-friendly parsing of date-time data, extraction and updating of components of a date-time (years, months, days, hours, minutes, and seconds), algebraic manipulation on date-time and time-span objects. This is part of the tidyverse collection, but it is not automatically loaded, so I will need to load it explicitly as I plan to use its functionality. |
+| [ggrepel](https://ggrepel.slowkow.com/)                       | An R package provides geoms for ggplot2 to repel overlapping text labels. This is not part of the tidyverse package collection, but it is an extension of ggplot2.                                                                                                                                                                                                                                                                   |
+| [ggthemes](https://cran.r-project.org/web/packages/ggthemes/) | Another separate R package that provides additional themes and scales for ggplot2 to enhance the appearance of plots. This package will also need to be installed and loaded independently.                                                                                                                                                                                                                                          |
+| [hrbrthemes](https://cinc.rud.is/web/packages/hrbrthemes/)    | This package provides additional typography-centric themes and theme components for ggplot2, focused on improving readability and appearance for data visualisation. It must be installed and loaded independently.                                                                                                                                                                                                                  |
+| [patchwork](https://patchwork.data-imaginist.com/)            | This one is also an extension package for ggplot2 that allows combining multiple ggplot2 plots into one (composite figure) and arranging them in various layouts. Even though patchwork complements the functionality of ggplot2, it is independently maintained and must be installed and loaded separately.                                                                                                                        |
 
-#### **Loading Packages**
-
-The following code chunk utilises [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) function from the [pacman](https://github.com/trinker/pacman) package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) will load them. If they are not installed, it will first install them and then load them into the R environment.
-
-```{r}
-pacman::p_load(ggrepel, patchwork, 
-               ggthemes, hrbrthemes,
-               tidyverse) 
-```
-
-
-#### **Loading The Data**
-
-The dataset
+The following code chunk utilises the [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) function from the [pacman](https://github.com/trinker/pacman) package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) will load them. If they are not installed, it will first install them and then load them into the R environment.
 
 ```{r}
-q12023 <- read_csv("data/ResidentialTransaction20240308160536.csv")
-q22023 <- read_csv("data/ResidentialTransaction20240308160736.csv")
-q32023 <- read_csv("data/ResidentialTransaction20240308161009.csv")
-q42023 <- read_csv("data/ResidentialTransaction20240308161109.csv")
-q12024 <- read_csv("data/ResidentialTransaction20240414220633.csv")
+pacman::p_load(tidyverse, scales,
+               lubridate, ggrepel, 
+               ggthemes, hrbrthemes, 
+               patchwork, knitr) 
 ```
+
+## Loading The Data
+
+### The Datasets
+
+There are five datasets that cover from the start of the 1st quarter 2023 to the end of the 1st quarter 2024, I decided to load each dataset in a separate code chunk for better clarity in understanding the data types.
+
+### Quarter 1, Year 2023:
+
+```{r, message=TRUE}
+q1_2023 <- read_csv("data/ResidentialTransaction20240308160536.csv")
+```
+
+### Quarter 2, Year 2023:
+
+```{r, message=TRUE}
+q2_2023 <- read_csv("data/ResidentialTransaction20240308160736.csv")
+```
+
+### Quarter 3, Year 2023:
+
+```{r, message=TRUE}
+q3_2023 <- read_csv("data/ResidentialTransaction20240308161009.csv")
+```
+
+::: callout-note
+As can be seen above, I noticed that in this particular dataset (Quarter 3, Year 2023), the data type for column Area (SQM) is 'dbl' (double), while in all the other four datasets, the data type for column Area (SQM) is 'num' (numeric). As far as I know, R does not differentiate between 'dbl' and 'num', so in this case, I will leave it as 'dbl' data type.
+:::
+
+### Quarter 4, Year 2023:
+
+```{r, message=TRUE}
+q4_2023 <- read_csv("data/ResidentialTransaction20240308161109.csv")
+```
+
+### Quarter 1, Year 2024:
+
+```{r, message=TRUE}
+q1_2024 <- read_csv("data/ResidentialTransaction20240414220633.csv")
+```
+
+::: callout-note
+I also noticed that the Sale Date data type format in all of these five datasets is 'chr' (character). I will parse/convert them into date-time format.
+:::
+
+# Data Preparation
+
+Data will be processed using the appropriate 'tidyverse' family of packages. Statistical graphics will be created using 'ggplot2' and its extensions.
+
+## Parsing Data Type
+
+Parsing the Sale Date column into date-time format using 'lubridate' package
 
 ```{r}
-q12023 <- read_csv("data/ResidentialTransaction20240308160536.csv")
+q1_2023 <- q1_2023 %>%
+  mutate(`Sale Date` = dmy(`Sale Date`))
+
+q2_2023 <- q2_2023 %>%
+  mutate(`Sale Date` = dmy(`Sale Date`))
+
+q3_2023 <- q3_2023 %>%
+  mutate(`Sale Date` = dmy(`Sale Date`))
+
+q4_2023 <- q4_2023 %>%
+  mutate(`Sale Date` = dmy(`Sale Date`))
+
+q1_2024 <- q1_2024 %>%
+  mutate(`Sale Date` = dmy(`Sale Date`))
 ```
 
+**Explanation:**
+
+-   The **`mutate()`** function is used to modify the Sale Date column directly.
+
+    -   Since the column name has a space in it, I need to use backticks to refer to it within the **`mutate()`** function.
+
+-   The **`dmy()`** function from the 'lubridate' package will parse the date strings into actual Date objects.
+
+Next, using the code below, I will check and confirm that the data types have been converted properly.
 
 ```{r}
-q22023 <- read_csv("data/ResidentialTransaction20240308160736.csv")
+class(q1_2023$`Sale Date`)
+class(q2_2023$`Sale Date`)
+class(q3_2023$`Sale Date`)
+class(q4_2023$`Sale Date`)
+class(q1_2024$`Sale Date`)
 ```
+
+## Merge the Data
+
+After standardising the data in all five datasets, I will then merge these datasets together using the **`bind_rows()`** function from the 'dplyr' package. This function stacks data frames on top of each other, combining them into a single data frame. It's important that all data frames have the same columns for **`bind_rows()`** to work correctly.
 
 ```{r}
-q32023 <- read_csv("data/ResidentialTransaction20240308161009.csv")
+combined_data <- bind_rows(q1_2023, q2_2023, q3_2023, q4_2023, q1_2024)
 ```
+
+## Inspect the Merged Data
+
+After merging, it's good practice to check the combined dataset to ensure everything looks as expected:
 
 ```{r}
-q42023 <- read_csv("data/ResidentialTransaction20240308161109.csv")
+# Check the structure of the combined data
+str(combined_data)
+
+# View the first few rows to confirm data looks correct
+head(combined_data)
+
+# Check for any missing values or anomalies
+summary(combined_data)
 ```
+
+## Save the Merged Dataset
+
+Since I may need to use to use this merged datasets repeatedly, I will save it into a file for easy access in future sessions. I will use **`write_csv()`** function from the 'readr' package (part of the 'tidyverse') to write this merged data frame to a CSV file.
 
 ```{r}
-q12024 <- read_csv("data/ResidentialTransaction20240414220633.csv")
+write_csv(combined_data, "data/All_ResidentialTransactions_2023-2024.csv")
 ```
+
+## Proceed with Visualisation and Analysis**
+
+Now that the data has been consolidated into a single dataframe, it is time to move forward with analysis:
+
+After completing all the previous setup and loading libraries, the next step is to create the visualisations to gather insights from the data.
 
 ```{r}
-glimpse(q12024)
+# Generate a Month-Year field for the x-axis and calculate total sales volume
+monthly_sales_stats <- combined_data %>%
+  mutate(Month = floor_date(`Sale Date`, unit = "month")) %>%
+  group_by(Month) %>%
+  summarise(Total_Sales_Volume = sum(`Number of Units`, na.rm = TRUE)) %>%
+  ungroup() %>%
+  arrange(Month)
+
+# Calculate the average monthly sales volume
+average_sales_volume <- mean(monthly_sales_stats$Total_Sales_Volume)
+
+# Create the line chart visualizing monthly sales volume and add the average reference line
+monthly_sales_line_chart <- ggplot(monthly_sales_stats, aes(x = Month, y = Total_Sales_Volume)) +
+  geom_line(color = "black") +  # Line color
+  geom_point(color = "black") +  # Point color
+  geom_hline(yintercept = average_sales_volume, linetype = "dotted", color = "red", size = 1) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  theme_minimal() +
+  labs(
+    title = "Monthly Sales Volume with Average Reference Line",
+    x = "Month",
+    y = "Total Units Sold"
+  ) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))  # Rotate the x-axis text for better readability
+
+# Print the plot
+monthly_sales_line_chart
 ```
 
+The visualisation illustrates the monthly sales volume trend of private housing units from January 2023 to March 2024. The trend shows significant fluctuation throughout the period, with peaks and troughs corresponding to market activity. Notably, there's a sharp increase in March 2023, suggesting a spike in sales, possibly due to market stimuli or seasonal factors. The overall pattern indicates a resilient market, yet with periods of reticence, potentially reflective of economic events or policy changes. The red dotted line represents the average sales volume across the period, providing a benchmark against which to compare monthly performance. The months above this line saw higher-than-average sales, whereas those below saw fewer transactions, highlighting the varying buyer activity throughout the year.
+
+```{r}
+# First, we aggregate the number of units sold by property type
+property_type_distribution <- combined_data %>%
+  group_by(`Property Type`) %>%
+  summarise(Transactions = n(), .groups = 'drop')
+
+# Now, we plot the distribution
+property_type_chart <- ggplot(property_type_distribution, aes(x = `Property Type`, y = Transactions)) +
+  geom_bar(stat = "identity", fill = "steelblue") + # All bars in 'steelblue'
+  theme_minimal() +
+  labs(title = "Sales Distribution based on Property Type in Singapore Private Residential Market",
+       x = "Property Type",
+       y = "Number of Transactions") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "none") # Remove legend
+
+# Print the plot
+print(property_type_chart)
+```
+
+The bar chart illustrates the frequency of transactions across different property types in Singapore's private residential market. Condominiums and apartments are the most commonly traded, suggesting a high demand for such property types, which could be due to their affordability and availability. Executive condominiums and detached houses represent a smaller fraction, likely reflecting their higher price points and more exclusive market position. The varied transaction volume across property types offers valuable insight into consumer preferences and the real estate market's dynamics, particularly indicating a trend towards high-density living options.

@@ -5,6 +5,6 @@
 .DS_Store
 .quarto
 
-data/
-
 /.quarto/
+
+data/

@@ -130,6 +130,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html" rel="" target="">
  <span class="dropdown-text">Hands-on Exercise 2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html" rel="" target="">
+ <span class="dropdown-text">Hands-on Exercise 3</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -140,6 +144,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex01/In-class_Ex01.html" rel="" target="">
  <span class="dropdown-text">In-class Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex02/In-class_Ex02.html" rel="" target="">
+ <span class="dropdown-text">In-class Exercise 2</span></a>
   </li>  
     </ul>
   </li>
@@ -180,11 +188,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#creating-data-visualisation-beyond-default" id="toc-creating-data-visualisation-beyond-default" class="nav-link active" data-scroll-target="#creating-data-visualisation-beyond-default"><strong><em>Creating data visualisation beyond default</em></strong></a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
-  <li><a href="#setting-the-scene" id="toc-setting-the-scene" class="nav-link" data-scroll-target="#setting-the-scene"><strong>Setting the Scene</strong></a></li>
-  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task"><strong>The Task</strong></a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><strong>Getting Started</strong></a></li>
+  <li><a href="#setting-the-scene" id="toc-setting-the-scene" class="nav-link" data-scroll-target="#setting-the-scene">Setting the Scene</a></li>
+  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task">The Task</a></li>
+  </ul></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link" data-scroll-target="#loading-packages">Loading Packages</a></li>
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data">Loading The Data</a>
+  <ul class="collapse">
+  <li><a href="#the-datasets" id="toc-the-datasets" class="nav-link" data-scroll-target="#the-datasets">The Datasets</a></li>
+  <li><a href="#quarter-1-year-2023" id="toc-quarter-1-year-2023" class="nav-link" data-scroll-target="#quarter-1-year-2023">Quarter 1, Year 2023:</a></li>
+  <li><a href="#quarter-2-year-2023" id="toc-quarter-2-year-2023" class="nav-link" data-scroll-target="#quarter-2-year-2023">Quarter 2, Year 2023:</a></li>
+  <li><a href="#quarter-3-year-2023" id="toc-quarter-3-year-2023" class="nav-link" data-scroll-target="#quarter-3-year-2023">Quarter 3, Year 2023:</a></li>
+  <li><a href="#quarter-4-year-2023" id="toc-quarter-4-year-2023" class="nav-link" data-scroll-target="#quarter-4-year-2023">Quarter 4, Year 2023:</a></li>
+  <li><a href="#quarter-1-year-2024" id="toc-quarter-1-year-2024" class="nav-link" data-scroll-target="#quarter-1-year-2024">Quarter 1, Year 2024:</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#parsing-data-type" id="toc-parsing-data-type" class="nav-link" data-scroll-target="#parsing-data-type">Parsing Data Type</a></li>
+  <li><a href="#merge-the-data" id="toc-merge-the-data" class="nav-link" data-scroll-target="#merge-the-data">Merge the Data</a></li>
+  <li><a href="#inspect-the-merged-data" id="toc-inspect-the-merged-data" class="nav-link" data-scroll-target="#inspect-the-merged-data">Inspect the Merged Data</a></li>
+  <li><a href="#save-the-merged-dataset" id="toc-save-the-merged-dataset" class="nav-link" data-scroll-target="#save-the-merged-dataset">Save the Merged Dataset</a></li>
+  <li><a href="#proceed-with-visualisation-and-analysis" id="toc-proceed-with-visualisation-and-analysis" class="nav-link" data-scroll-target="#proceed-with-visualisation-and-analysis">Proceed with Visualisation and Analysis**</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -218,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 19, 2024</p>
+      <p class="date-modified">April 26, 2024</p>
     </div>
   </div>
     
@@ -227,83 +255,423 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="creating-data-visualisation-beyond-default" class="level2">
-<h2 class="anchored" data-anchor-id="creating-data-visualisation-beyond-default"><strong><em>Creating data visualisation beyond default</em></strong></h2>
-<section id="setting-the-scene" class="level3">
-<h3 class="anchored" data-anchor-id="setting-the-scene"><strong>Setting the Scene</strong></h3>
-<p>There are two major residential property market in Singapore, namely public and private housing. Public housing aims to meet the basic need of the general public with monthly household income less than or equal to S$14,000. For families with monthly household income more than S$14,000, they need to turn to the private residential market.</p>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<section id="setting-the-scene" class="level2">
+<h2 class="anchored" data-anchor-id="setting-the-scene">Setting the Scene</h2>
+<p>There are two major residential property markets in Singapore, namely public and private housing. Public housing aims to meet the basic needs of the general public with a monthly household income of less than or equal to S$14,000. For families with a monthly household income of more than S$14,000, they need to turn to the private residential market.</p>
 </section>
-<section id="the-task" class="level3">
-<h3 class="anchored" data-anchor-id="the-task"><strong>The Task</strong></h3>
-<p>In this task, I am to assumed the role of a graphical editor of a median company, I have been requested to prepare a minimum of two and a maximum of three data visualisation to reveal the private residential market and sub-markets of Singapore for the 1st quarter of 2024.</p>
+<section id="the-task" class="level2">
+<h2 class="anchored" data-anchor-id="the-task">The Task</h2>
+<p>In this task, I am to assume the role of a graphical editor of a median company. I have been requested to prepare a minimum of two and a maximum of three data visualisations to reveal the private residential market and its sub-markets in Singapore for the 1st quarter of 2024.</p>
 </section>
-<section id="getting-started" class="level3">
-<h3 class="anchored" data-anchor-id="getting-started"><strong>Getting Started</strong></h3>
-<section id="loading-packages" class="level4">
-<h4 class="anchored" data-anchor-id="loading-packages"><strong>Loading Packages</strong></h4>
-<p>The following code chunk utilises <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> function from the <a href="https://github.com/trinker/pacman">pacman</a> package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> will load them. If they are not installed, it will first install them and then load them into the R environment.</p>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<section id="loading-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-packages">Loading Packages</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Library</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://github.com/trinker/pacman">pacman</a></td>
+<td>Pacman is a package that makes it possible to perform tasks associated with add-on packages in a more convenient manner. It checks whether the add-on packages are installed or not. If not, it will automatically install and load them into the R environment. In this take-home exercise 1, the pacman package has been installed beforehand.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://www.tidyverse.org/">tidyverse</a></td>
+<td>A collection of core packages designed for data science, used extensively for data preparation and wrangling. Content includes: ggplot2, dplyr, tidyr, readr, purr, tibble, stringr, forcats, scales, lubridate, etc.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://scales.r-lib.org/">scales</a></td>
+<td>This package is designed to enhance how data is presented in visualisation, particularly in ggplot2 plots. It provides tools for mapping data to aesthetic attributes like colours, shapes, and sizes more effectively. It also includes functions for formatting and transforming axes and legends in a chart. Even though this is part of the tidyverse package collection, it needs to be installed and loaded separately.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://lubridate.tidyverse.org/">lubridate</a></td>
+<td>It is a package to work with date-times and time-spans: fast and user-friendly parsing of date-time data, extraction and updating of components of a date-time (years, months, days, hours, minutes, and seconds), algebraic manipulation on date-time and time-span objects. This is part of the tidyverse collection, but it is not automatically loaded, so I will need to load it explicitly as I plan to use its functionality.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://ggrepel.slowkow.com/">ggrepel</a></td>
+<td>An R package provides geoms for ggplot2 to repel overlapping text labels. This is not part of the tidyverse package collection, but it is an extension of ggplot2.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://cran.r-project.org/web/packages/ggthemes/">ggthemes</a></td>
+<td>Another separate R package that provides additional themes and scales for ggplot2 to enhance the appearance of plots. This package will also need to be installed and loaded independently.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://cinc.rud.is/web/packages/hrbrthemes/">hrbrthemes</a></td>
+<td>This package provides additional typography-centric themes and theme components for ggplot2, focused on improving readability and appearance for data visualisation. It must be installed and loaded independently.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://patchwork.data-imaginist.com/">patchwork</a></td>
+<td>This one is also an extension package for ggplot2 that allows combining multiple ggplot2 plots into one (composite figure) and arranging them in various layouts. Even though patchwork complements the functionality of ggplot2, it is independently maintained and must be installed and loaded separately.</td>
+</tr>
+</tbody>
+</table>
+<p>The following code chunk utilises the <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> function from the <a href="https://github.com/trinker/pacman">pacman</a> package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> will load them. If they are not installed, it will first install them and then load them into the R environment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggrepel, patchwork, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               ggthemes, hrbrthemes,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, scales,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               lubridate, ggrepel, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               ggthemes, hrbrthemes, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               patchwork, knitr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="loading-the-data" class="level4">
-<h4 class="anchored" data-anchor-id="loading-the-data"><strong>Loading The Data</strong></h4>
-<p>The dataset</p>
+<section id="loading-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-data">Loading The Data</h2>
+<section id="the-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="the-datasets">The Datasets</h3>
+<p>There are five datasets that cover from the start of the 1st quarter 2023 to the end of the 1st quarter 2024, I decided to load each dataset in a separate code chunk for better clarity in understanding the data types.</p>
+</section>
+<section id="quarter-1-year-2023" class="level3">
+<h3 class="anchored" data-anchor-id="quarter-1-year-2023">Quarter 1, Year 2023:</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>q12023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160536.csv"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>q22023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160736.csv"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>q32023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161009.csv"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>q42023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161109.csv"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>q12024 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240414220633.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>q1_2023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160536.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4722 Columns: 21
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (15): Project Name, Sale Date, Address, Type of Sale, Type of Area, Nett...
+dbl  (1): Number of Units
+num  (5): Transacted Price ($), Area (SQFT), Unit Price ($ PSF), Area (SQM),...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>q12023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160536.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="quarter-2-year-2023" class="level3">
+<h3 class="anchored" data-anchor-id="quarter-2-year-2023">Quarter 2, Year 2023:</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>q22023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160736.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>q2_2023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160736.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 6125 Columns: 21
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (15): Project Name, Sale Date, Address, Type of Sale, Type of Area, Nett...
+dbl  (1): Number of Units
+num  (5): Transacted Price ($), Area (SQFT), Unit Price ($ PSF), Area (SQM),...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>q32023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161009.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="quarter-3-year-2023" class="level3">
+<h3 class="anchored" data-anchor-id="quarter-3-year-2023">Quarter 3, Year 2023:</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>q42023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161109.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>q3_2023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161009.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 6206 Columns: 21
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (15): Project Name, Sale Date, Address, Type of Sale, Type of Area, Nett...
+dbl  (2): Area (SQM), Number of Units
+num  (4): Transacted Price ($), Area (SQFT), Unit Price ($ PSF), Unit Price ...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q12024 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240414220633.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As can be seen above, I noticed that in this particular dataset (Quarter 3, Year 2023), the data type for column Area (SQM) is ‘dbl’ (double), while in all the other four datasets, the data type for column Area (SQM) is ‘num’ (numeric). As far as I know, R does not differentiate between ‘dbl’ and ‘num’, so in this case, I will leave it as ‘dbl’ data type.</p>
+</div>
+</div>
+</section>
+<section id="quarter-4-year-2023" class="level3">
+<h3 class="anchored" data-anchor-id="quarter-4-year-2023">Quarter 4, Year 2023:</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(q12024)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>q4_2023 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161109.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4851 Columns: 21
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (15): Project Name, Sale Date, Address, Type of Sale, Type of Area, Nett...
+dbl  (1): Number of Units
+num  (5): Transacted Price ($), Area (SQFT), Unit Price ($ PSF), Area (SQM),...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+</section>
+<section id="quarter-1-year-2024" class="level3">
+<h3 class="anchored" data-anchor-id="quarter-1-year-2024">Quarter 1, Year 2024:</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>q1_2024 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240414220633.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4902 Columns: 21
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (15): Project Name, Sale Date, Address, Type of Sale, Type of Area, Nett...
+dbl  (1): Number of Units
+num  (5): Transacted Price ($), Area (SQFT), Unit Price ($ PSF), Area (SQM),...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I also noticed that the Sale Date data type format in all of these five datasets is ‘chr’ (character). I will parse/convert them into date-time format.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="data-preparation" class="level1">
+<h1>Data Preparation</h1>
+<p>Data will be processed using the appropriate ‘tidyverse’ family of packages. Statistical graphics will be created using ‘ggplot2’ and its extensions.</p>
+<section id="parsing-data-type" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-data-type">Parsing Data Type</h2>
+<p>Parsing the Sale Date column into date-time format using ‘lubridate’ package</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>q1_2023 <span class="ot">&lt;-</span> q1_2023 <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dmy</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>q2_2023 <span class="ot">&lt;-</span> q2_2023 <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dmy</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>q3_2023 <span class="ot">&lt;-</span> q3_2023 <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dmy</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>q4_2023 <span class="ot">&lt;-</span> q4_2023 <span class="sc">%&gt;%</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dmy</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>))</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>q1_2024 <span class="ot">&lt;-</span> q1_2024 <span class="sc">%&gt;%</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dmy</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><p>The <strong><code>mutate()</code></strong> function is used to modify the Sale Date column directly.</p>
+<ul>
+<li>Since the column name has a space in it, I need to use backticks to refer to it within the <strong><code>mutate()</code></strong> function.</li>
+</ul></li>
+<li><p>The <strong><code>dmy()</code></strong> function from the ‘lubridate’ package will parse the date strings into actual Date objects.</p></li>
+</ul>
+<p>Next, using the code below, I will check and confirm that the data types have been converted properly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(q1_2023<span class="sc">$</span><span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 4,902
-Columns: 21
-$ `Project Name`                &lt;chr&gt; "THE LANDMARK", "POLLEN COLLECTION", "SK…
-$ `Transacted Price ($)`        &lt;dbl&gt; 2726888, 3850000, 2346000, 2190000, 1954…
-$ `Area (SQFT)`                 &lt;dbl&gt; 1076.40, 1808.35, 1087.16, 807.30, 796.5…
-$ `Unit Price ($ PSF)`          &lt;dbl&gt; 2533, 2129, 2158, 2713, 2453, 2577, 838,…
-$ `Sale Date`                   &lt;chr&gt; "01 Jan 2024", "01 Jan 2024", "01 Jan 20…
-$ Address                       &lt;chr&gt; "173 CHIN SWEE ROAD #22-11", "34 POLLEN …
-$ `Type of Sale`                &lt;chr&gt; "New Sale", "New Sale", "New Sale", "New…
-$ `Type of Area`                &lt;chr&gt; "Strata", "Land", "Strata", "Strata", "S…
-$ `Area (SQM)`                  &lt;dbl&gt; 100.0, 168.0, 101.0, 75.0, 74.0, 123.0, …
-$ `Unit Price ($ PSM)`          &lt;dbl&gt; 27269, 22917, 23228, 29200, 26405, 27741…
-$ `Nett Price($)`               &lt;chr&gt; "-", "-", "-", "-", "-", "-", "-", "-", …
-$ `Property Type`               &lt;chr&gt; "Condominium", "Terrace House", "Apartme…
-$ `Number of Units`             &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-$ Tenure                        &lt;chr&gt; "99 yrs from 28/08/2020", "99 yrs from 0…
-$ `Completion Date`             &lt;chr&gt; "Uncompleted", "Uncompleted", "Uncomplet…
-$ `Purchaser Address Indicator` &lt;chr&gt; "Private", "N.A", "HDB", "N.A", "Private…
-$ `Postal Code`                 &lt;chr&gt; "169878", "807233", "469657", "118992", …
-$ `Postal District`             &lt;chr&gt; "03", "28", "16", "05", "21", "21", "28"…
-$ `Postal Sector`               &lt;chr&gt; "16", "80", "46", "11", "59", "58", "79"…
-$ `Planning Region`             &lt;chr&gt; "Central Region", "North East Region", "…
-$ `Planning Area`               &lt;chr&gt; "Outram", "Serangoon", "Bedok", "Queenst…</code></pre>
+<pre><code>[1] "Date"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(q2_2023<span class="sc">$</span><span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(q3_2023<span class="sc">$</span><span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(q4_2023<span class="sc">$</span><span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(q1_2024<span class="sc">$</span><span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
 </div>
 </div>
-
-
 </section>
+<section id="merge-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="merge-the-data">Merge the Data</h2>
+<p>After standardising the data in all five datasets, I will then merge these datasets together using the <strong><code>bind_rows()</code></strong> function from the ‘dplyr’ package. This function stacks data frames on top of each other, combining them into a single data frame. It’s important that all data frames have the same columns for <strong><code>bind_rows()</code></strong> to work correctly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(q1_2023, q2_2023, q3_2023, q4_2023, q1_2024)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="inspect-the-merged-data" class="level2">
+<h2 class="anchored" data-anchor-id="inspect-the-merged-data">Inspect the Merged Data</h2>
+<p>After merging, it’s good practice to check the combined dataset to ensure everything looks as expected:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the structure of the combined data</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(combined_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [26,806 × 21] (S3: tbl_df/tbl/data.frame)
+ $ Project Name               : chr [1:26806] "THE REEF AT KING'S DOCK" "URBAN TREASURES" "NORTH GAIA" "NORTH GAIA" ...
+ $ Transacted Price ($)       : num [1:26806] 2317000 1823500 1421112 1258112 1280000 ...
+ $ Area (SQFT)                : num [1:26806] 883 883 1076 1033 872 ...
+ $ Unit Price ($ PSF)         : num [1:26806] 2625 2066 1320 1218 1468 ...
+ $ Sale Date                  : Date[1:26806], format: "2023-01-01" "2023-01-02" ...
+ $ Address                    : chr [1:26806] "12 HARBOURFRONT AVENUE #05-32" "205 JALAN EUNOS #08-02" "29 YISHUN CLOSE #08-10" "45 YISHUN CLOSE #07-42" ...
+ $ Type of Sale               : chr [1:26806] "New Sale" "New Sale" "New Sale" "New Sale" ...
+ $ Type of Area               : chr [1:26806] "Strata" "Strata" "Strata" "Strata" ...
+ $ Area (SQM)                 : num [1:26806] 82 82 100 96 81 ...
+ $ Unit Price ($ PSM)         : num [1:26806] 28256 22238 14211 13105 15802 ...
+ $ Nett Price($)              : chr [1:26806] "-" "-" "-" "-" ...
+ $ Property Type              : chr [1:26806] "Condominium" "Condominium" "Executive Condominium" "Executive Condominium" ...
+ $ Number of Units            : num [1:26806] 1 1 1 1 1 1 1 1 1 1 ...
+ $ Tenure                     : chr [1:26806] "99 yrs from 12/01/2021" "Freehold" "99 yrs from 15/02/2021" "99 yrs from 15/02/2021" ...
+ $ Completion Date            : chr [1:26806] "Uncompleted" "Uncompleted" "Uncompleted" "Uncompleted" ...
+ $ Purchaser Address Indicator: chr [1:26806] "HDB" "Private" "HDB" "HDB" ...
+ $ Postal Code                : chr [1:26806] "097996" "419535" "269343" "269294" ...
+ $ Postal District            : chr [1:26806] "04" "14" "27" "27" ...
+ $ Postal Sector              : chr [1:26806] "09" "41" "26" "26" ...
+ $ Planning Region            : chr [1:26806] "Central Region" "East Region" "North Region" "North Region" ...
+ $ Planning Area              : chr [1:26806] "Bukit Merah" "Bedok" "Yishun" "Yishun" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View the first few rows to confirm data looks correct</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(combined_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 21
+  `Project Name`       `Transacted Price ($)` `Area (SQFT)` `Unit Price ($ PSF)`
+  &lt;chr&gt;                                 &lt;dbl&gt;         &lt;dbl&gt;                &lt;dbl&gt;
+1 THE REEF AT KING'S …                2317000          883.                 2625
+2 URBAN TREASURES                     1823500          883.                 2066
+3 NORTH GAIA                          1421112         1076.                 1320
+4 NORTH GAIA                          1258112         1033.                 1218
+5 PARC BOTANNIA                       1280000          872.                 1468
+6 NANYANG PARK                        5870000         3323.                 1767
+# ℹ 17 more variables: `Sale Date` &lt;date&gt;, Address &lt;chr&gt;, `Type of Sale` &lt;chr&gt;,
+#   `Type of Area` &lt;chr&gt;, `Area (SQM)` &lt;dbl&gt;, `Unit Price ($ PSM)` &lt;dbl&gt;,
+#   `Nett Price($)` &lt;chr&gt;, `Property Type` &lt;chr&gt;, `Number of Units` &lt;dbl&gt;,
+#   Tenure &lt;chr&gt;, `Completion Date` &lt;chr&gt;, `Purchaser Address Indicator` &lt;chr&gt;,
+#   `Postal Code` &lt;chr&gt;, `Postal District` &lt;chr&gt;, `Postal Sector` &lt;chr&gt;,
+#   `Planning Region` &lt;chr&gt;, `Planning Area` &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for any missing values or anomalies</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(combined_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Project Name       Transacted Price ($)  Area (SQFT)       Unit Price ($ PSF)
+ Length:26806       Min.   :   440000    Min.   :   322.9   Min.   : 138      
+ Class :character   1st Qu.:  1280000    1st Qu.:   721.2   1st Qu.:1384      
+ Mode  :character   Median :  1660000    Median :   990.3   Median :1762      
+                    Mean   :  2143286    Mean   :  1191.6   Mean   :1852      
+                    3rd Qu.:  2320000    3rd Qu.:  1302.4   3rd Qu.:2260      
+                    Max.   :392180000    Max.   :144883.4   Max.   :5756      
+                                                                              
+   Sale Date            Address          Type of Sale       Type of Area      
+ Min.   :2023-01-01   Length:26806       Length:26806       Length:26806      
+ 1st Qu.:2023-04-29   Class :character   Class :character   Class :character  
+ Median :2023-07-28   Mode  :character   Mode  :character   Mode  :character  
+ Mean   :2023-08-11                                                           
+ 3rd Qu.:2023-11-20                                                           
+ Max.   :2024-03-31                                                           
+                                                                              
+   Area (SQM)      Unit Price ($ PSM) Nett Price($)      Property Type     
+ Min.   :   30.0   Min.   : 1484      Length:26806       Length:26806      
+ 1st Qu.:   67.0   1st Qu.:14893      Class :character   Class :character  
+ Median :   92.0   Median :18966      Mode  :character   Mode  :character  
+ Mean   :  110.5   Mean   :19930                                           
+ 3rd Qu.:  121.0   3rd Qu.:24327                                           
+ Max.   :13460.0   Max.   :61962                                           
+ NA's   :6                                                                 
+ Number of Units     Tenure          Completion Date   
+ Min.   : 1.000   Length:26806       Length:26806      
+ 1st Qu.: 1.000   Class :character   Class :character  
+ Median : 1.000   Mode  :character   Mode  :character  
+ Mean   : 1.005                                        
+ 3rd Qu.: 1.000                                        
+ Max.   :60.000                                        
+                                                       
+ Purchaser Address Indicator Postal Code        Postal District   
+ Length:26806                Length:26806       Length:26806      
+ Class :character            Class :character   Class :character  
+ Mode  :character            Mode  :character   Mode  :character  
+                                                                  
+                                                                  
+                                                                  
+                                                                  
+ Postal Sector      Planning Region    Planning Area     
+ Length:26806       Length:26806       Length:26806      
+ Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character  
+                                                         
+                                                         
+                                                         
+                                                         </code></pre>
+</div>
+</div>
+</section>
+<section id="save-the-merged-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="save-the-merged-dataset">Save the Merged Dataset</h2>
+<p>Since I may need to use to use this merged datasets repeatedly, I will save it into a file for easy access in future sessions. I will use <strong><code>write_csv()</code></strong> function from the ‘readr’ package (part of the ‘tidyverse’) to write this merged data frame to a CSV file.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(combined_data, <span class="st">"data/All_ResidentialTransactions_2023-2024.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="proceed-with-visualisation-and-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="proceed-with-visualisation-and-analysis">Proceed with Visualisation and Analysis**</h2>
+<p>Now that the data has been consolidated into a single dataframe, it is time to move forward with analysis:</p>
+<p>After completing all the previous setup and loading libraries, the next step is to create the visualisations to gather insights from the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a Month-Year field for the x-axis and calculate total sales volume</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>monthly_sales_stats <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">floor_date</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>, <span class="at">unit =</span> <span class="st">"month"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Month) <span class="sc">%&gt;%</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Sales_Volume =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Number of Units</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Month)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the average monthly sales volume</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>average_sales_volume <span class="ot">&lt;-</span> <span class="fu">mean</span>(monthly_sales_stats<span class="sc">$</span>Total_Sales_Volume)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the line chart visualizing monthly sales volume and add the average reference line</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>monthly_sales_line_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(monthly_sales_stats, <span class="fu">aes</span>(<span class="at">x =</span> Month, <span class="at">y =</span> Total_Sales_Volume)) <span class="sc">+</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span>  <span class="co"># Line color</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span>  <span class="co"># Point color</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> average_sales_volume, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"1 month"</span>, <span class="at">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="sc">+</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Monthly Sales Volume with Average Reference Line"</span>,</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Month"</span>,</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total Units Sold"</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))  <span class="co"># Rotate the x-axis text for better readability</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the plot</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>monthly_sales_line_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex01_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The visualisation illustrates the monthly sales volume trend of private housing units from January 2023 to March 2024. The trend shows significant fluctuation throughout the period, with peaks and troughs corresponding to market activity. Notably, there’s a sharp increase in March 2023, suggesting a spike in sales, possibly due to market stimuli or seasonal factors. The overall pattern indicates a resilient market, yet with periods of reticence, potentially reflective of economic events or policy changes. The red dotted line represents the average sales volume across the period, providing a benchmark against which to compare monthly performance. The months above this line saw higher-than-average sales, whereas those below saw fewer transactions, highlighting the varying buyer activity throughout the year.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we aggregate the number of units sold by property type</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>property_type_distribution <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Property Type</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Transactions =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Now, we plot the distribution</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>property_type_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(property_type_distribution, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Property Type</span><span class="st">`</span>, <span class="at">y =</span> Transactions)) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span> <span class="co"># All bars in 'steelblue'</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sales Distribution based on Property Type in Singapore Private Residential Market"</span>,</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Property Type"</span>,</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Transactions"</span>) <span class="sc">+</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="co"># Remove legend</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the plot</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(property_type_chart)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex01_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The bar chart illustrates the frequency of transactions across different property types in Singapore’s private residential market. Condominiums and apartments are the most commonly traded, suggesting a high demand for such property types, which could be due to their affordability and availability. Executive condominiums and detached houses represent a smaller fraction, likely reflecting their higher price points and more exclusive market position. The varied transaction volume across property types offers valuable insight into consumer preferences and the real estate market’s dynamics, particularly indicating a trend towards high-density living options.</p>
+
+
 </section>
 </section>
 
