@@ -162,11 +162,13 @@ Since I may need to use to use this merged datasets repeatedly, I will save it i
 write_csv(combined_data, "data/All_ResidentialTransactions_2023-2024.csv")
 ```
 
-## Proceed with Visualisation and Analysis**
+## Proceed with Visualisation and Analysis
 
 Now that the data has been consolidated into a single dataframe, it is time to move forward with analysis:
 
 After completing all the previous setup and loading libraries, the next step is to create the visualisations to gather insights from the data.
+
+### Monthly Sales Volume Visualisation with Average Reference Line
 
 ```{r}
 # Generate a Month-Year field for the x-axis and calculate total sales volume
@@ -199,6 +201,9 @@ monthly_sales_line_chart
 ```
 
 The visualisation illustrates the monthly sales volume trend of private housing units from January 2023 to March 2024. The trend shows significant fluctuation throughout the period, with peaks and troughs corresponding to market activity. Notably, there's a sharp increase in March 2023, suggesting a spike in sales, possibly due to market stimuli or seasonal factors. The overall pattern indicates a resilient market, yet with periods of reticence, potentially reflective of economic events or policy changes. The red dotted line represents the average sales volume across the period, providing a benchmark against which to compare monthly performance. The months above this line saw higher-than-average sales, whereas those below saw fewer transactions, highlighting the varying buyer activity throughout the year.
+
+
+### Sales Distribution based on Property Type in Singapore Private Residential Market
 
 ```{r}
 # First, we aggregate the number of units sold by property type

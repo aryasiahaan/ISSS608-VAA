@@ -212,7 +212,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#merge-the-data" id="toc-merge-the-data" class="nav-link" data-scroll-target="#merge-the-data">Merge the Data</a></li>
   <li><a href="#inspect-the-merged-data" id="toc-inspect-the-merged-data" class="nav-link" data-scroll-target="#inspect-the-merged-data">Inspect the Merged Data</a></li>
   <li><a href="#save-the-merged-dataset" id="toc-save-the-merged-dataset" class="nav-link" data-scroll-target="#save-the-merged-dataset">Save the Merged Dataset</a></li>
-  <li><a href="#proceed-with-visualisation-and-analysis" id="toc-proceed-with-visualisation-and-analysis" class="nav-link" data-scroll-target="#proceed-with-visualisation-and-analysis">Proceed with Visualisation and Analysis**</a></li>
+  <li><a href="#proceed-with-visualisation-and-analysis" id="toc-proceed-with-visualisation-and-analysis" class="nav-link" data-scroll-target="#proceed-with-visualisation-and-analysis">Proceed with Visualisation and Analysis</a>
+  <ul class="collapse">
+  <li><a href="#monthly-sales-volume-visualisation-with-average-reference-line" id="toc-monthly-sales-volume-visualisation-with-average-reference-line" class="nav-link" data-scroll-target="#monthly-sales-volume-visualisation-with-average-reference-line">Monthly Sales Volume Visualisation with Average Reference Line</a></li>
+  <li><a href="#sales-distribution-based-on-property-type-in-singapore-private-residential-market" id="toc-sales-distribution-based-on-property-type-in-singapore-private-residential-market" class="nav-link" data-scroll-target="#sales-distribution-based-on-property-type-in-singapore-private-residential-market">Sales Distribution based on Property Type in Singapore Private Residential Market</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -611,9 +615,11 @@ Note
 </div>
 </section>
 <section id="proceed-with-visualisation-and-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="proceed-with-visualisation-and-analysis">Proceed with Visualisation and Analysis**</h2>
+<h2 class="anchored" data-anchor-id="proceed-with-visualisation-and-analysis">Proceed with Visualisation and Analysis</h2>
 <p>Now that the data has been consolidated into a single dataframe, it is time to move forward with analysis:</p>
 <p>After completing all the previous setup and loading libraries, the next step is to create the visualisations to gather insights from the data.</p>
+<section id="monthly-sales-volume-visualisation-with-average-reference-line" class="level3">
+<h3 class="anchored" data-anchor-id="monthly-sales-volume-visualisation-with-average-reference-line">Monthly Sales Volume Visualisation with Average Reference Line</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a Month-Year field for the x-axis and calculate total sales volume</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>monthly_sales_stats <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
@@ -647,6 +653,9 @@ Note
 </div>
 </div>
 <p>The visualisation illustrates the monthly sales volume trend of private housing units from January 2023 to March 2024. The trend shows significant fluctuation throughout the period, with peaks and troughs corresponding to market activity. Notably, there’s a sharp increase in March 2023, suggesting a spike in sales, possibly due to market stimuli or seasonal factors. The overall pattern indicates a resilient market, yet with periods of reticence, potentially reflective of economic events or policy changes. The red dotted line represents the average sales volume across the period, providing a benchmark against which to compare monthly performance. The months above this line saw higher-than-average sales, whereas those below saw fewer transactions, highlighting the varying buyer activity throughout the year.</p>
+</section>
+<section id="sales-distribution-based-on-property-type-in-singapore-private-residential-market" class="level3">
+<h3 class="anchored" data-anchor-id="sales-distribution-based-on-property-type-in-singapore-private-residential-market">Sales Distribution based on Property Type in Singapore Private Residential Market</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we aggregate the number of units sold by property type</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>property_type_distribution <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
@@ -672,6 +681,7 @@ Note
 <p>The bar chart illustrates the frequency of transactions across different property types in Singapore’s private residential market. Condominiums and apartments are the most commonly traded, suggesting a high demand for such property types, which could be due to their affordability and availability. Executive condominiums and detached houses represent a smaller fraction, likely reflecting their higher price points and more exclusive market position. The varied transaction volume across property types offers valuable insight into consumer preferences and the real estate market’s dynamics, particularly indicating a trend towards high-density living options.</p>
 
 
+</section>
 </section>
 </section>
 
