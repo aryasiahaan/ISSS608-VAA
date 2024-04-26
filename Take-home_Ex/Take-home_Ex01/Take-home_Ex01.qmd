@@ -200,10 +200,13 @@ monthly_sales_line_chart <- ggplot(monthly_sales_stats, aes(x = Month, y = Total
 monthly_sales_line_chart
 ```
 
-The visualisation illustrates the monthly sales volume trend of private housing units from January 2023 to March 2024. The trend shows significant fluctuation throughout the period, with peaks and troughs corresponding to market activity. Notably, there's a sharp increase in March 2023, suggesting a spike in sales, possibly due to market stimuli or seasonal factors. The overall pattern indicates a resilient market, yet with periods of reticence, potentially reflective of economic events or policy changes. The red dotted line represents the average sales volume across the period, providing a benchmark against which to compare monthly performance. The months above this line saw higher-than-average sales, whereas those below saw fewer transactions, highlighting the varying buyer activity throughout the year.
+The visualisation illustrates the monthly sales volume trend for private housing units from January 2023 to March 2024. The trend exhibits significant fluctuations throughout the period, with peaks and troughs corresponding to market activities. Notably, there is a sharp increase in March 2024 as compared to February 2024, suggesting a spike in sales. Huttons Asia's chief executive, Mark Yip, attributes this to the resumption of project launches in March following the Chinese New Year festive lull, which had a spillover effect on the resale market (Yip, 2024). The red dotted line represents the average sales volume over the period, providing a benchmark for monthly performance comparison. Months above this line experienced higher-than-average sales, while those below indicated fewer transactions, highlighting the variable buyer activity throughout the year.
+
+Citation:
+Yip, M. (2024, April 26). Condo resale prices inch up in March as volume rebounds 17.4%. The Straits Times. Retrieved from [https://www.straitstimes.com/singapore/housing/condo-resale-prices-inch-up-in-march-as-volume-rebounds-174]
 
 
-### Sales Distribution based on Property Type in Singapore Private Residential Market
+### SALES DISTRIBUTION BASED ON PROPERTY TYPE IN SINGAPORE PRIVATE RESIDENTIAL MARKET
 
 ```{r}
 # First, we aggregate the number of units sold by property type
@@ -215,7 +218,7 @@ property_type_distribution <- combined_data %>%
 property_type_chart <- ggplot(property_type_distribution, aes(x = `Property Type`, y = Transactions)) +
   geom_bar(stat = "identity", fill = "steelblue") + # All bars in 'steelblue'
   theme_minimal() +
-  labs(title = "Sales Distribution based on Property Type in Singapore Private Residential Market",
+  labs(title = "Sales Distribution based on Property Type",
        x = "Property Type",
        y = "Number of Transactions") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
@@ -224,5 +227,15 @@ property_type_chart <- ggplot(property_type_distribution, aes(x = `Property Type
 # Print the plot
 print(property_type_chart)
 ```
+The bar chart illustrates the frequency of transactions across different property types in Singapore’s private residential market. Condominiums and apartments are the most commonly traded, suggesting a high demand for such property types, which could be due to their affordability and availability. Executive condominiums and detached houses represent a smaller fraction, likely reflecting their higher price points and more exclusive market position. The varied transaction volume across property types offers valuable insight into consumer preferences and the real estate market’s dynamics, particularly indicating a trend towards high-density living options.
 
-The bar chart illustrates the frequency of transactions across different property types in Singapore's private residential market. Condominiums and apartments are the most commonly traded, suggesting a high demand for such property types, which could be due to their affordability and availability. Executive condominiums and detached houses represent a smaller fraction, likely reflecting their higher price points and more exclusive market position. The varied transaction volume across property types offers valuable insight into consumer preferences and the real estate market's dynamics, particularly indicating a trend towards high-density living options.
+
+
+
+# Conclusion    
+
+The Singapore private residential market shows a lively character, affected by elements such as timing in the market and kinds of property. The big rise in sales amount during March 2024 shown by the first graph emphasizes how new project starts after festive time can greatly influence buyer interest and increase selling activities, as commented from Mark Yip at Huttons Asia.
+
+The second visualisation supports this by displaying a strong inclination in the market towards condominiums and apartments, which represent the majority of transaction volumes.
+
+In combination, the observations emphasize how the real estate market is cyclical and influenced by cultural as well as economic activities. Such information holds great importance for stakeholders such as investors, developers and policymakers who require these details to decide wisely. The ongoing inclination towards high-density living implies that the focus on developing and investing in condominiums and apartments may persist, possibly aligning with majority buyers' need for affordability combined with lifestyle preference in Singapore.
