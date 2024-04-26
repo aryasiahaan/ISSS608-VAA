@@ -206,7 +206,7 @@ Citation:
 Yip, M. (2024, April 26). Condo resale prices inch up in March as volume rebounds 17.4%. The Straits Times. Retrieved from [https://www.straitstimes.com/singapore/housing/condo-resale-prices-inch-up-in-march-as-volume-rebounds-174]
 
 
-### SALES DISTRIBUTION BASED ON PROPERTY TYPE IN SINGAPORE PRIVATE RESIDENTIAL MARKET
+### Sales Distribution based on Property type in Singapore Private Residential Market
 
 ```{r}
 # First, we aggregate the number of units sold by property type
