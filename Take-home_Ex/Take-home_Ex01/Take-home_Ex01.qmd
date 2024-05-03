@@ -25,7 +25,7 @@ In this task, I am to assume the role of a graphical editor of a median company.
 ## Loading Packages
 
 | Library                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|:------------------------------|-----------------------------------------|
+|:------------------------------------------|-----------------------------------------|
 | [pacman](https://github.com/trinker/pacman)                   | Pacman is a package that makes it possible to perform tasks associated with add-on packages in a more convenient manner. It checks whether the add-on packages are installed or not. If not, it will automatically install and load them into the R environment. In this take-home exercise 1, the pacman package has been installed beforehand.                                                                                     |
 | [tidyverse](https://www.tidyverse.org/)                       | A collection of core packages designed for data science, used extensively for data preparation and wrangling. Content includes: ggplot2, dplyr, tidyr, readr, purr, tibble, stringr, forcats, scales, lubridate, etc.                                                                                                                                                                                                                |
 | [scales](https://scales.r-lib.org/)                           | This package is designed to enhance how data is presented in visualisation, particularly in ggplot2 plots. It provides tools for mapping data to aesthetic attributes like colours, shapes, and sizes more effectively. It also includes functions for formatting and transforming axes and legends in a chart. Even though this is part of the tidyverse package collection, it needs to be installed and loaded separately.        |
@@ -202,9 +202,7 @@ monthly_sales_line_chart
 
 The visualisation illustrates the monthly sales volume trend for private housing units from January 2023 to March 2024. The trend exhibits significant fluctuations throughout the period, with peaks and troughs corresponding to market activities. Notably, there is a sharp increase in March 2024 as compared to February 2024, suggesting a spike in sales. Huttons Asia's chief executive, Mark Yip, attributes this to the resumption of project launches in March following the Chinese New Year festive lull, which had a spillover effect on the resale market (Yip, 2024). The red dotted line represents the average sales volume over the period, providing a benchmark for monthly performance comparison. Months above this line experienced higher-than-average sales, while those below indicated fewer transactions, highlighting the variable buyer activity throughout the year.
 
-Citation:
-Yip, M. (2024, April 26). Condo resale prices inch up in March as volume rebounds 17.4%. The Straits Times. Retrieved from [https://www.straitstimes.com/singapore/housing/condo-resale-prices-inch-up-in-march-as-volume-rebounds-174]
-
+Citation: Yip, M. (2024, April 26). Condo resale prices inch up in March as volume rebounds 17.4%. The Straits Times. Retrieved from \[https://www.straitstimes.com/singapore/housing/condo-resale-prices-inch-up-in-march-as-volume-rebounds-174\]
 
 ### Sales Distribution based on Property type in Singapore Private Residential Market
 
@@ -227,12 +225,10 @@ property_type_chart <- ggplot(property_type_distribution, aes(x = Transactions, 
 # Print the plot
 print(property_type_chart)
 ```
+
 The bar chart illustrates the frequency of transactions across different property types in Singapore’s private residential market. Condominiums and apartments are the most commonly traded, suggesting a high demand for such property types, which could be due to their affordability and availability. Executive condominiums and detached houses represent a smaller fraction, likely reflecting their higher price points and more exclusive market position. The varied transaction volume across property types offers valuable insight into consumer preferences and the real estate market’s dynamics, particularly indicating a trend towards high-density living options.
 
-
-
-
-# Conclusion    
+# Conclusion
 
 The Singapore private residential market shows a lively character, affected by elements such as timing in the market and kinds of property. The big rise in sales amount during March 2024 shown by the first graph emphasizes how new project starts after festive time can greatly influence buyer interest and increase selling activities, as commented from Mark Yip at Huttons Asia.
 

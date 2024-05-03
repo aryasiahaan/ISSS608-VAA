@@ -33,8 +33,8 @@ First, write a code chunk to check, install and launch the following R packages:
 The code chunk below will be used to accomplish the task.
 
 ```{r}
-pacman::p_load(ggiraph, plotly, 
-               patchwork, DT, tidyverse) 
+pacman::p_load(plotly,patchwork, DT, tidyverse) 
+library(ggiraph)
 ```
 
 ## **3.3 Importing Data**
@@ -85,7 +85,7 @@ girafe(
 )
 ```
 
-Notice that two steps are involved. First, an interactive version of ggplot2 geom (i.e. [`geom_dotplot_interactive()`](https://davidgohel.github.io/ggiraph/reference/geom_dotplot_interactive.html)) will be used to create the basic graph. Then, [`girafe()`](https://davidgohel.github.io/ggiraph/reference/girafe.html) will be used to generate an svg object to be displayed on an html page.
+Notice that two steps are involved. First, an interactive version of ggplot2 geom (i.e.[`geom_dotplot_interactive()`](https://davidgohel.github.io/ggiraph/reference/geom_dotplot_interactive.html)) will be used to create the basic graph. Then,[`girafe()`](https://davidgohel.github.io/ggiraph/reference/girafe.html) will be used to generate an svg object to be displayed on an html page.
 
 ## **3.5 Interactivity**
 
@@ -341,7 +341,5 @@ Interactivity: Web document link with a data object will be displayed on the web
 ![](images/diagram9.png)
 
 ::: callout-warning
-
 Note that click actions must be a string column in the dataset containing valid javascript instructions.
-
 :::
