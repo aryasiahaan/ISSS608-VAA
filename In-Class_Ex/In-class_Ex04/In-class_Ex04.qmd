@@ -1,0 +1,98 @@
+---
+title: "In-class_Ex04"
+author: "Arya Siahaan"
+date: "May 5, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: true
+  freeze: true
+---
+
+## **Getting Started**
+
+## Loading R packages
+
+```{r}
+pacman::p_load(tidyverse, ggstatsplot) 
+```
+
+# Importing the data
+
+```{r}
+exam <- read_csv("data/Exam_data.csv")
+```
+
+```{r}
+set.seed(1234)
+
+p <- gghistostats(
+  data = exam,
+  x = ENGLISH,
+  type = "bayes",
+  test.value = 60,
+  bin.args = list(color = "black",
+                  fill = "grey50",
+                  alpha = 0.7),
+  normal.curve = TRUE,
+  normal.curve.args = list(linewidth = 0.5),
+  xlab = "English scores"
+)
+
+p
+```
+
+```{r}
+extract_stats(p)
+```
+
+```{r}
+ggdotplotstats(
+  data = exam,
+  x = ENGLISH,
+  y = CLASS,
+  title = "",
+  xlab = ""
+)
+```
+
+
+```{r}
+exam_long <- exam %>%
+  pivot_longer(
+    cols = ENGLISH:SCIENCE,
+    names_to = "SUBJECT",
+    values_to = "SCORES") %>%
+  filter(CLASS == "3A")
+```
+
+```{r}
+ggwithinstats(
+  data = filter(exam_long,
+                SUBJECT %in%
+                  c("MATHS", "SCIENCE")),
+  x = SUBJECT,
+  y = SCORES,
+  type = "p"
+)
+```
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = TRUE,
+  label.var = ID,
+  label.expression = ENGLISH > 90 & MATHS > 90
+)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
