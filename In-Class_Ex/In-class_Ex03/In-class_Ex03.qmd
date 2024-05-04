@@ -1,12 +1,12 @@
 ---
-title: "In-class_Ex02 Demo"
+title: "In-class Exercise 3"
 author: "Arya Siahaan"
-date: "April 20, 2024"
+date: "April 27, 2024"
 date-modified: "last-modified"
 execute: 
   eval: true
   echo: true
-  warning: true
+  warning: false
   freeze: true
 ---
 

@@ -6,7 +6,7 @@ date-modified: "last-modified"
 execute: 
   eval: true
   echo: true
-  warning: true
+  warning: false
   freeze: true
 ---
 
@@ -264,7 +264,6 @@ plot(parameters(model1))
 ### **10.6.8 Visualising Regression Parameters: *ggcoefstats()* methods**
 
 In the code below, [*ggcoefstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggcoefstats.html) of ggstatsplot package to visualise the parameters of a regression model.
-
 
 ```{r}
 ggcoefstats(model1, 

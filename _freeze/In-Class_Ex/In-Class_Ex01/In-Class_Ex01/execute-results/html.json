@@ -1,6 +1,7 @@
 {
-  "hash": "a8e66fc48c4c20ad5411a1ed6049d14e",
+  "hash": "e3e6d9b42c196bf5bc328244f85c348f",
   "result": {
+    "engine": "knitr",
     "markdown": "---\ntitle: \"In-class Exercise 1\"\nauthor: \"Arya Siahaan\"\ndate: \"April 13, 2024\"\ndate-modified: \"last-modified\"\nexecute: \n  eval: true\n  echo: true\n  warning: false\n  freeze: true\n---\n\n\n## Loading R packages\n\nIn the code chunk below, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) of [pacman](https://github.com/trinker/pacman) package is used to load tidyverse family of packages.\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(tidyverse)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nrealis <- read_csv(\"data/realis2019.csv\")\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(data = realis,\n       aes(x = `Unit Price ($ psm)`)) +\n  geom_histogram()\n```\n\n::: {.cell-output-display}\n![](In-class_Ex01_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n",
     "supporting": [
       "In-class_Ex01_files"

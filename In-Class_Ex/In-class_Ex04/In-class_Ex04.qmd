@@ -6,7 +6,7 @@ date-modified: "last-modified"
 execute: 
   eval: true
   echo: true
-  warning: true
+  warning: false
   freeze: true
 ---
 
@@ -56,7 +56,6 @@ ggdotplotstats(
   xlab = ""
 )
 ```
-
 
 ```{r}
 exam_long <- exam %>%

@@ -6,7 +6,7 @@ date-modified: "last-modified"
 execute: 
   eval: true
   echo: true
-  warning: true
+  warning: false
   freeze: true
 ---
 
@@ -238,8 +238,6 @@ fp_ggplotly <- ggplotly(p,
               "y"))
 fp_ggplotly
 ```
-
-
 
 ## **12.6 References**
 
