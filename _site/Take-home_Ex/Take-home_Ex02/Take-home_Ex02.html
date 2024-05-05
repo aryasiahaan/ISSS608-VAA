@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Arya Siahaan">
+<meta name="dcterms.date" content="2024-05-01">
+
+<title>ISSS608-VAA - Take-home Exercise 2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISSS608-VAA</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Hands-on Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html">
+ <span class="dropdown-text">Hands-on Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html">
+ <span class="dropdown-text">Hands-on Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html">
+ <span class="dropdown-text">Hands-on Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04a.html">
+ <span class="dropdown-text">Hands-on Exercise 4a</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04b.html">
+ <span class="dropdown-text">Hands-on Exercise 4b</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html">
+ <span class="dropdown-text">Hands-on Exercise 4c</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-class Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex01/In-class_Ex01.html">
+ <span class="dropdown-text">In-class Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex02/In-class_Ex02.html">
+ <span class="dropdown-text">In-class Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex03/In-class_Ex03.html">
+ <span class="dropdown-text">In-class Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex04/In-class_Ex04.html">
+ <span class="dropdown-text">In-class Exercise 4</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-home Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html">
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html">
+ <span class="dropdown-text">Take-home Exercise 2</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task">The Task</a></li>
+  </ul></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#reproducing-the-original-process" id="toc-reproducing-the-original-process" class="nav-link" data-scroll-target="#reproducing-the-original-process">Reproducing The Original Process</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-packages" id="toc-loading-the-packages" class="nav-link" data-scroll-target="#loading-the-packages"><strong>Loading The Packages</strong></a></li>
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data">Loading The Data</a></li>
+  <li><a href="#variable-selection" id="toc-variable-selection" class="nav-link" data-scroll-target="#variable-selection"><strong>Variable Selection</strong></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#datavis-makeover" id="toc-datavis-makeover" class="nav-link" data-scroll-target="#datavis-makeover">DataVis Makeover</a>
+  <ul class="collapse">
+  <li><a href="#analysis-of-the-original-visualisation-and-its-intended-purpose" id="toc-analysis-of-the-original-visualisation-and-its-intended-purpose" class="nav-link" data-scroll-target="#analysis-of-the-original-visualisation-and-its-intended-purpose"><strong>Analysis of the Original Visualisation and Its Intended Purpose:</strong></a></li>
+  <li><a href="#how-the-original-visualisation-achieves-the-analytical-goals" id="toc-how-the-original-visualisation-achieves-the-analytical-goals" class="nav-link" data-scroll-target="#how-the-original-visualisation-achieves-the-analytical-goals"><strong>How the Original Visualisation Achieves the Analytical Goals:</strong></a></li>
+  <li><a href="#critique-on-clarity-and-aesthetics-of-the-original-visualisation" id="toc-critique-on-clarity-and-aesthetics-of-the-original-visualisation" class="nav-link" data-scroll-target="#critique-on-clarity-and-aesthetics-of-the-original-visualisation">Critique on Clarity and Aesthetics of the Original Visualisation</a>
+  <ul class="collapse">
+  <li><a href="#clarity" id="toc-clarity" class="nav-link" data-scroll-target="#clarity"><strong>Clarity</strong></a></li>
+  <li><a href="#aesthetics" id="toc-aesthetics" class="nav-link" data-scroll-target="#aesthetics"><strong>Aesthetics</strong></a></li>
+  <li><a href="#recommendations-for-improvement" id="toc-recommendations-for-improvement" class="nav-link" data-scroll-target="#recommendations-for-improvement"><strong>Recommendations for Improvement</strong></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#learning-takeaways" id="toc-learning-takeaways" class="nav-link" data-scroll-target="#learning-takeaways">Learning Takeaways</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take-home Exercise 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Arya Siahaan </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2024</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">May 5, 2024</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<section id="the-task" class="level2">
+<h2 class="anchored" data-anchor-id="the-task">The Task</h2>
+<p>For Take-home Exercise 2, I need to choose a data visualisation prepared by one of my classmate’s Take-home Exercise 1 submission, critique its clarity and aesthetics, and then redesign it using the ggplot2 and tidyverse packages, including ggplot2 extensions.</p>
+</section>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<section id="reproducing-the-original-process" class="level2">
+<h2 class="anchored" data-anchor-id="reproducing-the-original-process">Reproducing The Original Process</h2>
+<p>I will follow the step-by-step process performed by my classmate in order to reproduce the original visualisation.</p>
+<section id="loading-the-packages" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-packages"><strong>Loading The Packages</strong></h3>
+<p>First of all, let’s load all the required packages to reproduce the visualisation. The packages used are listed below:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Library</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/trinker/pacman">pacman</a></td>
+<td>Pacman is a package that makes it possible to perform tasks associated with add-on packages in a more convenient manner. It checks whether the add-on packages are installed or not. If not, it will automatically install and load them into the R environment.</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.tidyverse.org/">tidyverse</a></td>
+<td>A collection of core packages designed for data science, used extensively for data preparation and wrangling. Content includes: ggplot2, dplyr, tidyr, readr, purr, tibble, stringr, forcats, scales, lubridate, etc.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://patchwork.data-imaginist.com/">patchwork</a></td>
+<td>This one is also an extension package for ggplot2 that allows combining multiple ggplot2 plots into one (composite figure) and arranging them in various layouts. Even though patchwork complements the functionality of ggplot2, it is independently maintained and must be installed and loaded separately.</td>
+</tr>
+<tr class="even">
+<td><a href="https://scales.r-lib.org/">scales</a></td>
+<td>This package is designed to enhance how data is presented in visualisation, particularly in ggplot2 plots. It provides tools for mapping data to aesthetic attributes like colours, shapes, and sizes more effectively. It also includes functions for formatting and transforming axes and legends in a chart. Even though this is part of the tidyverse package collection, it needs to be installed and loaded separately.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://zoo.r-forge.r-project.org/">zoo</a></td>
+<td>Provides powerful methods for managing and manipulating ordered indexed data, particularly time series data, making it easier to handle a variety of data irregularities.</td>
+</tr>
+</tbody>
+</table>
+<p>These packages will be loaded using the <a href="https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load"><code>p_load()</code></a> function from the <a href="https://github.com/trinker/pacman">pacman</a> package to ensure that all the necessary packages are available in the R environment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, lubridate, patchwork, scales, zoo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="loading-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-data">Loading The Data</h3>
+<section id="the-datasets" class="level4">
+<h4 class="anchored" data-anchor-id="the-datasets">The Datasets</h4>
+<p>There are five datasets in the form of CSV files used to produce the original visualisation. These datasets cover from the start of the 1st quarter 2023 to the end of the 1st quarter 2024.</p>
+<ul>
+<li><p>read_csv() function will be used to load these CSV files into the R environment to create five separate dataframes: data1, data2, data3, data4, and data5.</p></li>
+<li><p>bind_rows() from the dplyr package merges these five data frames into one large data frame called data.</p></li>
+<li><p>glimpse() provides a quick overview of the combined data frame.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160536.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308160736.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data3 <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161009.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>data4 <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240308161109.csv"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data5 <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/ResidentialTransaction20240414220633.csv"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(data1, data2, data3, data4, data5)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 26,806
+Columns: 21
+$ `Project Name`                &lt;chr&gt; "THE REEF AT KING'S DOCK", "URBAN TREASU…
+$ `Transacted Price ($)`        &lt;dbl&gt; 2317000, 1823500, 1421112, 1258112, 1280…
+$ `Area (SQFT)`                 &lt;dbl&gt; 882.65, 882.65, 1076.40, 1033.34, 871.88…
+$ `Unit Price ($ PSF)`          &lt;dbl&gt; 2625, 2066, 1320, 1218, 1468, 1767, 1095…
+$ `Sale Date`                   &lt;chr&gt; "01 Jan 2023", "02 Jan 2023", "02 Jan 20…
+$ Address                       &lt;chr&gt; "12 HARBOURFRONT AVENUE #05-32", "205 JA…
+$ `Type of Sale`                &lt;chr&gt; "New Sale", "New Sale", "New Sale", "New…
+$ `Type of Area`                &lt;chr&gt; "Strata", "Strata", "Strata", "Strata", …
+$ `Area (SQM)`                  &lt;dbl&gt; 82.0, 82.0, 100.0, 96.0, 81.0, 308.7, 42…
+$ `Unit Price ($ PSM)`          &lt;dbl&gt; 28256, 22238, 14211, 13105, 15802, 19015…
+$ `Nett Price($)`               &lt;chr&gt; "-", "-", "-", "-", "-", "-", "-", "-", …
+$ `Property Type`               &lt;chr&gt; "Condominium", "Condominium", "Executive…
+$ `Number of Units`             &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ Tenure                        &lt;chr&gt; "99 yrs from 12/01/2021", "Freehold", "9…
+$ `Completion Date`             &lt;chr&gt; "Uncompleted", "Uncompleted", "Uncomplet…
+$ `Purchaser Address Indicator` &lt;chr&gt; "HDB", "Private", "HDB", "HDB", "HDB", "…
+$ `Postal Code`                 &lt;chr&gt; "097996", "419535", "269343", "269294", …
+$ `Postal District`             &lt;chr&gt; "04", "14", "27", "27", "28", "19", "10"…
+$ `Postal Sector`               &lt;chr&gt; "09", "41", "26", "26", "79", "54", "27"…
+$ `Planning Region`             &lt;chr&gt; "Central Region", "East Region", "North …
+$ `Planning Area`               &lt;chr&gt; "Bukit Merah", "Bedok", "Yishun", "Yishu…</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="variable-selection" class="level3">
+<h3 class="anchored" data-anchor-id="variable-selection"><strong>Variable Selection</strong></h3>
+<table class="table">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Project Name</td>
+<td>the name of the property or title of the development project that is being sold</td>
+</tr>
+<tr class="even">
+<td>Sale Date</td>
+<td>The specific date when the transaction was completed</td>
+</tr>
+<tr class="odd">
+<td>Type of Sale</td>
+<td>A new sale, resale, or auction, among other types.Here mainly analyze resale</td>
+</tr>
+<tr class="even">
+<td>Area (SQM)</td>
+<td>The usable floor area of the property in square meters</td>
+</tr>
+<tr class="odd">
+<td>Unit Price ($ PSM)</td>
+<td>The price per square meter of the property</td>
+</tr>
+</tbody>
+</table>
+<section id="data-cleaning" class="level4">
+<h4 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h4>
+<p><strong>Sale Date</strong> is converted to a date format using the dmy() function from the lubridate package, which interprets strings as dates in “day-month-year” format.</p>
+<p><strong>Area (SQM)</strong> is transformed into a numeric variable.</p>
+<p><strong>Unit Price ($ PSM)</strong> undergoes a similar process as Area (SQM).</p>
+<p>Any NA (missing) values in Area (SQM) is replaced with 0</p>
+<p>A new variable Area_Category is created using the cut() function to categorize the Area (SQM). variable into predefined bins: &lt;100, 100-200, 200-300, 300-400, &gt;400.</p>
+<p>The breaks argument specifies the boundaries for these bins, and labels provides the corresponding category labels.</p>
+<p>include.lowest = TRUE ensures that values equal to the lowest break point (0) are included in the first category (&lt;100).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_cleaned <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">dmy</span>(<span class="st">`</span><span class="at">Sale Date</span><span class="st">`</span>),  <span class="co"># Ensuring we're using the exact column name from the dataset</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Area (SQM)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, <span class="st">`</span><span class="at">Area (SQM)</span><span class="st">`</span>)),  <span class="co"># Keeping the variable names as they are in the dataset</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">$"</span>, <span class="st">""</span>, <span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, <span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>)))  <span class="co"># Properly referencing the variable</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>data_cleaned <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Area (SQM)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(<span class="st">`</span><span class="at">Area (SQM)</span><span class="st">`</span>), <span class="dv">0</span>, <span class="st">`</span><span class="at">Area (SQM)</span><span class="st">`</span>)  <span class="co"># Dealing with NA values</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>data_cleaned <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Area_Category =</span> <span class="fu">cut</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">Area (SQM)</span><span class="st">`</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">400</span>, <span class="cn">Inf</span>),  </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"&lt;100"</span>, <span class="st">"100-200"</span>, <span class="st">"200-300"</span>, <span class="st">"300-400"</span>, <span class="st">"&gt;400"</span>),</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">include.lowest =</span> <span class="cn">TRUE</span>  </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="reproducing-the-original-visualization" class="level4">
+<h4 class="anchored" data-anchor-id="reproducing-the-original-visualization">Reproducing The Original Visualization</h4>
+<p>The plot below shows the original design of the “Comparative Analysis of Transaction Volumes and Pricing Across Real Estate Projects”.</p>
+<p>Access the original design from this <a href="https://iss608-1.netlify.app/take-home_ex/take-home_ex01/take-home%20exercise%201#comparative-analysis-of-transaction-volumes-and-pricing-across-real-estate-projects">link</a>.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">The code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resale_data <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Type of Sale</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Resale"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>project_stats <span class="ot">&lt;-</span> resale_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Project Name</span><span class="st">`</span> <span class="sc">!=</span> <span class="st">"N.A."</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Units =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Number of Units</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># Sum up all units for each project</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Avg_Unit_Price =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># Calculate the average price per square meter</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span>  <span class="co"># Drop the grouping</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>top_projects <span class="ot">&lt;-</span> project_stats <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">25</span>, Total_Units) <span class="sc">%&gt;%</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Units))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>project_order <span class="ot">&lt;-</span> top_projects<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>top_projects<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">factor</span>(top_projects<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">levels =</span> project_order)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">factor</span>(resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">levels =</span> project_order)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>p_units <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(top_projects, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">y =</span> Total_Units, <span class="at">fill =</span> <span class="st">'steelblue'</span>)) <span class="sc">+</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Total Number of Units"</span>) <span class="sc">+</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>p_price <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(resale_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Unit Price ($ PSM)"</span>) <span class="sc">+</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>p_combined <span class="ot">&lt;-</span> p_units <span class="sc">|</span> p_price</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>p_combined</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="datavis-makeover" class="level1">
+<h1>DataVis Makeover</h1>
+<section id="analysis-of-the-original-visualisation-and-its-intended-purpose" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-the-original-visualisation-and-its-intended-purpose"><strong>Analysis of the Original Visualisation and Its Intended Purpose:</strong></h3>
+<ol type="1">
+<li><p><strong>Project Name</strong>:</p>
+<ul>
+<li><p><strong>Goal</strong>: To provide a detailed understanding of the popularity and demand for specific developments, and how property developers’ reputation, location desirability, and unique features of projects might influence prices.</p></li>
+<li><p><strong>Visualization</strong>: Both plots are labeled with “Project Name” on the x-axis, allowing for the identification and comparison of specific housing projects. This enables stakeholders to discern which projects are more popular or command higher prices, potentially reflecting the reputation or desirability of the developers and locations involved.</p></li>
+</ul></li>
+<li><p><strong>Total Units</strong>:</p>
+<ul>
+<li><p><strong>Goal</strong>: To assess the scale of a project and its market absorption rate, with high sales volumes indicating high demand or effective pricing strategies, while low volumes may signal overpricing or less desirable attributes.</p></li>
+<li><p><strong>Visualization</strong>: The bar chart presents the total number of units sold per project. The descending order of bars (left to right) conveys which projects have the highest sales, which could be due to higher popularity or more effective market strategies. Projects with few units sold appear toward the right, highlighting potential issues or lower demand.</p></li>
+</ul></li>
+<li><p><strong>Avg Unit Price PSM</strong>:</p>
+<ul>
+<li><p><strong>Goal</strong>: To provide a comparative value indicator that normalizes prices across different sizes and types of properties, reflecting the price at which the market clears. This helps in understanding if there’s a relationship between the number of units sold and the price points.</p></li>
+<li><p><strong>Visualization</strong>: The box plot displays the distribution of unit prices per square meter for each project. This format shows the median, variability, and outliers in pricing within each project. It helps stakeholders see not just the average price but also how wide the price range is within each project, which can indicate a variety of unit types or varying desirabilities within a single project.</p></li>
+</ul></li>
+</ol>
+</section>
+<section id="how-the-original-visualisation-achieves-the-analytical-goals" class="level3">
+<h3 class="anchored" data-anchor-id="how-the-original-visualisation-achieves-the-analytical-goals"><strong>How the Original Visualisation Achieves the Analytical Goals:</strong></h3>
+<ul>
+<li><p><strong>Comparative Analysis</strong>: By placing both plots side by side, viewers can compare the total number of units sold to the price distributions of those same projects. For example, a project with many units sold but lower price variability might suggest a well-received project priced effectively for its target market.</p></li>
+<li><p><strong>Market Insights</strong>: Stakeholders can use this visual data to determine if projects with higher unit sales generally also command higher prices, or if prices are more competitive or lower despite high sales volumes, thus influencing future development and pricing strategies.</p></li>
+<li><p><strong>Developer Strategy</strong>: Seeing which projects command higher prices and also have high sales can guide developers in mimicking successful features in future projects. Conversely, projects with low sales and low prices might indicate areas needing improvement or reevaluation of market fit.</p></li>
+</ul>
+</section>
+<section id="critique-on-clarity-and-aesthetics-of-the-original-visualisation" class="level2">
+<h2 class="anchored" data-anchor-id="critique-on-clarity-and-aesthetics-of-the-original-visualisation">Critique on Clarity and Aesthetics of the Original Visualisation</h2>
+<p>Overall, the original visualisation aligns with the analytical goals by allowing for a detailed examination of both sales volume and pricing across projects, offering insights that can guide strategic decisions in real estate development. With that being said, there is still room for improvements, and some modifications would be beneficial to enhance its clarity and aesthetics.</p>
+<section id="clarity" class="level3">
+<h3 class="anchored" data-anchor-id="clarity"><strong>Clarity</strong></h3>
+<ol type="1">
+<li><p><strong>Label Overcrowding</strong>:</p>
+<ul>
+<li>The project names on the x-axis are densely packed, making them hard to read. This affects the viewer’s ability to quickly identify and compare projects.</li>
+</ul></li>
+<li><p><strong>Scale and Balance</strong>:</p>
+<ul>
+<li>The scale of the bar chart and box plot do not align well.</li>
+</ul></li>
+<li><p><strong>Data Visibility</strong>:</p>
+<ul>
+<li>In the box plot, some boxes and whiskers are thin or compressed due to the wide range of data, which can make it difficult to discern differences between the median and quartile values across projects.</li>
+</ul></li>
+</ol>
+</section>
+<section id="aesthetics" class="level3">
+<h3 class="anchored" data-anchor-id="aesthetics"><strong>Aesthetics</strong></h3>
+<ol type="1">
+<li><p><strong>Color and Design</strong>:</p>
+<ul>
+<li>Both plots use a simple, minimalistic color scheme which, while clean, could be enhanced to differentiate data points or groups more effectively. For example, different colors could be used to represent different quartiles in the box plot or to highlight projects with particularly high or low metrics in both plots.</li>
+</ul></li>
+<li><p><strong>Consistency in Style</strong>:</p>
+<ul>
+<li>There is a visual inconsistency between the bar chart and the box plot that could be distracting. The bar chart is filled with a solid color, while the box plot is more traditional with outlines. Harmonizing these styles could improve the overall cohesion of the visualization.</li>
+</ul></li>
+<li><p><strong>Utilization of Space</strong>:</p>
+<ul>
+<li>There’s significant empty space at the right end of both plots, especially noticeable in the box plot. This could be better utilized by compressing the x-axis or by providing additional contextual information or annotations.</li>
+</ul></li>
+</ol>
+</section>
+<section id="recommendations-for-improvement" class="level3">
+<h3 class="anchored" data-anchor-id="recommendations-for-improvement"><strong>Recommendations for Improvement</strong></h3>
+<ol type="1">
+<li><p><strong>Improving Label Readability</strong>:</p>
+<ul>
+<li><p>Rotate the position of the plot to a horizontal layout.</p></li>
+<li><p>Reducing the number of projects with the highest ‘Total_Units’ sold from top 25 to just top 10.</p></li>
+<li><p>Additional annotations could help to convey key information better for the viewer.</p></li>
+<li><p>Boxplot may benefit from incorporating median price directly on the plot</p></li>
+<li><p>Upsizing the labels on the y-axis and the x-axis</p></li>
+<li><p>Repositioning the two plots from side-by-side to top-bottom alignment.</p></li>
+</ul></li>
+<li><p><strong>Adjusting Scales and Ranges</strong>:</p>
+<ul>
+<li><p>Adjust the y-axis on the box plot to focus more closely on the interquartile range, possibly using a secondary axis or break in the axis to handle outliers.</p></li>
+<li><p>Labels and ticks on the axes should be more readable, and using formatted numbers (like millions or rounding off) can help in understanding the scales at a glance without overwhelming with too many digits.</p></li>
+</ul></li>
+<li><p><strong>Enhanced Color Coding and Visibility</strong>:</p>
+<ul>
+<li><p>Use color more strategically to highlight differences in data, such as coloring bars or boxes based on performance tiers (e.g., high, medium, low sales volume or prices).</p></li>
+<li><p>Apply consistent thematic styling across both plots to enhance the visual narrative.</p></li>
+<li><p>The use of a single color, while minimalist, could be expanded to differentiate data further. Using a palette to distinguish between different quartiles or highlighting specific noteworthy data points could make the visual more engaging.</p></li>
+<li><p>Use different colours to denote different metrics like median, mean, or outliers in box plots.</p></li>
+</ul></li>
+</ol>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">The code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1920"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>resale_data <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Type of Sale</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Resale"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>project_stats <span class="ot">&lt;-</span> resale_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Project Name</span><span class="st">`</span> <span class="sc">!=</span> <span class="st">"N.A."</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Units =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Number of Units</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># Sum up all units for each project</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Avg_Unit_Price =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># Calculate the average price per square meter</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span>  <span class="co"># Drop the grouping</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>top_projects <span class="ot">&lt;-</span> project_stats <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">10</span>, Total_Units) <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Units))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>project_order <span class="ot">&lt;-</span> top_projects<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>top_projects<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">factor</span>(top_projects<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">levels =</span> project_order)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">factor</span>(resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">levels =</span> project_order)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>p_units <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(top_projects, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(<span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, Total_Units), <span class="at">y =</span> Total_Units)) <span class="sc">+</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">'steelblue'</span>) <span class="sc">+</span>  </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste</span>(Total_Units, <span class="st">"units sold"</span>)), <span class="at">position =</span> <span class="fu">position_nudge</span>(<span class="at">y =</span> <span class="dv">8</span>), <span class="at">hjust =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">6</span>) <span class="sc">+</span>  <span class="co"># Add annotations with "units sold"</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span>  <span class="co"># Flips the axes to make the bar chart horizontal</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Project Name"</span>, <span class="at">y =</span> <span class="st">"Total Units Sold"</span>) <span class="sc">+</span>  <span class="co"># Change axis labels and update names</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">20</span>),  <span class="co"># Enlarge y-axis labels</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">30</span>),  <span class="co"># Enlarge x-axis labels</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">24</span>),  <span class="co"># Enlarge x-axis title</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">24</span>),  <span class="co"># Enlarge y-axis title</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>p_price <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(resale_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Unit Price ($ PSM)"</span>) <span class="sc">+</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the interquartile range to adjust y-axis limits more appropriately</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>iqr <span class="ot">&lt;-</span> <span class="fu">IQR</span>(resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(resale_data<span class="sc">$</span><span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="dv">0</span>, q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr)  </span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> iqr</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the boxplot with refined axis focus and number formatting</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>p_price <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(resale_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Project Name</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Unit Price ($ PSM)</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"grey80"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">outlier.colour =</span> <span class="st">"red"</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>, <span class="at">outlier.size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span>  <span class="co"># Flip the axes for horizontal layout</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(lower_bound, upper_bound), <span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span>  <span class="co"># Apply comma for thousands</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Project Name"</span>, <span class="at">y =</span> <span class="st">"Unit Price ($ PSM)"</span>) <span class="sc">+</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">20</span>),  <span class="co"># Enhance readability of the x-axis labels</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">30</span>),  <span class="co"># Enhance readability of the y-axis labels</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">24</span>),  <span class="co"># Enlarge x-axis title</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">24</span>),  <span class="co"># Enlarge y-axis title</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>p_combined <span class="ot">&lt;-</span> p_units <span class="sc">/</span> p_price <span class="co"># Change | to / to stack plots vertically</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>p_combined</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="learning-takeaways" class="level1">
+<h1>Learning Takeaways</h1>
+<p>Improving these visualisations has helped me better understand the importance of clarity and precision in data presentation. Through this process, I have improved my ability to manipulate graphical properties in ggplot2, thereby enhancing readability and conveying information more effectively. Adjusting elements such as bar width, text annotations, and axis labels not only makes the visualisation more aesthetically pleasing but also more intuitive and informative for the audience. By customising text sizes, adjusting plot dimensions, and fine-tuning the placement of text annotations, I have observed how minor changes can significantly impact the viewer’s ability to quickly understand and interpret data. This experience has deepened my understanding of the crucial role of thoughtful visualisation design in data science, where the goal is not merely to present data but to tell a compelling story with it.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
