@@ -1,0 +1,49 @@
+---
+title: "In-class_Ex05a"
+author: "Arya Siahaan"
+date: "May 11, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## **Getting Started**
+
+## Loading R packages
+
+```{r}
+pacman::p_load(tidyverse, readtext,
+               quanteda, tidytext) 
+```
+
+```{r}
+text_data <- readtext("data/articles/*")
+```
+
+```{r}
+corpus_text <-  corpus(text_data) 
+summary(corpus_text, 5)
+```
+
+```{r}
+usenet_words <- text_data %>%
+  unnest_tokens(word, text) %>%
+  filter(str_detect(word, "[a-z']$"),
+  !word %in% stop_words$word)
+```
+
+```{r}
+usenet_words %>%
+  count(word, sort = TRUE)
+```
+
+```{r}
+text_data_splitted <- text_data %>%
+  separate_wider_delim("doc_id",
+                       delim = "__0__",
+                       names = c("X", "Y"),
+                       too_few = "align_end")
+```

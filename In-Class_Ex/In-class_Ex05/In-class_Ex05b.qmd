@@ -1,0 +1,31 @@
+---
+title: "In-class_Ex05b"
+author: "Arya Siahaan"
+date: "May 11, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## **Getting Started**
+
+## Loading R packages
+
+```{r}
+pacman::p_load(jsonlite, tidyverse, quanteda, readtext, tidytext,
+               tidygraph, ggraph) 
+```
+
+
+```{r}
+mc1_data <- fromJSON("data/mc1.json")
+```
+
+```{r}
+mc2_data <- fromJSON("data/mc2.json")
+```
+
+
