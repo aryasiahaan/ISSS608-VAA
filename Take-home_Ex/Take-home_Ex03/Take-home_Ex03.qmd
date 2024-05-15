@@ -1,0 +1,15 @@
+---
+title: "Take-home Exercise 3"
+author: "Arya Siahaan"
+date: "May 15, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# Overview
+
+## The Task
