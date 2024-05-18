@@ -13,3 +13,213 @@ execute:
 # Overview
 
 ## The Task
+
+```{r}
+pacman::p_load(jsonlite, tidyverse, quanteda, readtext, tidytext,
+               tidygraph, ggraph) 
+```
+
+
+```{r}
+mc1_data <- fromJSON("data/mc1.json")
+```
+
+```{r}
+mc2_data <- fromJSON("data/mc2.json")
+
+# Display the structure of the loaded data
+str(mc2_data)
+
+# If mc2_data is a list, convert it to data frames
+if (is.list(mc2_data)) {
+  if ("nodes" %in% names(mc2_data)) {
+    nodes_df <- as.data.frame(mc2_data$nodes)
+    print("Nodes Data Frame:")
+    print(head(nodes_df))
+  }
+  if ("links" %in% names(mc2_data)) {
+    links_df <- as.data.frame(mc2_data$links)
+    print("Links Data Frame:")
+    print(head(links_df))
+  }
+} else {
+  # If mc2_data is directly a data frame
+  print("Data Frame:")
+  print(head(mc2_data))
+}
+
+# Alternatively, you can use View() in RStudio to view the entire data frame
+# View(nodes_df)
+# View(links_df)
+```
+
+
+```{r}
+View(nodes_df)
+# View(links_df)
+```
+
+```{r}
+# View(nodes_df)
+View(links_df)
+```
+```{r}
+# Read the JSON file as plain text
+json_text <- readLines("data/mc3.json", warn = FALSE)
+
+# Replace NaN with null
+json_text <- gsub("NaN", "null", json_text)
+
+# Write the modified JSON text back to a file (optional, for verification)
+writeLines(json_text, "data/mc3_fixed.json")
+
+# Parse the modified JSON text
+mc3_data <- fromJSON(json_text)
+
+# Display the structure of the loaded data
+str(mc3_data)
+
+# If mc3_data is a list, convert it to a data frame
+# Assuming mc3_data has a structure similar to mc2_data with nodes and links
+if (is.list(mc3_data)) {
+  if ("nodes" %in% names(mc3_data)) {
+    nodes_df <- as.data.frame(mc3_data$nodes)
+    print("Nodes Data Frame:")
+    print(head(nodes_df))
+  }
+  if ("links" %in% names(mc3_data)) {
+    links_df <- as.data.frame(mc3_data$links)
+    print("Links Data Frame:")
+    print(head(links_df))
+  }
+} else {
+  # If mc3_data is directly a data frame
+  print("Data Frame:")
+  print(head(mc3_data))
+}
+```
+
+
+
+
+```{r}
+mc3_data <- fromJSON("data/mc3.json")
+```
+
+
+
+```{r}
+str(mc1_data)
+```
+```{r}
+# View the first few rows of the nodes data frame
+head(mc2_data$nodes)
+```
+
+```{r}
+# Summarize the key variables in the nodes data frame
+summary(mc2_data$nodes)
+```
+
+
+```{r}
+# View the first few rows of the links data frame
+head(mc2_data$links)
+```
+
+```{r}
+# Summarize the key variables in the links data frame
+summary(mc2_data$links)
+```
+```{r}
+# Check for missing values in nodes and edges
+summary(mc2_data$nodes)
+summary(mc2_data$links)
+```
+
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+library(tidygraph)
+library(ggraph)
+
+# Check for missing values in nodes and edges
+sum(is.na(mc2_data$nodes$id))    # Check for missing node ids
+sum(is.na(mc2_data$links$source))  # Check for missing edge sources
+sum(is.na(mc2_data$links$target))  # Check for missing edge targets
+
+# Remove rows with missing id, source, or target
+mc2_data$nodes <- mc2_data$nodes %>% filter(!is.na(id))
+mc2_data$links <- mc2_data$links %>% filter(!is.na(source) & !is.na(target))
+
+# Ensure ids are unique in nodes
+mc2_data$nodes <- mc2_data$nodes %>% distinct(id, .keep_all = TRUE)
+
+# Convert id, source, and target to character
+mc2_data$nodes$id <- as.character(mc2_data$nodes$id)
+mc2_data$links$source <- as.character(mc2_data$links$source)
+mc2_data$links$target <- as.character(mc2_data$links$target)
+
+# Check again if all sources and targets are in node ids
+all(mc2_data$links$source %in% mc2_data$nodes$id)
+all(mc2_data$links$target %in% mc2_data$nodes$id)
+
+# Create the tidygraph object
+graph <- tbl_graph(nodes = mc2_data$nodes, edges = mc2_data$links, directed = TRUE)
+
+# Plot the graph
+ggraph(graph, layout = "fr") + 
+  geom_edge_link(aes(start_cap = label_rect(node1.name), end_cap = label_rect(node2.name))) + 
+  geom_node_point() + 
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1)
+```
+
+
+
+```{r}
+# Check for NaN values in the dwell column
+sum(is.na(mc2_data$links$dwell))  # Count of NaN values in dwell
+
+# Optionally, replace NaN values in dwell with 0 or any appropriate value
+mc2_data$links$dwell[is.na(mc2_data$links$dwell)] <- 0
+```
+
+
+```{r}
+# Check for missing values in nodes and edges
+sum(is.na(mc2_data$nodes$id))    # Count of missing node ids
+sum(is.na(mc2_data$links$source))  # Count of missing edge sources
+sum(is.na(mc2_data$links$target))  # Count of missing edge targets
+
+# Check for missing values in dwell column
+sum(is.na(mc2_data$links$dwell))  # Count of missing dwell values
+```
+
+
+
+```{r}
+# Check for NaN values in the nodes and edges data frames
+sum(is.nan(mc2_data$nodes$tonnage))
+sum(is.nan(mc2_data$nodes$length_overall))
+sum(is.nan(mc2_data$links$dwell))
+
+# Replace NaN values with appropriate defaults (e.g., 0 or another sentinel value)
+mc2_data$nodes$tonnage[is.nan(mc2_data$nodes$tonnage)] <- 0
+mc2_data$nodes$length_overall[is.nan(mc2_data$nodes$length_overall)] <- 0
+mc2_data$links$dwell[is.nan(mc2_data$links$dwell)] <- 0
+
+# Check for infinite values and replace them
+sum(is.infinite(mc2_data$nodes$tonnage))
+sum(is.infinite(mc2_data$nodes$length_overall))
+sum(is.infinite(mc2_data$links$dwell))
+
+mc2_data$nodes$tonnage[is.infinite(mc2_data$nodes$tonnage)] <- 0
+mc2_data$nodes$length_overall[is.infinite(mc2_data$nodes$length_overall)] <- 0
+mc2_data$links$dwell[is.infinite(mc2_data$links$dwell)] <- 0
+```
+
+
+
+
+
