@@ -49,3 +49,11 @@ The data sets used in this hands-on exercise is from an oil exploration and extr
 ### **27.3.1 The edges data**
 
 -   *GAStech-email_edges.csv* which consists of two weeks of 9063 emails correspondances between 55 employees.
+
+![](images/clipboard-2217976830.png)
+
+### **27.3.2 The nodes data**
+
+-   *GAStech_email_nodes.csv* which consist of the names, department and title of the 55 employees.
+
+![](images/clipboard-2166758786.png)

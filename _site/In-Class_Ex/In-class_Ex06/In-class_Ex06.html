@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arya Siahaan">
-<meta name="dcterms.date" content="2024-05-17">
+<meta name="dcterms.date" content="2024-05-18">
 
-<title>ISSS608-VAA - Hands-on Exercise 6</title>
+<title>ISSS608-VAA - In-class_Ex06</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -243,19 +243,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#chapter-27-modelling-visualising-and-analysing-network-data-with-r" id="toc-chapter-27-modelling-visualising-and-analysing-network-data-with-r" class="nav-link active" data-scroll-target="#chapter-27-modelling-visualising-and-analysing-network-data-with-r"><strong>27 Chapter 27: Modelling, Visualising and Analysing Network Data with R</strong></a>
-  <ul class="collapse">
-  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><strong>27.1 Overview</strong></a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><strong>27.2 Getting Started</strong></a>
-  <ul class="collapse">
-  <li><a href="#installing-and-launching-r-packages" id="toc-installing-and-launching-r-packages" class="nav-link" data-scroll-target="#installing-and-launching-r-packages"><strong>27.2.1 Installing and launching R packages</strong></a></li>
-  </ul></li>
-  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data"><strong>27.3 The Data</strong></a>
-  <ul class="collapse">
-  <li><a href="#the-edges-data" id="toc-the-edges-data" class="nav-link" data-scroll-target="#the-edges-data"><strong>27.3.1 The edges data</strong></a></li>
-  <li><a href="#the-nodes-data" id="toc-the-nodes-data" class="nav-link" data-scroll-target="#the-nodes-data"><strong>27.3.2 The nodes data</strong></a></li>
-  </ul></li>
-  </ul></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><strong>Getting Started</strong></a></li>
+  <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">Loading R packages</a></li>
   </ul>
 </nav>
     </div>
@@ -264,7 +253,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on Exercise 6</h1>
+<h1 class="title">In-class_Ex06</h1>
 </div>
 
 
@@ -281,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 17, 2024</p>
+      <p class="date">May 18, 2024</p>
     </div>
   </div>
   
@@ -299,53 +288,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="chapter-27-modelling-visualising-and-analysing-network-data-with-r" class="level1">
-<h1><strong>27 Chapter 27: Modelling, Visualising and Analysing Network Data with R</strong></h1>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview"><strong>27.1 Overview</strong></h2>
-<p>In this hands-on exercise, you will learn how to model, analyse and visualise network data using R.</p>
-<p>By the end of this hands-on exercise, you will be able to:</p>
-<ul>
-<li><p>create graph object data frames, manipulate them using appropriate functions of <em>dplyr</em>, <em>lubridate</em>, and <em>tidygraph</em>,</p></li>
-<li><p>build network graph visualisation using appropriate functions of <em>ggraph</em>,</p></li>
-<li><p>compute network geometrics using <em>tidygraph</em>,</p></li>
-<li><p>build advanced graph visualisation by incorporating the network geometrics, and</p></li>
-<li><p>build interactive network visualisation using <em>visNetwork</em> package.</p></li>
-</ul>
-</section>
 <section id="getting-started" class="level2">
-<h2 class="anchored" data-anchor-id="getting-started"><strong>27.2 Getting Started</strong></h2>
-<section id="installing-and-launching-r-packages" class="level3">
-<h3 class="anchored" data-anchor-id="installing-and-launching-r-packages"><strong>27.2.1 Installing and launching R packages</strong></h3>
-<p>In this hands-on exercise, four network data modelling and visualisation packages will be installed and launched. They are igraph, tidygraph, ggraph and visNetwork. Beside these four packages, tidyverse and <a href="https://lubridate.tidyverse.org/">lubridate</a>, an R package specially designed to handle and wrangling time data will be installed and launched too.</p>
-<p>The code chunk:</p>
+<h2 class="anchored" data-anchor-id="getting-started"><strong>Getting Started</strong></h2>
+</section>
+<section id="loading-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-r-packages">Loading R packages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(igraph, tidygraph, ggraph, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               visNetwork, lubridate, clock,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               tidyverse, graphlayouts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, corporaexplorer, quanteda, stringi, rvest) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-</section>
-<section id="the-data" class="level2">
-<h2 class="anchored" data-anchor-id="the-data"><strong>27.3 The Data</strong></h2>
-<p>The data sets used in this hands-on exercise is from an oil exploration and extraction company. There are two data sets. One contains the nodes data and the other contains the edges (also know as link) data.</p>
-<section id="the-edges-data" class="level3">
-<h3 class="anchored" data-anchor-id="the-edges-data"><strong>27.3.1 The edges data</strong></h3>
-<ul>
-<li><em>GAStech-email_edges.csv</em> which consists of two weeks of 9063 emails correspondances between 55 employees.</li>
-</ul>
-<p><img src="images/clipboard-2217976830.png" class="img-fluid"></p>
-</section>
-<section id="the-nodes-data" class="level3">
-<h3 class="anchored" data-anchor-id="the-nodes-data"><strong>27.3.2 The nodes data</strong></h3>
-<ul>
-<li><em>GAStech_email_nodes.csv</em> which consist of the names, department and title of the 55 employees.</li>
-</ul>
-<p><img src="images/clipboard-2166758786.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bible <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_lines</span>(<span class="st">"http://www.gutenberg.org/cache/epub/10/pg10.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#collapsing into one string</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>bible <span class="ot">&lt;-</span> <span class="fu">paste</span>(bible, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identifying the beginning and end of the Bible / stripping PJ metadata</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># (technique borrowed from https://quanteda.io/articles/pkgdown/replication/digital-humanities.html).</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>start_v <span class="ot">&lt;-</span> <span class="fu">stri_locate_first_fixed</span>(bible, <span class="st">"The First Book of Moses: Called Genesis"</span>)[<span class="dv">1</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>end_v <span class="ot">&lt;-</span> <span class="fu">stri_locate_last_fixed</span>(bible, <span class="st">"Amen."</span>)[<span class="dv">2</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>bible <span class="ot">&lt;-</span> <span class="fu">stri_sub</span>(bible, start_v, end_v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In the file, every book in the bible is preceded by five newlines,</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># which we use to split our string into a vector where each element is a book.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">stri_split_regex</span>(bible, <span class="st">"</span><span class="sc">\n</span><span class="st">{5}"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    unlist <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    .[<span class="sc">-</span><span class="dv">40</span>]  <span class="co"># Removing the heading "The New Testament of the King James Bible",</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>              <span class="co"># which also was preceded by five newlines.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Because of the structure of the text in the file:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Replacing double or more newlines with two newlines, and a single newline with space.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(books, <span class="st">"</span><span class="sc">\n</span><span class="st">{2,}"</span>, <span class="st">"NEW_PARAGRAPH"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"NEW_PARAGRAPH"</span>, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> books[<span class="dv">3</span><span class="sc">:</span><span class="dv">68</span>]  <span class="co"># The two first elements are not books</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identifying new chapters within each book and split the text into chapters.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (The first characters in chapter 2 will e.g. be 2:1)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>chapters <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(books, <span class="st">"(</span><span class="sc">\\</span><span class="st">d+:1 )"</span>, <span class="st">"NEW_CHAPTER</span><span class="sc">\\</span><span class="st">1"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stri_split_regex</span>(<span class="st">"NEW_CHAPTER"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing the chapter headings from the text (we want them as metadata).</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>chapters <span class="ot">&lt;-</span> <span class="fu">lapply</span>(chapters, <span class="cf">function</span>(x) x[<span class="sc">-</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We are not quite happy with the long book titles in the King James Bible,</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># so we retrieve shorter versions from esv.org which will take up less</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># space in the corpus map plot.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>book_titles <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://www.esv.org/resources/esv-global-study-bible/list-of-abbreviations"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">"td:nth-child(1)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  .[<span class="dv">13</span><span class="sc">:</span><span class="dv">78</span>]  <span class="co"># Removing irrelevant elements after manual inspection.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We add a column indicating whether a book belongs to the Old or New Testament,</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   knowing that they contain respectively 39 and 27 books.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>testament <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"Old"</span>, <span class="dv">39</span>), <span class="fu">rep</span>(<span class="st">"New"</span>, <span class="dv">27</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data frame with one book as one row.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>bible_df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">Text =</span> chapters,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Book =</span> book_titles,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Testament =</span> testament)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We want each chapter to be one row, but keep the metadata (book and which testament).</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>bible_df <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">unnest</span>(bible_df, Text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As this is a corpus which is not organised by date,</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we set `date_based_corpus` to `FALSE`.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Because we want to organise our exploration around the books in the Bible,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we pass `"Book"` to the `grouping_variable` argument.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># We specify which metadata columns we want to be displayed in the</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Document information" tab, using the `columns_doc_info` argument.</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>KJB <span class="ot">&lt;-</span> <span class="fu">prepare_data</span>(<span class="at">dataset =</span> bible_df,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">date_based_corpus =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">grouping_variable =</span> <span class="st">"Book"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">columns_doc_info =</span> <span class="fu">c</span>(<span class="st">"Testament"</span>, <span class="st">"Book"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(KJB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "corporaexplorerobject"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">explore</span>(KJB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p></p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div><p></p>
+</div>
+</div>
 
 
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->
