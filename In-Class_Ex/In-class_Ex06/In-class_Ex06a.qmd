@@ -1,5 +1,5 @@
 ---
-title: "In-class_Ex06"
+title: "In-class_Ex06a"
 author: "Arya Siahaan"
 date: "May 18, 2024"
 date-modified: "last-modified"
@@ -80,7 +80,6 @@ book_titles <- read_html("https://www.esv.org/resources/esv-global-study-bible/l
 #   knowing that they contain respectively 39 and 27 books.
 testament <- c(rep("Old", 39), rep("New", 27))
 ```
-
 
 ```{r}
 # Data frame with one book as one row.

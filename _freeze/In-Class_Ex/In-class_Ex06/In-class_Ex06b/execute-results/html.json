@@ -1,0 +1,17 @@
+{
+  "hash": "0848d7015423f58e97c48197a98cc390",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"In-class_Ex06b\"\nauthor: \"Arya Siahaan\"\ndate: \"May 18, 2024\"\ndate-modified: \"last-modified\"\nexecute: \n  eval: true\n  echo: true\n  warning: false\n  freeze: true\n---\n\n\n## **Getting Started**\n\n## Loading R packages\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(jsonlite, tidygraph, ggraph,\n               visNetwork, graphlayouts, tidyverse) \n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmc3_data <- fromJSON(\"data/MC3_2023.json\")\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nclass(mc3_data)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"list\"\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmc3_edges <- as_tibble(mc3_data$links) %>%\n  distinct() %>%\n  mutate(source = as.character(source),\n          target = as.character(target),\n          type = as.character(type)) %>%\n  group_by(source, target, type) %>%\n    summarise(weights = n()) %>%\n  filter(source!=target) %>%\n  ungroup()\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmc3_nodes <- as_tibble(mc3_data$nodes) %>%\n  mutate(country = as.character(country),\n         id = as.character(id),\n         product_services = as.character(product_services),\n         revenue_omu = as.numeric(as.character(revenue_omu)),\n         type = as.character(type)) %>%\n  select(id, country, type, revenue_omu, product_services)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nid1 <-mc3_edges %>%\n  select(source) %>%\n  rename(id = source)\nid2 <- mc3_edges %>%\n  select(target) %>%\n  rename(id = target)\nmc3_nodes1 <- rbind(id1, id2) %>%\n  distinct() %>%\n  left_join(mc3_nodes,\n            unmatched = \"drop\")\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmc3_graph <- tbl_graph(nodes = mc3_nodes1,\n                       edges = mc3_edges,\n                       directed = FALSE) %>%\n  mutate(betweenness_centrality = centrality_betweenness(),\n         closeness_centralilty = centrality_closeness())\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmc3_graph %>%\n  filter(betweenness_centrality >= 300000) %>%\n  ggraph(layout = \"fr\") +\n  geom_edge_link(aes(alpha=0.5)) +\n  geom_node_point(aes(size = betweenness_centrality,\n                      colors = \"lightblue\",\n                      alpha = 0.5)) +\n  scale_size_continuous(range=c(1,10))+\n  theme_graph()\n```\n\n::: {.cell-output-display}\n![](In-class_Ex06b_files/figure-html/unnamed-chunk-8-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
+    "supporting": [
+      "In-class_Ex06b_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

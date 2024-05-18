@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arya Siahaan">
+<meta name="dcterms.date" content="2024-05-18">
 
-<title>ISSS608-VAA - ISSS608 Visual Analytics and Applications</title>
+<title>ISSS608-VAA - In-class_Ex06a</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,25 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -79,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ISSS608-VAA</span>
     </a>
   </div>
@@ -95,35 +130,35 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html">
  <span class="dropdown-text">Hands-on Exercise 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html">
  <span class="dropdown-text">Hands-on Exercise 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html">
  <span class="dropdown-text">Hands-on Exercise 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04a.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04a.html">
  <span class="dropdown-text">Hands-on Exercise 4a</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04b.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04b.html">
  <span class="dropdown-text">Hands-on Exercise 4b</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html">
  <span class="dropdown-text">Hands-on Exercise 4c</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html">
  <span class="dropdown-text">Hands-on Exercise 5</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html">
  <span class="dropdown-text">Hands-on Exercise 6</span></a>
   </li>  
     </ul>
@@ -134,35 +169,35 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex01/In-class_Ex01.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex01/In-class_Ex01.html">
  <span class="dropdown-text">In-class Exercise 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex02/In-class_Ex02.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex02/In-class_Ex02.html">
  <span class="dropdown-text">In-class Exercise 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex03/In-class_Ex03.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex03/In-class_Ex03.html">
  <span class="dropdown-text">In-class Exercise 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex04/In-class_Ex04.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex04/In-class_Ex04.html">
  <span class="dropdown-text">In-class Exercise 4</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex05/In-class_Ex05a.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex05/In-class_Ex05a.html">
  <span class="dropdown-text">In-class Exercise 5a</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex05/In-class_Ex05b.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex05/In-class_Ex05b.html">
  <span class="dropdown-text">In-class Exercise 5b</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex06/In-class_Ex06.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex06/In-class_Ex06a.html">
  <span class="dropdown-text">In-class Exercise 6a</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex06/In-class_Ex06.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex06/In-class_Ex06b.html">
  <span class="dropdown-text">In-class Exercise 6b</span></a>
   </li>  
     </ul>
@@ -173,15 +208,15 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
         <li>
-    <a class="dropdown-item" href="./Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html">
  <span class="dropdown-text">Take-home Exercise 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html">
  <span class="dropdown-text">Take-home Exercise 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html">
  <span class="dropdown-text">Take-home Exercise 3</span></a>
   </li>  
     </ul>
@@ -189,11 +224,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -208,14 +243,21 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><strong>Getting Started</strong></a></li>
+  <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">Loading R packages</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">ISSS608 Visual Analytics and Applications</h1>
+<h1 class="title">In-class_Ex06a</h1>
 </div>
 
 
@@ -229,7 +271,19 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 18, 2024</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">May 18, 2024</p>
+    </div>
+  </div>
     
   </div>
   
@@ -238,10 +292,104 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Welcome to my portfolio for the <strong>ISSS608 Visual Analytics and Applications</strong> course, taught by Professor Kam Tin Seong at Singapore Management University. This website showcases a compilation of the exercises and assignments I have undertaken and completed over the duration of the course.</p>
-<p><img src="Images/vaclass2.png" class="img-fluid"></p>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started"><strong>Getting Started</strong></h2>
+</section>
+<section id="loading-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-r-packages">Loading R packages</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, corporaexplorer, quanteda, stringi, rvest) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bible <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_lines</span>(<span class="st">"http://www.gutenberg.org/cache/epub/10/pg10.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#collapsing into one string</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>bible <span class="ot">&lt;-</span> <span class="fu">paste</span>(bible, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identifying the beginning and end of the Bible / stripping PJ metadata</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># (technique borrowed from https://quanteda.io/articles/pkgdown/replication/digital-humanities.html).</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>start_v <span class="ot">&lt;-</span> <span class="fu">stri_locate_first_fixed</span>(bible, <span class="st">"The First Book of Moses: Called Genesis"</span>)[<span class="dv">1</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>end_v <span class="ot">&lt;-</span> <span class="fu">stri_locate_last_fixed</span>(bible, <span class="st">"Amen."</span>)[<span class="dv">2</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>bible <span class="ot">&lt;-</span> <span class="fu">stri_sub</span>(bible, start_v, end_v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In the file, every book in the bible is preceded by five newlines,</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># which we use to split our string into a vector where each element is a book.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">stri_split_regex</span>(bible, <span class="st">"</span><span class="sc">\n</span><span class="st">{5}"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    unlist <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    .[<span class="sc">-</span><span class="dv">40</span>]  <span class="co"># Removing the heading "The New Testament of the King James Bible",</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>              <span class="co"># which also was preceded by five newlines.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Because of the structure of the text in the file:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Replacing double or more newlines with two newlines, and a single newline with space.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(books, <span class="st">"</span><span class="sc">\n</span><span class="st">{2,}"</span>, <span class="st">"NEW_PARAGRAPH"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"NEW_PARAGRAPH"</span>, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> books[<span class="dv">3</span><span class="sc">:</span><span class="dv">68</span>]  <span class="co"># The two first elements are not books</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identifying new chapters within each book and split the text into chapters.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (The first characters in chapter 2 will e.g. be 2:1)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>chapters <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(books, <span class="st">"(</span><span class="sc">\\</span><span class="st">d+:1 )"</span>, <span class="st">"NEW_CHAPTER</span><span class="sc">\\</span><span class="st">1"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stri_split_regex</span>(<span class="st">"NEW_CHAPTER"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing the chapter headings from the text (we want them as metadata).</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>chapters <span class="ot">&lt;-</span> <span class="fu">lapply</span>(chapters, <span class="cf">function</span>(x) x[<span class="sc">-</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We are not quite happy with the long book titles in the King James Bible,</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># so we retrieve shorter versions from esv.org which will take up less</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># space in the corpus map plot.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>book_titles <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://www.esv.org/resources/esv-global-study-bible/list-of-abbreviations"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">"td:nth-child(1)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  .[<span class="dv">13</span><span class="sc">:</span><span class="dv">78</span>]  <span class="co"># Removing irrelevant elements after manual inspection.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We add a column indicating whether a book belongs to the Old or New Testament,</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   knowing that they contain respectively 39 and 27 books.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>testament <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"Old"</span>, <span class="dv">39</span>), <span class="fu">rep</span>(<span class="st">"New"</span>, <span class="dv">27</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data frame with one book as one row.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>bible_df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">Text =</span> chapters,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Book =</span> book_titles,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Testament =</span> testament)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We want each chapter to be one row, but keep the metadata (book and which testament).</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>bible_df <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">unnest</span>(bible_df, Text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As this is a corpus which is not organised by date,</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we set `date_based_corpus` to `FALSE`.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Because we want to organise our exploration around the books in the Bible,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we pass `"Book"` to the `grouping_variable` argument.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># We specify which metadata columns we want to be displayed in the</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Document information" tab, using the `columns_doc_info` argument.</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>KJB <span class="ot">&lt;-</span> <span class="fu">prepare_data</span>(<span class="at">dataset =</span> bible_df,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">date_based_corpus =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">grouping_variable =</span> <span class="st">"Book"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">columns_doc_info =</span> <span class="fu">c</span>(<span class="st">"Testament"</span>, <span class="st">"Book"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(KJB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "corporaexplorerobject"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">explore</span>(KJB)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p></p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div><p></p>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

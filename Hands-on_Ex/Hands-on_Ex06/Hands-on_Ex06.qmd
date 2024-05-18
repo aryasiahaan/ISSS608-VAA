@@ -37,6 +37,7 @@ In this hands-on exercise, four network data modelling and visualisation package
 The code chunk:
 
 ```{r}
+#| code-fold: true
 pacman::p_load(igraph, tidygraph, ggraph, 
                visNetwork, lubridate, clock,
                tidyverse, graphlayouts)

@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Arya Siahaan">
+<meta name="dcterms.date" content="2024-05-18">
 
-<title>ISSS608-VAA - ISSS608 Visual Analytics and Applications</title>
+<title>ISSS608-VAA - In-class_Ex06b</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,25 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -79,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ISSS608-VAA</span>
     </a>
   </div>
@@ -95,35 +130,35 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html">
  <span class="dropdown-text">Hands-on Exercise 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html">
  <span class="dropdown-text">Hands-on Exercise 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html">
  <span class="dropdown-text">Hands-on Exercise 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04a.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04a.html">
  <span class="dropdown-text">Hands-on Exercise 4a</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04b.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04b.html">
  <span class="dropdown-text">Hands-on Exercise 4b</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html">
  <span class="dropdown-text">Hands-on Exercise 4c</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html">
  <span class="dropdown-text">Hands-on Exercise 5</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html">
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html">
  <span class="dropdown-text">Hands-on Exercise 6</span></a>
   </li>  
     </ul>
@@ -134,35 +169,35 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex01/In-class_Ex01.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex01/In-class_Ex01.html">
  <span class="dropdown-text">In-class Exercise 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex02/In-class_Ex02.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex02/In-class_Ex02.html">
  <span class="dropdown-text">In-class Exercise 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex03/In-class_Ex03.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex03/In-class_Ex03.html">
  <span class="dropdown-text">In-class Exercise 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex04/In-class_Ex04.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex04/In-class_Ex04.html">
  <span class="dropdown-text">In-class Exercise 4</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex05/In-class_Ex05a.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex05/In-class_Ex05a.html">
  <span class="dropdown-text">In-class Exercise 5a</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex05/In-class_Ex05b.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex05/In-class_Ex05b.html">
  <span class="dropdown-text">In-class Exercise 5b</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex06/In-class_Ex06.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex06/In-class_Ex06a.html">
  <span class="dropdown-text">In-class Exercise 6a</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./In-class_Ex/In-class_Ex06/In-class_Ex06.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex06/In-class_Ex06b.html">
  <span class="dropdown-text">In-class Exercise 6b</span></a>
   </li>  
     </ul>
@@ -173,15 +208,15 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
         <li>
-    <a class="dropdown-item" href="./Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html">
  <span class="dropdown-text">Take-home Exercise 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html">
  <span class="dropdown-text">Take-home Exercise 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html">
  <span class="dropdown-text">Take-home Exercise 3</span></a>
   </li>  
     </ul>
@@ -189,11 +224,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -208,14 +243,21 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><strong>Getting Started</strong></a></li>
+  <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">Loading R packages</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">ISSS608 Visual Analytics and Applications</h1>
+<h1 class="title">In-class_Ex06b</h1>
 </div>
 
 
@@ -229,7 +271,19 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 18, 2024</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">May 18, 2024</p>
+    </div>
+  </div>
     
   </div>
   
@@ -238,10 +292,84 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Welcome to my portfolio for the <strong>ISSS608 Visual Analytics and Applications</strong> course, taught by Professor Kam Tin Seong at Singapore Management University. This website showcases a compilation of the exercises and assignments I have undertaken and completed over the duration of the course.</p>
-<p><img src="Images/vaclass2.png" class="img-fluid"></p>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started"><strong>Getting Started</strong></h2>
+</section>
+<section id="loading-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-r-packages">Loading R packages</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(jsonlite, tidygraph, ggraph,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               visNetwork, graphlayouts, tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mc3_data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/MC3_2023.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mc3_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mc3_edges <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc3_data<span class="sc">$</span>links) <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="fu">as.character</span>(source),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">target =</span> <span class="fu">as.character</span>(target),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="fu">as.character</span>(type)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, target, type) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">weights =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source<span class="sc">!=</span>target) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mc3_nodes <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc3_data<span class="sc">$</span>nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">country =</span> <span class="fu">as.character</span>(country),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">id =</span> <span class="fu">as.character</span>(id),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">product_services =</span> <span class="fu">as.character</span>(product_services),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">revenue_omu =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(revenue_omu)),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="fu">as.character</span>(type)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, country, type, revenue_omu, product_services)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>id1 <span class="ot">&lt;-</span>mc3_edges <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(source) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id =</span> source)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>id2 <span class="ot">&lt;-</span> mc3_edges <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(target) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id =</span> target)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>mc3_nodes1 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(id1, id2) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mc3_nodes,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">unmatched =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mc3_graph <span class="ot">&lt;-</span> <span class="fu">tbl_graph</span>(<span class="at">nodes =</span> mc3_nodes1,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">edges =</span> mc3_edges,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">betweenness_centrality =</span> <span class="fu">centrality_betweenness</span>(),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">closeness_centralilty =</span> <span class="fu">centrality_closeness</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(betweenness_centrality <span class="sc">&gt;=</span> <span class="dv">300000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">"fr"</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">alpha=</span><span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> betweenness_centrality,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">colors =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">alpha =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">10</span>))<span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="In-class_Ex06b_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
