@@ -14,17 +14,19 @@ execute:
 
 ## The Task
 
-```{r}
+
+
+
+```{}
 pacman::p_load(jsonlite, tidyverse, quanteda, readtext, tidytext,
                tidygraph, ggraph) 
 ```
 
-
-```{r}
+```{}
 mc1_data <- fromJSON("data/mc1.json")
 ```
 
-```{r}
+```{}
 mc2_data <- fromJSON("data/mc2.json")
 
 # Display the structure of the loaded data
@@ -53,17 +55,17 @@ if (is.list(mc2_data)) {
 # View(links_df)
 ```
 
-
-```{r}
+```{}
 View(nodes_df)
 # View(links_df)
 ```
 
-```{r}
+```{}
 # View(nodes_df)
 View(links_df)
 ```
-```{r}
+
+```{}
 # Read the JSON file as plain text
 json_text <- readLines("data/mc3.json", warn = FALSE)
 
@@ -99,46 +101,41 @@ if (is.list(mc3_data)) {
 }
 ```
 
-
-
-
-```{r}
+```{}
 mc3_data <- fromJSON("data/mc3.json")
 ```
 
-
-
-```{r}
+```{}
 str(mc1_data)
 ```
-```{r}
+
+```{}
 # View the first few rows of the nodes data frame
 head(mc2_data$nodes)
 ```
 
-```{r}
+```{}
 # Summarize the key variables in the nodes data frame
 summary(mc2_data$nodes)
 ```
 
-
-```{r}
+```{}
 # View the first few rows of the links data frame
 head(mc2_data$links)
 ```
 
-```{r}
+```{}
 # Summarize the key variables in the links data frame
 summary(mc2_data$links)
 ```
-```{r}
+
+```{}
 # Check for missing values in nodes and edges
 summary(mc2_data$nodes)
 summary(mc2_data$links)
 ```
 
-
-```{r}
+```{}
 # Load necessary libraries
 library(tidyverse)
 library(tidygraph)
@@ -175,9 +172,7 @@ ggraph(graph, layout = "fr") +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1)
 ```
 
-
-
-```{r}
+```{}
 # Check for NaN values in the dwell column
 sum(is.na(mc2_data$links$dwell))  # Count of NaN values in dwell
 
@@ -185,8 +180,7 @@ sum(is.na(mc2_data$links$dwell))  # Count of NaN values in dwell
 mc2_data$links$dwell[is.na(mc2_data$links$dwell)] <- 0
 ```
 
-
-```{r}
+```{}
 # Check for missing values in nodes and edges
 sum(is.na(mc2_data$nodes$id))    # Count of missing node ids
 sum(is.na(mc2_data$links$source))  # Count of missing edge sources
@@ -196,9 +190,7 @@ sum(is.na(mc2_data$links$target))  # Count of missing edge targets
 sum(is.na(mc2_data$links$dwell))  # Count of missing dwell values
 ```
 
-
-
-```{r}
+```{}
 # Check for NaN values in the nodes and edges data frames
 sum(is.nan(mc2_data$nodes$tonnage))
 sum(is.nan(mc2_data$nodes$length_overall))
@@ -218,8 +210,3 @@ mc2_data$nodes$tonnage[is.infinite(mc2_data$nodes$tonnage)] <- 0
 mc2_data$nodes$length_overall[is.infinite(mc2_data$nodes$length_overall)] <- 0
 mc2_data$links$dwell[is.infinite(mc2_data$links$dwell)] <- 0
 ```
-
-
-
-
-
