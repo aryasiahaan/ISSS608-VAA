@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -127,6 +190,22 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html">
  <span class="dropdown-text">Hands-on Exercise 6</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07.html">
+ <span class="dropdown-text">Hands-on Exercise 7</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html">
+ <span class="dropdown-text">Hands-on Exercise 8</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09.html">
+ <span class="dropdown-text">Hands-on Exercise 9</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex10/Hands-on_Ex10.html">
+ <span class="dropdown-text">Hands-on Exercise 10</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -157,6 +236,14 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex05/In-class_Ex05b.html">
  <span class="dropdown-text">In-class Exercise 5b</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex06/In-class_Ex06a.html">
+ <span class="dropdown-text">In-class Exercise 6a</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex06/In-class_Ex06b.html">
+ <span class="dropdown-text">In-class Exercise 6b</span></a>
   </li>  
     </ul>
   </li>
@@ -209,6 +296,39 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#the-task" id="toc-the-task" class="nav-link" data-scroll-target="#the-task">The Task</a></li>
   </ul></li>
+  <li><a href="#display-the-structure-of-the-loaded-data" id="toc-display-the-structure-of-the-loaded-data" class="nav-link" data-scroll-target="#display-the-structure-of-the-loaded-data">Display the structure of the loaded data</a></li>
+  <li><a href="#if-mc2_data-is-a-list-convert-it-to-data-frames" id="toc-if-mc2_data-is-a-list-convert-it-to-data-frames" class="nav-link" data-scroll-target="#if-mc2_data-is-a-list-convert-it-to-data-frames">If mc2_data is a list, convert it to data frames</a></li>
+  <li><a href="#alternatively-you-can-use-view-in-rstudio-to-view-the-entire-data-frame" id="toc-alternatively-you-can-use-view-in-rstudio-to-view-the-entire-data-frame" class="nav-link" data-scroll-target="#alternatively-you-can-use-view-in-rstudio-to-view-the-entire-data-frame">Alternatively, you can use View() in RStudio to view the entire data frame</a></li>
+  <li><a href="#viewnodes_df" id="toc-viewnodes_df" class="nav-link" data-scroll-target="#viewnodes_df">View(nodes_df)</a></li>
+  <li><a href="#viewlinks_df" id="toc-viewlinks_df" class="nav-link" data-scroll-target="#viewlinks_df">View(links_df)</a></li>
+  <li><a href="#viewnodes_df-1" id="toc-viewnodes_df-1" class="nav-link" data-scroll-target="#viewnodes_df-1">View(nodes_df)</a></li>
+  <li><a href="#read-the-json-file-as-plain-text" id="toc-read-the-json-file-as-plain-text" class="nav-link" data-scroll-target="#read-the-json-file-as-plain-text">Read the JSON file as plain text</a></li>
+  <li><a href="#replace-nan-with-null" id="toc-replace-nan-with-null" class="nav-link" data-scroll-target="#replace-nan-with-null">Replace NaN with null</a></li>
+  <li><a href="#write-the-modified-json-text-back-to-a-file-optional-for-verification" id="toc-write-the-modified-json-text-back-to-a-file-optional-for-verification" class="nav-link" data-scroll-target="#write-the-modified-json-text-back-to-a-file-optional-for-verification">Write the modified JSON text back to a file (optional, for verification)</a></li>
+  <li><a href="#parse-the-modified-json-text" id="toc-parse-the-modified-json-text" class="nav-link" data-scroll-target="#parse-the-modified-json-text">Parse the modified JSON text</a></li>
+  <li><a href="#display-the-structure-of-the-loaded-data-1" id="toc-display-the-structure-of-the-loaded-data-1" class="nav-link" data-scroll-target="#display-the-structure-of-the-loaded-data-1">Display the structure of the loaded data</a></li>
+  <li><a href="#if-mc3_data-is-a-list-convert-it-to-a-data-frame" id="toc-if-mc3_data-is-a-list-convert-it-to-a-data-frame" class="nav-link" data-scroll-target="#if-mc3_data-is-a-list-convert-it-to-a-data-frame">If mc3_data is a list, convert it to a data frame</a></li>
+  <li><a href="#assuming-mc3_data-has-a-structure-similar-to-mc2_data-with-nodes-and-links" id="toc-assuming-mc3_data-has-a-structure-similar-to-mc2_data-with-nodes-and-links" class="nav-link" data-scroll-target="#assuming-mc3_data-has-a-structure-similar-to-mc2_data-with-nodes-and-links">Assuming mc3_data has a structure similar to mc2_data with nodes and links</a></li>
+  <li><a href="#view-the-first-few-rows-of-the-nodes-data-frame" id="toc-view-the-first-few-rows-of-the-nodes-data-frame" class="nav-link" data-scroll-target="#view-the-first-few-rows-of-the-nodes-data-frame">View the first few rows of the nodes data frame</a></li>
+  <li><a href="#summarize-the-key-variables-in-the-nodes-data-frame" id="toc-summarize-the-key-variables-in-the-nodes-data-frame" class="nav-link" data-scroll-target="#summarize-the-key-variables-in-the-nodes-data-frame">Summarize the key variables in the nodes data frame</a></li>
+  <li><a href="#view-the-first-few-rows-of-the-links-data-frame" id="toc-view-the-first-few-rows-of-the-links-data-frame" class="nav-link" data-scroll-target="#view-the-first-few-rows-of-the-links-data-frame">View the first few rows of the links data frame</a></li>
+  <li><a href="#summarize-the-key-variables-in-the-links-data-frame" id="toc-summarize-the-key-variables-in-the-links-data-frame" class="nav-link" data-scroll-target="#summarize-the-key-variables-in-the-links-data-frame">Summarize the key variables in the links data frame</a></li>
+  <li><a href="#check-for-missing-values-in-nodes-and-edges" id="toc-check-for-missing-values-in-nodes-and-edges" class="nav-link" data-scroll-target="#check-for-missing-values-in-nodes-and-edges">Check for missing values in nodes and edges</a></li>
+  <li><a href="#load-necessary-libraries" id="toc-load-necessary-libraries" class="nav-link" data-scroll-target="#load-necessary-libraries">Load necessary libraries</a></li>
+  <li><a href="#check-for-missing-values-in-nodes-and-edges-1" id="toc-check-for-missing-values-in-nodes-and-edges-1" class="nav-link" data-scroll-target="#check-for-missing-values-in-nodes-and-edges-1">Check for missing values in nodes and edges</a></li>
+  <li><a href="#remove-rows-with-missing-id-source-or-target" id="toc-remove-rows-with-missing-id-source-or-target" class="nav-link" data-scroll-target="#remove-rows-with-missing-id-source-or-target">Remove rows with missing id, source, or target</a></li>
+  <li><a href="#ensure-ids-are-unique-in-nodes" id="toc-ensure-ids-are-unique-in-nodes" class="nav-link" data-scroll-target="#ensure-ids-are-unique-in-nodes">Ensure ids are unique in nodes</a></li>
+  <li><a href="#convert-id-source-and-target-to-character" id="toc-convert-id-source-and-target-to-character" class="nav-link" data-scroll-target="#convert-id-source-and-target-to-character">Convert id, source, and target to character</a></li>
+  <li><a href="#check-again-if-all-sources-and-targets-are-in-node-ids" id="toc-check-again-if-all-sources-and-targets-are-in-node-ids" class="nav-link" data-scroll-target="#check-again-if-all-sources-and-targets-are-in-node-ids">Check again if all sources and targets are in node ids</a></li>
+  <li><a href="#create-the-tidygraph-object" id="toc-create-the-tidygraph-object" class="nav-link" data-scroll-target="#create-the-tidygraph-object">Create the tidygraph object</a></li>
+  <li><a href="#plot-the-graph" id="toc-plot-the-graph" class="nav-link" data-scroll-target="#plot-the-graph">Plot the graph</a></li>
+  <li><a href="#check-for-nan-values-in-the-dwell-column" id="toc-check-for-nan-values-in-the-dwell-column" class="nav-link" data-scroll-target="#check-for-nan-values-in-the-dwell-column">Check for NaN values in the dwell column</a></li>
+  <li><a href="#optionally-replace-nan-values-in-dwell-with-0-or-any-appropriate-value" id="toc-optionally-replace-nan-values-in-dwell-with-0-or-any-appropriate-value" class="nav-link" data-scroll-target="#optionally-replace-nan-values-in-dwell-with-0-or-any-appropriate-value">Optionally, replace NaN values in dwell with 0 or any appropriate value</a></li>
+  <li><a href="#check-for-missing-values-in-nodes-and-edges-2" id="toc-check-for-missing-values-in-nodes-and-edges-2" class="nav-link" data-scroll-target="#check-for-missing-values-in-nodes-and-edges-2">Check for missing values in nodes and edges</a></li>
+  <li><a href="#check-for-missing-values-in-dwell-column" id="toc-check-for-missing-values-in-dwell-column" class="nav-link" data-scroll-target="#check-for-missing-values-in-dwell-column">Check for missing values in dwell column</a></li>
+  <li><a href="#check-for-nan-values-in-the-nodes-and-edges-data-frames" id="toc-check-for-nan-values-in-the-nodes-and-edges-data-frames" class="nav-link" data-scroll-target="#check-for-nan-values-in-the-nodes-and-edges-data-frames">Check for NaN values in the nodes and edges data frames</a></li>
+  <li><a href="#replace-nan-values-with-appropriate-defaults-e.g.-0-or-another-sentinel-value" id="toc-replace-nan-values-with-appropriate-defaults-e.g.-0-or-another-sentinel-value" class="nav-link" data-scroll-target="#replace-nan-values-with-appropriate-defaults-e.g.-0-or-another-sentinel-value">Replace NaN values with appropriate defaults (e.g., 0 or another sentinel value)</a></li>
+  <li><a href="#check-for-infinite-values-and-replace-them" id="toc-check-for-infinite-values-and-replace-them" class="nav-link" data-scroll-target="#check-for-infinite-values-and-replace-them">Check for infinite values and replace them</a></li>
   </ul>
 </nav>
     </div>
@@ -241,7 +361,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 18, 2024</p>
+      <p class="date-modified">May 31, 2024</p>
     </div>
   </div>
     
@@ -256,152 +376,338 @@ ul.task-list li input[type="checkbox"] {
 <h1>Overview</h1>
 <section id="the-task" class="level2">
 <h2 class="anchored" data-anchor-id="the-task">The Task</h2>
+<p>Getting Started</p>
+<p>Loading the library</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, igraph, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               tidygraph, ggraph, SmartEDA,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               lubridate) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Importing Graph Data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mc2_data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/mc2.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Wrangling and tidying edges</p>
+<p>Extracting edges</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mc2_edges <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc2_data<span class="sc">$</span>links) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 271,643
+Columns: 17
+$ type                &lt;chr&gt; "Event.TransportEvent.TransponderPing", "Event.Tra…
+$ time                &lt;chr&gt; "2035-09-16T04:06:48.185987", "2035-09-20T05:21:33…
+$ dwell               &lt;dbl&gt; 115074.79, 412706.32, 286092.88, 327623.95, 243225…
+$ `_last_edited_by`   &lt;chr&gt; "Olokun Daramola", "Melinda Manning", "Olokun Dara…
+$ `_date_added`       &lt;chr&gt; "2035-09-16T00:59:46.300100", "2035-09-22T02:37:37…
+$ `_last_edited_date` &lt;chr&gt; "2035-09-16T00:59:46.300100", "2035-09-22T02:37:37…
+$ `_raw_source`       &lt;chr&gt; "Oceanus Vessel Locator System", "Oceanus Vessel L…
+$ `_algorithm`        &lt;chr&gt; "OVLS-Catch&amp;Hook", "OVLS-Catch&amp;Hook", "OVLS-Catch&amp;…
+$ source              &lt;chr&gt; "City of Haacklee", "City of Haacklee", "City of H…
+$ target              &lt;chr&gt; "perchplundererbc0", "perchplundererbc0", "perchpl…
+$ key                 &lt;int&gt; 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7,…
+$ date                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ data_author         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ aphorism            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ holiday_greeting    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ wisdom              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</code></pre>
+</div>
+</div>
+<p>Correcting data type</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mc2_edges<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">as_datetime</span>(mc2_edges<span class="sc">$</span>time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mc2_edges<span class="sc">$</span><span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as_datetime</span>(mc2_edges<span class="sc">$</span><span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mc2_edges<span class="sc">$</span><span class="st">`</span><span class="at">_date_added</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as_datetime</span>(mc2_edges<span class="sc">$</span><span class="st">`</span><span class="at">_date_added</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mc2_edges<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as_datetime</span>(mc2_edges<span class="sc">$</span>date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 271,643
+Columns: 17
+$ type                &lt;chr&gt; "Event.TransportEvent.TransponderPing", "Event.Tra…
+$ time                &lt;dttm&gt; 2035-09-16 04:06:48, 2035-09-20 05:21:33, 2035-09…
+$ dwell               &lt;dbl&gt; 115074.79, 412706.32, 286092.88, 327623.95, 243225…
+$ `_last_edited_by`   &lt;chr&gt; "Olokun Daramola", "Melinda Manning", "Olokun Dara…
+$ `_date_added`       &lt;dttm&gt; 2035-09-16 00:59:46, 2035-09-22 02:37:37, 2035-09…
+$ `_last_edited_date` &lt;dttm&gt; 2035-09-16 00:59:46, 2035-09-22 02:37:37, 2035-10…
+$ `_raw_source`       &lt;chr&gt; "Oceanus Vessel Locator System", "Oceanus Vessel L…
+$ `_algorithm`        &lt;chr&gt; "OVLS-Catch&amp;Hook", "OVLS-Catch&amp;Hook", "OVLS-Catch&amp;…
+$ source              &lt;chr&gt; "City of Haacklee", "City of Haacklee", "City of H…
+$ target              &lt;chr&gt; "perchplundererbc0", "perchplundererbc0", "perchpl…
+$ key                 &lt;int&gt; 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7,…
+$ date                &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ data_author         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ aphorism            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ holiday_greeting    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ wisdom              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mc2_edges <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"last_edited_by"</span> <span class="ot">=</span> <span class="st">"_last_edited_by"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"date_added"</span> <span class="ot">=</span> <span class="st">"_date_added"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"last_edited_date"</span> <span class="ot">=</span> <span class="st">"_last_edited_date"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">"raw_source"</span> <span class="ot">=</span> <span class="st">"_raw_source"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">"algorithm"</span> <span class="ot">=</span> <span class="st">"_algorithm"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 271,643
+Columns: 17
+$ type                &lt;chr&gt; "Event.TransportEvent.TransponderPing", "Event.Tra…
+$ time                &lt;dttm&gt; 2035-09-16 04:06:48, 2035-09-20 05:21:33, 2035-09…
+$ dwell               &lt;dbl&gt; 115074.79, 412706.32, 286092.88, 327623.95, 243225…
+$ last_edited_by      &lt;chr&gt; "Olokun Daramola", "Melinda Manning", "Olokun Dara…
+$ date_added          &lt;dttm&gt; 2035-09-16 00:59:46, 2035-09-22 02:37:37, 2035-09…
+$ last_edited_date    &lt;dttm&gt; 2035-09-16 00:59:46, 2035-09-22 02:37:37, 2035-10…
+$ raw_source          &lt;chr&gt; "Oceanus Vessel Locator System", "Oceanus Vessel L…
+$ algorithm           &lt;chr&gt; "OVLS-Catch&amp;Hook", "OVLS-Catch&amp;Hook", "OVLS-Catch&amp;…
+$ source              &lt;chr&gt; "City of Haacklee", "City of Haacklee", "City of H…
+$ target              &lt;chr&gt; "perchplundererbc0", "perchplundererbc0", "perchpl…
+$ key                 &lt;int&gt; 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7,…
+$ date                &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ data_author         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ aphorism            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ holiday_greeting    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ wisdom              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>word_list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(mc2_edges<span class="sc">$</span>type, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>max_elements <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">lengths</span>(word_list))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>word_list_padded <span class="ot">&lt;-</span> <span class="fu">lapply</span>(word_list, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(x) <span class="fu">c</span>(x, <span class="fu">rep</span>(<span class="cn">NA</span>, max_elements <span class="sc">-</span> <span class="fu">length</span>(x))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>word_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, word_list_padded)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(word_df) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"event"</span>, <span class="dv">1</span><span class="sc">:</span>max_elements)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code># Convert the links data to a tibble
+mc2_edges &lt;- as_tibble(mc2_data$links)
+# Convert the nodes data to a tibble (if available)
+mc2_nodes &lt;- as_tibble(mc2_data$nodes)</code></pre>
+<pre><code># Display the first few rows of the nodes tibble
+print(head(mc2_nodes))
+
+# Display the first few rows of the links tibble
+print(head(mc2_edges))</code></pre>
+<pre><code># Display the structure of the nodes and edges tibbles
+str(mc2_nodes)</code></pre>
+<pre><code># Display the structure of the nodes and edges tibbles
+str(mc2_edges)</code></pre>
+<pre><code># Summary of nodes and edges data
+summary(mc2_nodes)</code></pre>
+<pre><code># Summary of nodes and edges data
+summary(mc2_edges)</code></pre>
+<pre><code># Display the first few rows of the nodes and edges tibbles
+head(mc2_nodes)
+head(mc2_edges)</code></pre>
+<pre><code># Subsetting data based on event category
+E_TransponderPing &lt;- subset(mc2_edges,  mc2_edges$type == "Event.TransportEvent.TransponderPing")
+E_HarborRpt &lt;- subset(mc2_edges,  mc2_edges$type == "Event.HarborReport")
+E_Tx &lt;- subset(mc2_edges, mc2_edges$type == "Event.Transaction")</code></pre>
+<pre><code>#assigning to mc2_edges2
+mc2_edges &lt;- as_tibble(mc2_data$links)
+
+# Breaking into subsets based on event category
+E_TransponderPing &lt;- subset(mc2_edges,  mc2_edges$type == "Event.TransportEvent.TransponderPing")
+E_HarborRpt &lt;- subset(mc2_edges,  mc2_edges$type == "Event.HarborReport")
+E_Tx &lt;- subset(mc2_edges, mc2_edges$type == "Event.Transaction")
+
+# Dropping columns that are NULL - check if code drops where data is 1 null or all null
+
+E_Tx_c &lt;- E_Tx %&gt;%
+  select_if(~ !any(is.na(.)))
+
+E_Tping_c &lt;- E_TransponderPing %&gt;%
+  select_if(~ !any(is.na(.)))
+
+# Exclude dropping of null for Habor report due to last 3 columns
+
+#E_Hbrpt_c &lt;- E_HarborRpt %&gt;%
+#  select_if(~ !any(is.na(.)))</code></pre>
+<pre><code>word_list &lt;-  strsplit(mc2_edges)</code></pre>
 <pre><code>pacman::p_load(jsonlite, tidyverse, quanteda, readtext, tidytext,
                tidygraph, ggraph) </code></pre>
 <pre><code>mc1_data &lt;- fromJSON("data/mc1.json")</code></pre>
-<pre><code>mc2_data &lt;- fromJSON("data/mc2.json")
-
-# Display the structure of the loaded data
-str(mc2_data)
-
-# If mc2_data is a list, convert it to data frames
-if (is.list(mc2_data)) {
-  if ("nodes" %in% names(mc2_data)) {
-    nodes_df &lt;- as.data.frame(mc2_data$nodes)
+</section>
+</section>
+<section id="display-the-structure-of-the-loaded-data" class="level1">
+<h1>Display the structure of the loaded data</h1>
+<p>str(mc2_data)</p>
+</section>
+<section id="if-mc2_data-is-a-list-convert-it-to-data-frames" class="level1">
+<h1>If mc2_data is a list, convert it to data frames</h1>
+<p>if (is.list(mc2_data)) { if (“nodes” %in% names(mc2_data)) { nodes_df &lt;- as.data.frame(mc2_data<span class="math inline">\(nodes)
     print("Nodes Data Frame:")
     print(head(nodes_df))
   }
   if ("links" %in% names(mc2_data)) {
-    links_df &lt;- as.data.frame(mc2_data$links)
-    print("Links Data Frame:")
-    print(head(links_df))
-  }
-} else {
-  # If mc2_data is directly a data frame
-  print("Data Frame:")
-  print(head(mc2_data))
-}
-
-# Alternatively, you can use View() in RStudio to view the entire data frame
-# View(nodes_df)
-# View(links_df)</code></pre>
-<pre><code>View(nodes_df)
-# View(links_df)</code></pre>
-<pre><code># View(nodes_df)
-View(links_df)</code></pre>
-<pre><code># Read the JSON file as plain text
-json_text &lt;- readLines("data/mc3.json", warn = FALSE)
-
-# Replace NaN with null
-json_text &lt;- gsub("NaN", "null", json_text)
-
-# Write the modified JSON text back to a file (optional, for verification)
-writeLines(json_text, "data/mc3_fixed.json")
-
-# Parse the modified JSON text
-mc3_data &lt;- fromJSON(json_text)
-
-# Display the structure of the loaded data
-str(mc3_data)
-
-# If mc3_data is a list, convert it to a data frame
-# Assuming mc3_data has a structure similar to mc2_data with nodes and links
-if (is.list(mc3_data)) {
-  if ("nodes" %in% names(mc3_data)) {
-    nodes_df &lt;- as.data.frame(mc3_data$nodes)
+    links_df &lt;- as.data.frame(mc2_data\)</span>links) print(“Links Data Frame:”) print(head(links_df)) } } else { # If mc2_data is directly a data frame print(“Data Frame:”) print(head(mc2_data)) }</p>
+</section>
+<section id="alternatively-you-can-use-view-in-rstudio-to-view-the-entire-data-frame" class="level1">
+<h1>Alternatively, you can use View() in RStudio to view the entire data frame</h1>
+</section>
+<section id="viewnodes_df" class="level1">
+<h1>View(nodes_df)</h1>
+</section>
+<section id="viewlinks_df" class="level1">
+<h1>View(links_df)</h1>
+<pre><code></code></pre>
+<p>View(nodes_df) # View(links_df)</p>
+<pre><code></code></pre>
+</section>
+<section id="viewnodes_df-1" class="level1">
+<h1>View(nodes_df)</h1>
+<p>View(links_df)</p>
+<pre><code></code></pre>
+</section>
+<section id="read-the-json-file-as-plain-text" class="level1">
+<h1>Read the JSON file as plain text</h1>
+<p>json_text &lt;- readLines(“data/mc3.json”, warn = FALSE)</p>
+</section>
+<section id="replace-nan-with-null" class="level1">
+<h1>Replace NaN with null</h1>
+<p>json_text &lt;- gsub(“NaN”, “null”, json_text)</p>
+</section>
+<section id="write-the-modified-json-text-back-to-a-file-optional-for-verification" class="level1">
+<h1>Write the modified JSON text back to a file (optional, for verification)</h1>
+<p>writeLines(json_text, “data/mc3_fixed.json”)</p>
+</section>
+<section id="parse-the-modified-json-text" class="level1">
+<h1>Parse the modified JSON text</h1>
+<p>mc3_data &lt;- fromJSON(json_text)</p>
+</section>
+<section id="display-the-structure-of-the-loaded-data-1" class="level1">
+<h1>Display the structure of the loaded data</h1>
+<p>str(mc3_data)</p>
+</section>
+<section id="if-mc3_data-is-a-list-convert-it-to-a-data-frame" class="level1">
+<h1>If mc3_data is a list, convert it to a data frame</h1>
+</section>
+<section id="assuming-mc3_data-has-a-structure-similar-to-mc2_data-with-nodes-and-links" class="level1">
+<h1>Assuming mc3_data has a structure similar to mc2_data with nodes and links</h1>
+<p>if (is.list(mc3_data)) { if (“nodes” %in% names(mc3_data)) { nodes_df &lt;- as.data.frame(mc3_data<span class="math inline">\(nodes)
     print("Nodes Data Frame:")
     print(head(nodes_df))
   }
   if ("links" %in% names(mc3_data)) {
-    links_df &lt;- as.data.frame(mc3_data$links)
-    print("Links Data Frame:")
-    print(head(links_df))
-  }
-} else {
-  # If mc3_data is directly a data frame
-  print("Data Frame:")
-  print(head(mc3_data))
-}</code></pre>
-<pre><code>mc3_data &lt;- fromJSON("data/mc3.json")</code></pre>
-<pre><code>str(mc1_data)</code></pre>
-<pre><code># View the first few rows of the nodes data frame
-head(mc2_data$nodes)</code></pre>
-<pre><code># Summarize the key variables in the nodes data frame
-summary(mc2_data$nodes)</code></pre>
-<pre><code># View the first few rows of the links data frame
-head(mc2_data$links)</code></pre>
-<pre><code># Summarize the key variables in the links data frame
-summary(mc2_data$links)</code></pre>
-<pre><code># Check for missing values in nodes and edges
-summary(mc2_data$nodes)
-summary(mc2_data$links)</code></pre>
-<pre><code># Load necessary libraries
-library(tidyverse)
-library(tidygraph)
-library(ggraph)
-
-# Check for missing values in nodes and edges
-sum(is.na(mc2_data$nodes$id))    # Check for missing node ids
-sum(is.na(mc2_data$links$source))  # Check for missing edge sources
-sum(is.na(mc2_data$links$target))  # Check for missing edge targets
-
-# Remove rows with missing id, source, or target
-mc2_data$nodes &lt;- mc2_data$nodes %&gt;% filter(!is.na(id))
-mc2_data$links &lt;- mc2_data$links %&gt;% filter(!is.na(source) &amp; !is.na(target))
-
-# Ensure ids are unique in nodes
-mc2_data$nodes &lt;- mc2_data$nodes %&gt;% distinct(id, .keep_all = TRUE)
-
-# Convert id, source, and target to character
-mc2_data$nodes$id &lt;- as.character(mc2_data$nodes$id)
-mc2_data$links$source &lt;- as.character(mc2_data$links$source)
-mc2_data$links$target &lt;- as.character(mc2_data$links$target)
-
-# Check again if all sources and targets are in node ids
-all(mc2_data$links$source %in% mc2_data$nodes$id)
-all(mc2_data$links$target %in% mc2_data$nodes$id)
-
-# Create the tidygraph object
-graph &lt;- tbl_graph(nodes = mc2_data$nodes, edges = mc2_data$links, directed = TRUE)
-
-# Plot the graph
-ggraph(graph, layout = "fr") + 
-  geom_edge_link(aes(start_cap = label_rect(node1.name), end_cap = label_rect(node2.name))) + 
-  geom_node_point() + 
-  geom_node_text(aes(label = name), vjust = 1, hjust = 1)</code></pre>
-<pre><code># Check for NaN values in the dwell column
-sum(is.na(mc2_data$links$dwell))  # Count of NaN values in dwell
-
-# Optionally, replace NaN values in dwell with 0 or any appropriate value
-mc2_data$links$dwell[is.na(mc2_data$links$dwell)] &lt;- 0</code></pre>
-<pre><code># Check for missing values in nodes and edges
-sum(is.na(mc2_data$nodes$id))    # Count of missing node ids
-sum(is.na(mc2_data$links$source))  # Count of missing edge sources
-sum(is.na(mc2_data$links$target))  # Count of missing edge targets
-
-# Check for missing values in dwell column
-sum(is.na(mc2_data$links$dwell))  # Count of missing dwell values</code></pre>
-<pre><code># Check for NaN values in the nodes and edges data frames
-sum(is.nan(mc2_data$nodes$tonnage))
-sum(is.nan(mc2_data$nodes$length_overall))
-sum(is.nan(mc2_data$links$dwell))
-
-# Replace NaN values with appropriate defaults (e.g., 0 or another sentinel value)
-mc2_data$nodes$tonnage[is.nan(mc2_data$nodes$tonnage)] &lt;- 0
-mc2_data$nodes$length_overall[is.nan(mc2_data$nodes$length_overall)] &lt;- 0
-mc2_data$links$dwell[is.nan(mc2_data$links$dwell)] &lt;- 0
-
-# Check for infinite values and replace them
-sum(is.infinite(mc2_data$nodes$tonnage))
-sum(is.infinite(mc2_data$nodes$length_overall))
-sum(is.infinite(mc2_data$links$dwell))
-
-mc2_data$nodes$tonnage[is.infinite(mc2_data$nodes$tonnage)] &lt;- 0
-mc2_data$nodes$length_overall[is.infinite(mc2_data$nodes$length_overall)] &lt;- 0
-mc2_data$links$dwell[is.infinite(mc2_data$links$dwell)] &lt;- 0</code></pre>
-
-
+    links_df &lt;- as.data.frame(mc3_data\)</span>links) print(“Links Data Frame:”) print(head(links_df)) } } else { # If mc3_data is directly a data frame print(“Data Frame:”) print(head(mc3_data)) }</p>
+<pre><code></code></pre>
+<p>mc3_data &lt;- fromJSON(“data/mc3.json”)</p>
+<pre><code></code></pre>
+<p>str(mc1_data)</p>
+<pre><code></code></pre>
 </section>
+<section id="view-the-first-few-rows-of-the-nodes-data-frame" class="level1">
+<h1>View the first few rows of the nodes data frame</h1>
+<p>head(mc2_data$nodes)</p>
+<pre><code></code></pre>
+</section>
+<section id="summarize-the-key-variables-in-the-nodes-data-frame" class="level1">
+<h1>Summarize the key variables in the nodes data frame</h1>
+<p>summary(mc2_data$nodes)</p>
+<pre><code></code></pre>
+</section>
+<section id="view-the-first-few-rows-of-the-links-data-frame" class="level1">
+<h1>View the first few rows of the links data frame</h1>
+<p>head(mc2_data$links)</p>
+<pre><code></code></pre>
+</section>
+<section id="summarize-the-key-variables-in-the-links-data-frame" class="level1">
+<h1>Summarize the key variables in the links data frame</h1>
+<p>summary(mc2_data$links)</p>
+<pre><code></code></pre>
+</section>
+<section id="check-for-missing-values-in-nodes-and-edges" class="level1">
+<h1>Check for missing values in nodes and edges</h1>
+<p>summary(mc2_data<span class="math inline">\(nodes)
+summary(mc2_data\)</span>links)</p>
+<pre><code></code></pre>
+</section>
+<section id="load-necessary-libraries" class="level1">
+<h1>Load necessary libraries</h1>
+<p>library(tidyverse) library(tidygraph) library(ggraph)</p>
+</section>
+<section id="check-for-missing-values-in-nodes-and-edges-1" class="level1">
+<h1>Check for missing values in nodes and edges</h1>
+<p>sum(is.na(mc2_data<span class="math inline">\(nodes\)</span>id)) # Check for missing node ids sum(is.na(mc2_data<span class="math inline">\(links\)</span>source)) # Check for missing edge sources sum(is.na(mc2_data<span class="math inline">\(links\)</span>target)) # Check for missing edge targets</p>
+</section>
+<section id="remove-rows-with-missing-id-source-or-target" class="level1">
+<h1>Remove rows with missing id, source, or target</h1>
+<p>mc2_data<span class="math inline">\(nodes &lt;- mc2_data\)</span>nodes %&gt;% filter(!is.na(id)) mc2_data<span class="math inline">\(links &lt;- mc2_data\)</span>links %&gt;% filter(!is.na(source) &amp; !is.na(target))</p>
+</section>
+<section id="ensure-ids-are-unique-in-nodes" class="level1">
+<h1>Ensure ids are unique in nodes</h1>
+<p>mc2_data<span class="math inline">\(nodes &lt;- mc2_data\)</span>nodes %&gt;% distinct(id, .keep_all = TRUE)</p>
+</section>
+<section id="convert-id-source-and-target-to-character" class="level1">
+<h1>Convert id, source, and target to character</h1>
+<p>mc2_data<span class="math inline">\(nodes\)</span>id &lt;- as.character(mc2_data<span class="math inline">\(nodes\)</span>id) mc2_data<span class="math inline">\(links\)</span>source &lt;- as.character(mc2_data<span class="math inline">\(links\)</span>source) mc2_data<span class="math inline">\(links\)</span>target &lt;- as.character(mc2_data<span class="math inline">\(links\)</span>target)</p>
+</section>
+<section id="check-again-if-all-sources-and-targets-are-in-node-ids" class="level1">
+<h1>Check again if all sources and targets are in node ids</h1>
+<p>all(mc2_data<span class="math inline">\(links\)</span>source %in% mc2_data<span class="math inline">\(nodes\)</span>id) all(mc2_data<span class="math inline">\(links\)</span>target %in% mc2_data<span class="math inline">\(nodes\)</span>id)</p>
+</section>
+<section id="create-the-tidygraph-object" class="level1">
+<h1>Create the tidygraph object</h1>
+<p>graph &lt;- tbl_graph(nodes = mc2_data<span class="math inline">\(nodes, edges = mc2_data\)</span>links, directed = TRUE)</p>
+</section>
+<section id="plot-the-graph" class="level1">
+<h1>Plot the graph</h1>
+<p>ggraph(graph, layout = “fr”) + geom_edge_link(aes(start_cap = label_rect(node1.name), end_cap = label_rect(node2.name))) + geom_node_point() + geom_node_text(aes(label = name), vjust = 1, hjust = 1)</p>
+<pre><code></code></pre>
+</section>
+<section id="check-for-nan-values-in-the-dwell-column" class="level1">
+<h1>Check for NaN values in the dwell column</h1>
+<p>sum(is.na(mc2_data<span class="math inline">\(links\)</span>dwell)) # Count of NaN values in dwell</p>
+</section>
+<section id="optionally-replace-nan-values-in-dwell-with-0-or-any-appropriate-value" class="level1">
+<h1>Optionally, replace NaN values in dwell with 0 or any appropriate value</h1>
+<p>mc2_data<span class="math inline">\(links\)</span>dwell[is.na(mc2_data<span class="math inline">\(links\)</span>dwell)] &lt;- 0</p>
+<pre><code></code></pre>
+</section>
+<section id="check-for-missing-values-in-nodes-and-edges-2" class="level1">
+<h1>Check for missing values in nodes and edges</h1>
+<p>sum(is.na(mc2_data<span class="math inline">\(nodes\)</span>id)) # Count of missing node ids sum(is.na(mc2_data<span class="math inline">\(links\)</span>source)) # Count of missing edge sources sum(is.na(mc2_data<span class="math inline">\(links\)</span>target)) # Count of missing edge targets</p>
+</section>
+<section id="check-for-missing-values-in-dwell-column" class="level1">
+<h1>Check for missing values in dwell column</h1>
+<p>sum(is.na(mc2_data<span class="math inline">\(links\)</span>dwell)) # Count of missing dwell values</p>
+<pre><code></code></pre>
+</section>
+<section id="check-for-nan-values-in-the-nodes-and-edges-data-frames" class="level1">
+<h1>Check for NaN values in the nodes and edges data frames</h1>
+<p>sum(is.nan(mc2_data<span class="math inline">\(nodes\)</span>tonnage)) sum(is.nan(mc2_data<span class="math inline">\(nodes\)</span>length_overall)) sum(is.nan(mc2_data<span class="math inline">\(links\)</span>dwell))</p>
+</section>
+<section id="replace-nan-values-with-appropriate-defaults-e.g.-0-or-another-sentinel-value" class="level1">
+<h1>Replace NaN values with appropriate defaults (e.g., 0 or another sentinel value)</h1>
+<p>mc2_data<span class="math inline">\(nodes\)</span>tonnage[is.nan(mc2_data<span class="math inline">\(nodes\)</span>tonnage)] &lt;- 0 mc2_data<span class="math inline">\(nodes\)</span>length_overall[is.nan(mc2_data<span class="math inline">\(nodes\)</span>length_overall)] &lt;- 0 mc2_data<span class="math inline">\(links\)</span>dwell[is.nan(mc2_data<span class="math inline">\(links\)</span>dwell)] &lt;- 0</p>
+</section>
+<section id="check-for-infinite-values-and-replace-them" class="level1">
+<h1>Check for infinite values and replace them</h1>
+<p>sum(is.infinite(mc2_data<span class="math inline">\(nodes\)</span>tonnage)) sum(is.infinite(mc2_data<span class="math inline">\(nodes\)</span>length_overall)) sum(is.infinite(mc2_data<span class="math inline">\(links\)</span>dwell))</p>
+<p>mc2_data<span class="math inline">\(nodes\)</span>tonnage[is.infinite(mc2_data<span class="math inline">\(nodes\)</span>tonnage)] &lt;- 0 mc2_data<span class="math inline">\(nodes\)</span>length_overall[is.infinite(mc2_data<span class="math inline">\(nodes\)</span>length_overall)] &lt;- 0 mc2_data<span class="math inline">\(links\)</span>dwell[is.infinite(mc2_data<span class="math inline">\(links\)</span>dwell)] &lt;- 0 ```</p>
+
+
 </section>
 
 </main> <!-- /main -->
