@@ -65,8 +65,6 @@ mc2_edges$date <- as_datetime(mc2_edges$date)
 glimpse(mc2_edges)
 ```
 
-
-
 ```{r}
 mc2_edges <- mc2_edges %>%
   rename("last_edited_by" = "_last_edited_by",
@@ -88,6 +86,8 @@ word_list <- strsplit(mc2_edges$type, "\\.")
 max_elements <- max(lengths(word_list))
 ```
 
+The code chunk below will be used to pad shorter splits with NA values to make them all the same length.
+
 ```{r}
 word_list_padded <- lapply(word_list, 
 function(x) c(x, rep(NA, max_elements - length(x))))
@@ -98,47 +98,89 @@ word_df <- do.call(rbind, word_list_padded)
 colnames(word_df) <- paste0("event", 1:max_elements)
 ```
 
-```         
-# Convert the links data to a tibble
-mc2_edges <- as_tibble(mc2_data$links)
-# Convert the nodes data to a tibble (if available)
-mc2_nodes <- as_tibble(mc2_data$nodes)
+Since the output above is a matrix, the code chunk below is used to convert word_df into a tibble data.frame.
+
+```{r}
+word_df <- as_tibble(word_df) %>%
+  select(event2, event3)
+class(word_df)
 ```
 
-```         
-# Display the first few rows of the nodes tibble
-print(head(mc2_nodes))
+The code chunk below appends the extracted columns back to mc2_edges tibble data.frame.
 
-# Display the first few rows of the links tibble
-print(head(mc2_edges))
+```{r}
+mc2_edges <- mc2_edges %>%
+  cbind(word_df)
+```
+Before moving to the next task, it will be wiser to save the tidied mc2_edges into a physical file for future used. By doing so, you also do not have to repeat the steps above.
+
+The code chunk below will be used to save mc2_edges into R rds file format.
+
+Please ensure that there is a sub-folder called rds in the data folder. If not, you should create one first.
+
+```{r}
+write_rds(mc2_edges, "data/rds/mc2_edges.rds")
 ```
 
-```         
-# Display the structure of the nodes and edges tibbles
-str(mc2_nodes)
+
+Wrangling and tidying nodes
+
+This section mainly focuses on tidying and wrangling text data in the Activities column. For other data checking, tidying and wrangling tasks, please refer to the steps discussed above.
+
+Extracting nodes
+The code chunk below will be used to extract the nodes data.frame of mc2_data and parses it as a tibble data.frame called mc2_nodes.
+
+```{r}
+mc2_nodes <- as_tibble(mc2_data$nodes) %>%
+  distinct()
 ```
 
-```         
-# Display the structure of the nodes and edges tibbles
-str(mc2_edges)
+Next, the code chunk below is used to reveal the data structure of mc2_nodes tibble data.frame.
+  
+```{r}
+glimpse(mc2_nodes)
+```
+From the table above, beside the date data type and inappropriate field name issues we discussed earlier, two additional data issues can be observed. They are:
+
+The values in Activities and fish_species_present fields are in list data type, which will affect the ability to process and to analyse the data.
+As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e. removing c(““)).
+
+Tidying text field
+In the code chunk below, mutate() of dplyr and gsub() of Base R are used to perform the data tidying task.
+
+```{r}
+mc2_nodes_tidied <- mc2_nodes %>%
+  mutate(Activities = gsub("c[(]", "", Activities)) %>% 
+  mutate(Activities = gsub("\"", "", Activities)) %>%
+  mutate(Activities = gsub("[)]", "", Activities)) 
 ```
 
-```         
-# Summary of nodes and edges data
-summary(mc2_nodes)
+```{r}
+mc2_nodes_tidied <- mc2_nodes_tidied %>%
+  mutate(fish_species_present = gsub("c[(]", "", fish_species_present)) %>% 
+  mutate(fish_species_present = gsub("\"", "", fish_species_present)) %>%
+  mutate(fish_species_present = gsub("[)]", "", fish_species_present)) 
 ```
 
-```         
-# Summary of nodes and edges data
-summary(mc2_edges)
+Notice that the text values in Activities column are in tidy manner now.
+
+Before moving to the next task, it is a good practice to save the tidied data into a physical file for future use.
+
+```{r}
+write_rds(mc2_nodes_tidied, "data/rds/mc2_nodes_tidied.rds")
 ```
 
-```         
-# Display the first few rows of the nodes and edges tibbles
-head(mc2_nodes)
-head(mc2_edges)
+```{r}
+# Check for columns with missing values
+colSums(is.na(mc2_edges))
 ```
 
+```{r}
+mc2_edges[duplicated(mc2_edges),]
+```
+
+```{r}
+view(mc2_edges)
 ```         
 # Subsetting data based on event category
 E_TransponderPing <- subset(mc2_edges,  mc2_edges$type == "Event.TransportEvent.TransponderPing")
@@ -169,40 +211,9 @@ E_Tping_c <- E_TransponderPing %>%
 #  select_if(~ !any(is.na(.)))
 ```
 
-```
-word_list <-  strsplit(mc2_edges)
-```
 
-```         
-pacman::p_load(jsonlite, tidyverse, quanteda, readtext, tidytext,
-               tidygraph, ggraph) 
-```
 
-```         
-mc1_data <- fromJSON("data/mc1.json")
-```
 
-# Display the structure of the loaded data
-
-str(mc2_data)
-
-# If mc2_data is a list, convert it to data frames
-
-if (is.list(mc2_data)) { if ("nodes" %in% names(mc2_data)) { nodes_df \<- as.data.frame(mc2_data$nodes)
-    print("Nodes Data Frame:")
-    print(head(nodes_df))
-  }
-  if ("links" %in% names(mc2_data)) {
-    links_df <- as.data.frame(mc2_data$links) print("Links Data Frame:") print(head(links_df)) } } else { \# If mc2_data is directly a data frame print("Data Frame:") print(head(mc2_data)) }
-
-# Alternatively, you can use View() in RStudio to view the entire data frame
-
-# View(nodes_df)
-
-# View(links_df)
-
-```         
-```
 
 View(nodes_df) \# View(links_df)
 

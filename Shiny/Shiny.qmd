@@ -1,0 +1,15 @@
+---
+title: "Hands-on Exercise 7"
+author: "Arya Siahaan"
+date: "Jun 1, 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# 
+
+# 

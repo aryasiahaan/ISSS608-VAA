@@ -95,6 +95,20 @@ raw_text <- tibble(folder =
 write_rds(raw_text, "data/rds/news20.rds")
 ```
 
+::: {.callout-note title="Things to learn from the code chunk above"}
+-   [`read_lines()`](https://readr.tidyverse.org/reference/read_lines.html) of [**readr**](https://readr.tidyverse.org/) package is used to read up to n_max lines from a file.
+
+-   [`map()`](https://purrr.tidyverse.org/reference/map.html) of [**purrr**](https://purrr.tidyverse.org/) package is used to transform their input by applying a function to each element of a list and returning an object of the same length as the input.
+
+-   [`unnest()`](https://tidyr.tidyverse.org/reference/nest.html) of **dplyr** package is used to flatten a list-column of data frames back out into regular columns.
+
+-   [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) of **dplyr** is used to add new variables and preserves existing ones;
+
+-   [`transmute()`](https://dplyr.tidyverse.org/reference/mutate.html) of **dplyr** is used to add new variables and drops existing ones.
+
+-   [`read_rds()`](https://readr.tidyverse.org/reference/read_rds.html) is used to save the extracted and combined data frame as rds file for future use.
+:::
+
 ## **29.5 Initial EDA**
 
 Figure below shows the frequency of messages by newsgroup.
@@ -303,3 +317,156 @@ newsgroup_cors <- words_by_newsgroup %>%
                n, 
                sort = TRUE)
 ```
+
+![](images/clipboard-313891623.png)
+
+In this code chunk below, `pairwise_cor()` of **widyr** package is used to compute the correlation between newsgroup based on the common words found.
+
+```{r}
+newsgroup_cors <- words_by_newsgroup %>%
+  pairwise_cor(newsgroup, 
+               word, 
+               n, 
+               sort = TRUE)
+```
+
+### **29.7.6 Visualising correlation as a network**
+
+Now, we can visualise the relationship between newgroups in network graph as shown below.
+
+```{r}
+set.seed(2017)
+
+newsgroup_cors %>%
+  filter(correlation > .025) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(alpha = correlation, 
+                     width = correlation)) +
+  geom_node_point(size = 6, 
+                  color = "lightblue") +
+  geom_node_text(aes(label = name),
+                 color = "red",
+                 repel = TRUE) +
+  theme_void()
+```
+
+### **29.7.7 Bigram**
+
+In this code chunk below, a bigram data frame is created by using `unnest_tokens()` of tidytext.
+
+```{r}
+bigrams <- cleaned_text %>%
+  unnest_tokens(bigram, 
+                text, 
+                token = "ngrams", 
+                n = 2)
+```
+
+```{r}
+bigrams
+```
+
+### **29.7.8 Counting bigrams**
+
+The code chunk is used to count and sort the bigram data frame ascendingly.
+
+```{r}
+bigrams_count <- bigrams %>%
+  filter(bigram != 'NA') %>%
+  count(bigram, sort = TRUE)
+```
+
+```{r}
+bigrams_count
+```
+
+### **29.7.9 Cleaning bigram**
+
+The code chunk below is used to seperate the bigram into two words.
+
+```{r}
+bigrams_separated <- bigrams %>%
+  filter(bigram != 'NA') %>%
+  separate(bigram, c("word1", "word2"), 
+           sep = " ")
+
+bigrams_filtered <- bigrams_separated %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+```
+
+```{r}
+bigrams_filtered
+```
+
+### **29.7.10 Counting the bigram again**
+
+```{r}
+bigram_counts <- bigrams_filtered %>% 
+  count(word1, word2, sort = TRUE)
+```
+
+### **29.7.11 Create a network graph from bigram data frame**
+
+In the code chunk below, a network graph is created by using `graph_from_data_frame()` of **igraph** package.
+
+```{r}
+bigram_graph <- bigram_counts %>%
+  filter(n > 3) %>%
+  graph_from_data_frame()
+bigram_graph
+```
+
+### **29.7.12 Visualizing a network of bigrams with ggraph**
+
+In this code chunk below, **ggraph** package is used to plot the bigram.
+
+The code chunk used to plot the network graph:
+
+```{r}
+set.seed(1234)
+
+ggraph(bigram_graph, layout = "fr") +
+  geom_edge_link() +
+  geom_node_point() +
+  geom_node_text(aes(label = name), 
+                 vjust = 1, 
+                 hjust = 1)
+```
+
+### **29.7.13 Revised version**
+
+The code chunk used to plot the network graph.
+
+```{r}
+set.seed(1234)
+
+a <- grid::arrow(type = "closed", 
+                 length = unit(.15,
+                               "inches"))
+
+ggraph(bigram_graph, 
+       layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), 
+                 show.legend = FALSE,
+                 arrow = a, 
+                 end_cap = circle(.07,
+                                  'inches')) +
+  geom_node_point(color = "lightblue", 
+                  size = 5) +
+  geom_node_text(aes(label = name), 
+                 vjust = 1, 
+                 hjust = 1) +
+  theme_void()
+```
+
+## **29.8 References**
+
+#### 29.8.0.1 widyr
+
+-   Reference guide
+
+    -   [widyr: Widen, process, and re-tidy a dataset](https://cran.r-project.org/web/packages/widyr/vignettes/intro.html)
+
+    -   [United Nations Voting Correlations](https://cran.r-project.org/web/packages/widyr/vignettes/united_nations.html)
