@@ -2,7 +2,7 @@
 title: "Take-home Exercise 3"
 author: "Arya Siahaan"
 date: "May 15, 2024"
-date-modified: "last-modified"
+date-modified: "June 9, 2024"
 execute: 
   eval: true
   echo: true
@@ -54,28 +54,24 @@ mc2_data <- fromJSON("data/mc2.json")
 
 ### Wrangling and tidying edges
 
-Extracting edges
+#### Extracting edges
 
 Converts the links part of mc2_data to a tibble and removes duplicate rows, then displays the structure of the data. 
 
 ```{r}
-mc2_edges <- as_tibble(mc2_data$links) %>% 
-  distinct() 
-glimpse(mc2_edges)
-```
-
-Correcting data type
-
-Converts the date columns to POSIXct datetime format using the as_datetime function from the lubridate package, then display it with  glimpse() to confirm if the process have been performed correctly.
-
-```{r}
-mc2_edges$date <- as_datetime(mc2_edges$date)
-mc2_edges$time <- as_datetime(mc2_edges$time)
+# Wrangling and tidying edges
+mc2_edges <- as_tibble(mc2_data$links) %>% distinct()
+# Converts the date columns to POSIXct datetime format using the as_datetime function from the lubridate package, then display it with  glimpse() to confirm if the process have been performed correctly.
+mc2_edges <- mc2_edges %>%
+  mutate(date = as_datetime(date), time = as_datetime(time)) %>%
+  mutate(date_only = as.Date(time))
 glimpse(mc2_edges)
 ```
 
 
-Splitting and Tidying the 'type' Column
+
+
+#### Splitting and Tidying the 'type' Column
 
 This splits the type column into multiple columns (event2 and event3) and appends these columns back to the mc2_edges dataframe.
   
@@ -99,7 +95,7 @@ mc2_edges <- mc2_edges %>%
 
 
 
-Handling unnessary Columns
+#### Handling unnecessary Columns
 
 ```{r}
 # Dropping Unnecessary Columns
@@ -110,7 +106,7 @@ glimpse(mc2_edges_cleaned)
 ```
 
 
-Wrangling and tidying nodes
+### Wrangling and tidying nodes
 
 Extracting Nodes and Removing Duplicates
 
@@ -144,7 +140,7 @@ mc2_nodes <- mc2_nodes %>%
 ```
 
 
-Dropping unnecessary Columns
+#### Dropping unnecessary Columns
 
 ```{r}
 mc2_nodes_cleaned <- mc2_nodes %>%
@@ -152,51 +148,278 @@ mc2_nodes_cleaned <- mc2_nodes %>%
 glimpse(mc2_nodes_cleaned)
 ```
 
+
+
 ```{r}
-glimpse(mc2_edges_cleaned)
+# Creating subsets for nodes data
+N_fish <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Commodity.Fish") %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) %>%
+  rename(fish_species = name, fish_id = id)
 ```
 
 ```{r}
-glimpse(mc2_nodes_cleaned)
+NL_City <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Location.City") %>%
+  select(-c(`type`, `fish_species_present`)) %>%
+  rename(city_name = Name, city_id = id)
 ```
 
-Saving the Cleaned Data
+```{r}
+NL_Point <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Location.Point") %>%
+  select(-c(`kind`, `fish_species_present`)) %>%
+  rename(point_name = Name, point_id = id)
+```
 
 ```{r}
-write_rds(mc2_edges_cleaned, "data/rds/mc2_edges_cleaned.rds")
-write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
+NL_Region <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Location.Region") %>%
+  select(-c(`type`, `Description`)) %>%
+  rename(region_name = Name, region_id = id, region_kind = kind)
+```
+
+```{r}
+N_Delivery_doc <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Document.DeliveryReport") %>%
+  mutate(date = as.Date(date)) %>%
+  rename(deliver_date = date, cargo_id = id) %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) 
+```
+
+```{r}
+glimpse(N_Delivery_doc)
 ```
 
 
 ```{r}
-# Display distinct entries in event2
-mc2_edges_cleaned %>% 
-  distinct(event2) %>%
-  pull(event2)
+N_vessel <- mc2_nodes_cleaned %>%
+  filter(grepl("Entity.Vessel", type)) %>%
+  mutate(vessel_type = case_when(
+    grepl("FishingVessel", type, ignore.case = TRUE) ~ "Fishing",
+    grepl("Ferry.Passenger", type, ignore.case = TRUE) ~ "Ferry_Passenger",
+    grepl("Ferry.Cargo", type, ignore.case = TRUE) ~ "Ferry_Cargo",
+    grepl("Research", type, ignore.case = TRUE) ~ "Research", 
+    grepl("Other", type, ignore.case = TRUE) ~ "Other", 
+    grepl("Tour", type, ignore.case = TRUE) ~ "Tour", 
+    grepl("CargoVessel", type, ignore.case = TRUE) ~ "Cargo_Vessel"
+  )) %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) %>%
+  mutate(company = ifelse(is.na(company), "Unknown", company)) %>%
+  rename(vessel_id = id, vessel_name = Name, vessel_company = company) 
+```
+
+
+
+
+```{r}
+# Handling Transponder Pings
+E_TransponderPing <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+E_TransponderPing <- E_TransponderPing %>%
+  rename(vessel_id = target) %>%
+  left_join(N_vessel %>% select(vessel_id, vessel_type, vessel_company), by = "vessel_id") %>%
+  filter(vessel_type == "Fishing") 
+
+
+
+# Handling Transactions
+E_Transaction <- subset(mc2_edges_cleaned, event2 == "Transaction")
+E_Transaction <- E_Transaction %>%
+  rename(cargo_id = source, 
+         destination = target,
+         transaction_date = date) %>%
+  mutate(transaction_date = transaction_date - 1)
 ```
 
 
 ```{r}
-# Display distinct entries in event3
-mc2_edges_cleaned %>% 
-  distinct(event3) %>%
-  pull(event3)
+glimpse(E_Transaction)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Extract Cargo to Fish relation data from Transaction Event data
+Cargo_to_Fish <- E_Tx_c %>%
+  filter(cargo_id %in% N_fish$fish_id) %>%
+  select(cargo_id, fish_id = dest)
+
+# Match Cargo ID in Delivery Documents to Fish ID from Transactions
+N_Delivery_doc <- N_Delivery_doc %>%
+  left_join(Cargo_to_Fish, by = "cargo_id") %>%
+  left_join(N_fish %>% select(fish_id, fish_species), by = c("fish_id" = "fish_id"))
+
+# Extract Cargo to Port relation data from Transaction Event data
+Cargo_to_City <- E_Tx_c %>%
+  filter(dest %in% NL_City$city_id) %>%
+  select(cargo_id, port = dest)
+
+# Match Cargo ID in Delivery Documents to Ports from Transactions
+N_Delivery_doc <- N_Delivery_doc %>%
+  left_join(Cargo_to_City, by = "cargo_id")
+
+```
+
+
+```
+# Filter E_Tping_Fishing to include only rows with ping_source values that match port values
+E_Tping_Fishing_filtered <- E_Tping_Fishing %>%
+  filter(ping_source %in% unique(N_Delivery_doc$port))
+
+# Verify the structure of E_Tping_Fishing_filtered to ensure correct filtering
+glimpse(E_Tping_Fishing_filtered)
+
+# Merge the datasets based on the date and port, acknowledging many-to-many relationship
+Tping_to_Delivery <- E_Tping_Fishing_filtered %>%
+  left_join(
+    N_Delivery_doc %>% select(deliver_date, port, cargo_id, qty_tons, fish_id, fish_species), 
+    by = c("date_only" = "deliver_date", "ping_source" = "port"),
+    relationship = "many-to-many"
+  )
+
+# Verify the structure of Tping_to_Delivery to ensure the port column is included
+glimpse(Tping_to_Delivery)
+
+```
+
+
+```
+# Filter E_Tping_Fishing to include only rows with ping_source values that match port values
+E_Tping_Fishing_filtered <- E_Tping_Fishing %>%
+  filter(ping_source %in% unique(N_Delivery_doc$port))
+
+# Verify the structure of E_Tping_Fishing_filtered to ensure correct filtering
+glimpse(E_Tping_Fishing_filtered)
+
+# Merge the datasets based on the date and port, acknowledging many-to-many relationship
+Tping_to_Delivery <- E_Tping_Fishing_filtered %>%
+  left_join(
+    N_Delivery_doc %>% select(deliver_date, port, cargo_id, qty_tons, fish_id, fish_species), 
+    by = c("date_only" = "deliver_date", "ping_source" = "port"),
+    relationship = "many-to-many"
+  )
+
+# Verify the structure of Tping_to_Delivery
+glimpse(Tping_to_Delivery)
+
+```
+
+```
+# Verify the unique values in ping_source and port
+unique_ping_source <- unique(E_Tping_Fishing$ping_source)
+unique_port <- unique(N_Delivery_doc$port)
+
+print(unique_ping_source)
+print(unique_port)
+```
+
+```
+
+# Merge the datasets based on the date and port, acknowledging many-to-many relationship
+Tping_to_Delivery <- E_Tping_Fishing %>%
+  filter(ping_source %in% NL_City$city_id) %>%
+  left_join(
+    N_Delivery_doc %>% select(deliver_date, port, cargo_id, qty_tons, fish_id, fish_species), 
+    by = c("date_only" = "deliver_date", "ping_source" = "port"),
+    relationship = "many-to-many"
+  )
+
+# Verify the structure of Tping_to_Delivery
+glimpse(Tping_to_Delivery)
+
+
+```
+
+
+
+
+
+```
+
+```
+# Verify the structure of Tping_to_Delivery
+glimpse(Tping_to_Delivery)
+```
+
+# Remove duplicate rows based on vessel_company and fish_species
+distinct_species <- Tping_to_Delivery %>%
+  distinct(vessel_company, fish_species) %>%
+  na.omit() %>%
+  select(vessel_company, fish_species)
+
+# Match Cargo ID in Delivery Documents to Ports from Transactions
+N_Delivery_doc <- N_Delivery_doc %>%
+  left_join(Cargo_to_City, by = "cargo_id")
+```
+
+```
+# Check the structure of Tping_to_Delivery
+glimpse(Tping_to_Delivery)
+
+```
+```
+# Visualize Vessel Activities by Port and Date
+ggplot(vessel_activity, aes(x = date, y = total_qty_tons, color = fish_species)) +
+  geom_line() +
+  facet_wrap(~ port) +
+  labs(title = "Vessel Activities by Port and Date", x = "Date", y = "Total Quantity of Fish (Tons)") +
+  theme_minimal()
 ```
 
 Subset the Data Based on Event Categories:
-
-
-```{r}
+```
 
 # Handling Transactions
 
 # Subset Transactions Data
 E_Tx <- subset(mc2_edges_cleaned, event2 == "Transaction")
 
-# Clean Transactions Data
+# Transactions
 E_Tx_c <- E_Tx %>%
-  rename(cargo_id = target, dest = source, tx_date = date) %>%
-  mutate(tx_date = tx_date - 1)
+  rename(
+    cargo_id = source, 
+    dest = target,
+    tx_date = date) %>%
+  mutate(tx_date = tx_date - 1) %>% # adjustment for records
+  select(-c(time, dwell))
+```
+
+```
+# Verify the content of the city_id column
+unique(NL_City$city_id)
+```
 
 
 # Handling Harbor Reports
@@ -218,6 +441,8 @@ E_TransponderPing <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
 E_Tping_c <- E_TransponderPing %>%
   rename(vessel_id = target, ping_source = source, start_time = time) 
 
+
+
 ```
 
 
@@ -227,14 +452,20 @@ E_Hbrpt_c: Cleaned harbor report data with relevant columns.
 E_Tping_c: Cleaned transponder ping data with relevant columns.
 
 
-```{r}
+```
 N_fish <- mc2_nodes_cleaned %>%
   filter(type == "Entity.Commodity.Fish") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) %>%
   rename(fish_species = name, fish_id = id)
 
 N_Delivery_doc <- mc2_nodes_cleaned %>%
   filter(type == "Entity.Document.DeliveryReport") %>%
-  rename(deliver_date = date, cargo_id = id)
+  select_if(~ !any(is.na(.))) %>%
+  rename(deliver_date = date, cargo_id = id) %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) %>%
+  mutate(deliver_date = as.Date(deliver_date))
+
 
 N_vessel <- mc2_nodes_cleaned %>%
   filter(grepl("Entity.Vessel", type)) %>%
@@ -246,80 +477,86 @@ N_vessel <- mc2_nodes_cleaned %>%
     grepl("Other", type, ignore.case = TRUE) ~ "Other", 
     grepl("Tour", type, ignore.case = TRUE) ~ "Tour", 
     grepl("CargoVessel", type, ignore.case = TRUE) ~ "Cargo_Vessel"
-  )) %>% 
-  rename(vessel_id = id, vessel_name = name, vessel_company = company)
-
-```
-
-```{r}
-# Handling Transactions
-E_Tx <- subset(mc2_edges_cleaned, event2 == "Transaction")
-E_Tx_c <- E_Tx %>%
-  rename(cargo_id = target, dest = source, tx_date = date) %>%
-  mutate(tx_date = tx_date - 1)
-
-# Handling Harbor Reports
-E_HarborRpt <- subset(mc2_edges_cleaned, event2 == "HarborReport")
-E_Hbrpt_c <- E_HarborRpt %>%
-  rename(vessel_id = source, port = target, arr_date = date)
-
-# Handling Transponder Pings
-E_TransponderPing <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
-E_Tping_c <- E_TransponderPing %>%
-  rename(vessel_id = target, ping_source = source, start_time = time)
-```
-
-```{r}
-# Divide different nodes into different dataset
-N_fish <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Commodity.Fish") %>%
-  select_if(~ !any(is.na(.))) %>%
-  select(-c(`type`,`Activities`, `fish_species_present`)) %>%
-  rename(fish_species = name, 
-         fish_id = id)
-
-NL_City <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Location.City") %>%
-  select_if(~ !any(is.na(.))) %>%
-  select(-c(`type`, `fish_species_present`)) %>%
-  rename(city_name = Name, 
-         city_id = id)
-
-
-NL_Point <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Location.Point") %>%
-  select_if(~ !any(is.na(.))) %>%
-  select(-c(`kind`, `fish_species_present`)) %>%
-  rename(point_name = Name, 
-         point_id = id)
-
-NL_Region <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Location.Region") %>%
-  select_if(~ !any(is.na(.))) %>%
-  select(-c(`type`, `Description`)) %>%
-  rename(region_name = Name, 
-         region_id = id, 
-         region_kind = kind)
-
-N_Delivery_doc <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Document.DeliveryReport") %>%
-  select_if(~ !any(is.na(.))) %>%
-  rename(deliver_date = date,
-         cargo_id = id) %>%
-  select(-c(`type`, `Activities`, `fish_species_present`)) 
-
-N_vessel <- mc2_nodes %>%
-  filter(grepl("Entity.Vessel", type)) %>%
-  mutate(vessel_type = case_when(
-    grepl("FishingVessel", type, ignore.case = TRUE) ~ "Fishing",
-    grepl("Ferry.Passenger", type, ignore.case = TRUE) ~ "Ferry_Passenger",
-    grepl("Ferry.Cargo", type, ignore.case = TRUE) ~ "Ferry_Cargo",
-    grepl("Research", type, ignore.case = TRUE) ~ "Research", 
-    grepl("Other", type, ignore.case = TRUE) ~ "Other", 
-    grepl("Tour", type, ignore.case = TRUE) ~ "Tour", 
-    grepl("CargoVessel", type, ignore.case = TRUE) ~ "Cargo_Vessel"
-    )) %>%
+  )) %>%
   select(-c(`type`, `Activities`, `fish_species_present`)) %>%
-  mutate(company = ifelse(is.na(company), "Unknown", company)) %>% # Handle NA values by replacing NA with unknown
-  rename(vessel_id = id, 
-         vessel_name = Name,
-         vessel_company = company) %>%
+  mutate(company = ifelse(is.na(company), "Unknown", company)) %>%
+  rename(vessel_id = id, vessel_name = name, vessel_company = company) %>%
   select_if(~ !any(is.na(.)))
 
+NL_City <- subset(mc2_nodes_cleaned, mc2_nodes_cleaned$type == "Entity.Location.City") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`type`, `fish_species_present`)) %>%
+  rename(city_name = Name, city_id = id)
+
+NL_Point <- subset(mc2_nodes_cleaned, mc2_nodes_cleaned$type == "Entity.Location.Point") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`kind`, `fish_species_present`)) %>%
+  rename(point_name = Name, point_id = id)
+
+NL_Region <- subset(mc2_nodes_cleaned, mc2_nodes_cleaned$type == "Entity.Location.Region") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`type`, `Description`)) %>%
+  rename(region_name = Name, region_id = id, region_kind = kind)
 
 ```
+
+
+
+```
+# Join data tables to include vessel_type, vessel_company in transponder ping data and filter only Fishing vessel type
+E_Tping_Fishing <- E_Tping_c %>%
+  left_join(N_vessel %>% select(vessel_id, vessel_type, vessel_company), by = "vessel_id") %>%
+  filter(vessel_type == "Fishing") %>%
+  mutate(date_only = as.Date(start_time))
+
+# Extract Cargo to Fish relation data from Transaction Event data
+Cargo_to_Fish <- E_Tx_c %>%
+  filter(cargo_id %in% N_fish$fish_id) %>%
+  select(cargo_id, fish_id = dest)
+
+# Match Cargo ID in Delivery Documents to Fish ID from Transactions
+N_Delivery_doc <- N_Delivery_doc %>%
+  left_join(Cargo_to_Fish, by = "cargo_id") %>%
+  left_join(N_fish %>% select(fish_id, fish_species), by = c("fish_id" = "fish_id"))
+
+# Extract Cargo to Port relation data from Transaction Event data
+Cargo_to_City <- E_Tx_c %>%
+  filter(dest %in% NL_City$city_id) %>%
+  select(cargo_id, port = dest)
+
+# Match Cargo ID in Delivery Documents to Ports from Transactions
+N_Delivery_doc <- N_Delivery_doc %>%
+  left_join(Cargo_to_City, by = "cargo_id")
+
+# Merge the datasets based on the date and port
+Tping_to_Delivery <- E_Tping_Fishing %>%
+  filter(ping_source %in% NL_City$city_id) %>%
+  left_join(N_Delivery_doc %>% select("deliver_date", "port", "cargo_id", "qty_tons", "fish_id", "fish_species"), by = c("date_only" = "deliver_date", "ping_source" = "port"))
+
+# Remove duplicate rows based on vessel_company and fish_species
+distinct_species <- Tping_to_Delivery %>%
+  distinct(vessel_company, fish_species) %>%
+  na.omit() %>%
+  select(vessel_company, fish_species)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
