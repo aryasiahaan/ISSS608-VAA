@@ -1,0 +1,13 @@
+name: testing1
+title: testing1
+username: aryasiahaan
+account: aryasiahaan
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12148187
+bundleId: 8716743
+url: https://aryasiahaan.shinyapps.io/testing1/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|ShinyDemo.R

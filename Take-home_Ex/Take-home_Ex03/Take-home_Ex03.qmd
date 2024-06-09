@@ -10,370 +10,316 @@ execute:
   freeze: true
 ---
 
-# Overview
+# VAST Challenge 2024
 
-## The Task
+### Mini-Challenge 2:
 
-Getting Started
+#### Background
 
-Loading the library
+In Oceanus, the island's economy thrives on the movement of seafaring vessels, particularly those operated by commercial fishing companies, indicating a healthy economic state. However, a major event has disrupted these routines: SouthSeafood Express Corp was caught engaging in illegal fishing. This scandal caused significant turmoil within the close-knit fishing community. FishEye International, a non-profit dedicated to combating illegal fishing, seeks assistance to understand the impact of this event. They have been gathering and processing data on ship movements and shipping records to create CatchNet: the Oceanus Knowledge Graph. While analysts at FishEye ensure data accuracy, they require assistance to develop analytical capabilities for this data.
+
+#### Tasks and Questions:
+
+FishEye analysts require assistance in performing geographic and temporal analysis of the CatchNet data to prevent future instances of illegal fishing. The task involves developing innovative visual analytics tools and workflows designed to identify and understand signatures of various behaviors. One key objective is to visualize the signature of SouthSeafood Express Corp's illegal activities. Additionally, there is a need to create a workflow capable of detecting other instances of illegal behavior within the data. These efforts are crucial for enhancing FishEye's ability to monitor and combat illegal fishing effectively. This exercise will attempt to address Question 1 and Question 3 of this challenge.
+
+##### Question 1
+
+FishEye analysts have long wanted to better understand the flow of commercially caught fish through Oceanus’s many ports. But as they were loading data into CatchNet, they discovered they had purchased the wrong port records. They wanted to get the ship off-load records, but they instead got the port-exit records (essentially trucks/trains leaving the port area). Port exit records do not include which vessel that delivered the products. Given this limitation, develop a visualization system to associate vessels with their probable cargos. Which vessels deliver which products and when? What are the seasonal trends and anomalies in the port exit records?
+
+##### Question 3
+
+To support further Fisheye investigations, develop visual analytics workflows that allow you to discover other vessels engaging in behaviors similar to SouthSeafood Express Corp’s illegal activities? Provide visual evidence of the similarities.
+
+## Getting Started
+
+### Loading the required R library packages
+
+The following code chunk utilises the [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) function from the [pacman](https://github.com/trinker/pacman) package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) will load them. If they are not installed, it will first install them and then load them into the R environment.
 
 ```{r}
 pacman::p_load(tidyverse, jsonlite, igraph, 
                tidygraph, ggraph, SmartEDA,
-               lubridate) 
+               lubridate, ggplot2) 
 ```
 
-Importing Graph Data
+### Loading The Data
+
+The dataset is in the form of a json file and it is available for download at the [Vast Challenge 2024](https://vast-challenge.github.io/2024/index.html).
 
 ```{r}
 mc2_data <- fromJSON("data/mc2.json")
 ```
 
-Wrangling and tidying edges
+## Data Preparation
+
+### Wrangling and tidying edges
 
 Extracting edges
+
+Converts the links part of mc2_data to a tibble and removes duplicate rows, then displays the structure of the data. 
 
 ```{r}
 mc2_edges <- as_tibble(mc2_data$links) %>% 
   distinct() 
-```
-
-```{r}
 glimpse(mc2_edges)
 ```
 
 Correcting data type
 
-```{r}
-mc2_edges$time <- as_datetime(mc2_edges$time)
-```
-
-```{r}
-mc2_edges$`_last_edited_date` <- as_datetime(mc2_edges$`_last_edited_date`)
-```
-
-```{r}
-mc2_edges$`_date_added` <- as_datetime(mc2_edges$`_date_added`)
-```
+Converts the date columns to POSIXct datetime format using the as_datetime function from the lubridate package, then display it with  glimpse() to confirm if the process have been performed correctly.
 
 ```{r}
 mc2_edges$date <- as_datetime(mc2_edges$date)
-```
-
-```{r}
+mc2_edges$time <- as_datetime(mc2_edges$time)
 glimpse(mc2_edges)
 ```
 
-```{r}
-mc2_edges <- mc2_edges %>%
-  rename("last_edited_by" = "_last_edited_by",
-         "date_added" = "_date_added",
-         "last_edited_date" = "_last_edited_date",
-         "raw_source" = "_raw_source",
-         "algorithm" = "_algorithm") 
-```
 
-```{r}
-glimpse(mc2_edges)
-```
+Splitting and Tidying the 'type' Column
 
+This splits the type column into multiple columns (event2 and event3) and appends these columns back to the mc2_edges dataframe.
+  
 ```{r}
 word_list <- strsplit(mc2_edges$type, "\\.")
-```
-
-```{r}
-max_elements <- max(lengths(word_list))
-```
-
-The code chunk below will be used to pad shorter splits with NA values to make them all the same length.
-
-```{r}
+max_elements <- max(lengths(word_list)) #to find the maximum number of elements in any split
 word_list_padded <- lapply(word_list, 
-function(x) c(x, rep(NA, max_elements - length(x))))
-```
-
-```{r}
+function(x) c(x, rep(NA, max_elements - length(x)))) #to pad shorter splits with NA values to make them all the same length.
 word_df <- do.call(rbind, word_list_padded)
 colnames(word_df) <- paste0("event", 1:max_elements)
-```
 
-Since the output above is a matrix, the code chunk below is used to convert word_df into a tibble data.frame.
-
-```{r}
+# Since the output above is a matrix, the code chunk below is used to convert word_df into a tibble data.frame.
 word_df <- as_tibble(word_df) %>%
   select(event2, event3)
-class(word_df)
-```
 
-The code chunk below appends the extracted columns back to mc2_edges tibble data.frame.
 
-```{r}
+# The code chunk below appends the extracted columns back to mc2_edges tibble data.frame
 mc2_edges <- mc2_edges %>%
   cbind(word_df)
 ```
-Before moving to the next task, it will be wiser to save the tidied mc2_edges into a physical file for future used. By doing so, you also do not have to repeat the steps above.
 
-The code chunk below will be used to save mc2_edges into R rds file format.
 
-Please ensure that there is a sub-folder called rds in the data folder. If not, you should create one first.
+
+Handling unnessary Columns
 
 ```{r}
-write_rds(mc2_edges, "data/rds/mc2_edges.rds")
+# Dropping Unnecessary Columns
+mc2_edges_cleaned <- mc2_edges %>%
+  select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `key`, `type`, `data_author`, `aphorism`, `holiday_greeting`, `wisdom`, `saying of the sea`))
+
+glimpse(mc2_edges_cleaned)
 ```
 
 
 Wrangling and tidying nodes
 
-This section mainly focuses on tidying and wrangling text data in the Activities column. For other data checking, tidying and wrangling tasks, please refer to the steps discussed above.
+Extracting Nodes and Removing Duplicates
 
-Extracting nodes
-The code chunk below will be used to extract the nodes data.frame of mc2_data and parses it as a tibble data.frame called mc2_nodes.
+This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data.
 
 ```{r}
 mc2_nodes <- as_tibble(mc2_data$nodes) %>%
   distinct()
-```
-
-Next, the code chunk below is used to reveal the data structure of mc2_nodes tibble data.frame.
-  
-```{r}
 glimpse(mc2_nodes)
 ```
+
+
 From the table above, beside the date data type and inappropriate field name issues we discussed earlier, two additional data issues can be observed. They are:
 
-The values in Activities and fish_species_present fields are in list data type, which will affect the ability to process and to analyse the data.
-As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e. removing c(““)).
+The values in Activities and fish_species_present fields are in list data type, which will affect the ability to process and to analyse the data. As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e. removing c(““)).
 
-Tidying text field
-In the code chunk below, mutate() of dplyr and gsub() of Base R are used to perform the data tidying task.
+Tidying text field In the code chunk below, mutate() of dplyr and gsub() of Base R are used to perform the data tidying task.
+
+This cleans up the Activities and fish_species_present columns by removing unnecessary characters.
 
 ```{r}
-mc2_nodes_tidied <- mc2_nodes %>%
+mc2_nodes <- mc2_nodes %>%
   mutate(Activities = gsub("c[(]", "", Activities)) %>% 
   mutate(Activities = gsub("\"", "", Activities)) %>%
   mutate(Activities = gsub("[)]", "", Activities)) 
-```
 
-```{r}
-mc2_nodes_tidied <- mc2_nodes_tidied %>%
+mc2_nodes <- mc2_nodes %>%
   mutate(fish_species_present = gsub("c[(]", "", fish_species_present)) %>% 
   mutate(fish_species_present = gsub("\"", "", fish_species_present)) %>%
   mutate(fish_species_present = gsub("[)]", "", fish_species_present)) 
 ```
 
-Notice that the text values in Activities column are in tidy manner now.
 
-Before moving to the next task, it is a good practice to save the tidied data into a physical file for future use.
+Dropping unnecessary Columns
 
 ```{r}
-write_rds(mc2_nodes_tidied, "data/rds/mc2_nodes_tidied.rds")
+mc2_nodes_cleaned <- mc2_nodes %>%
+  select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `style`))
+glimpse(mc2_nodes_cleaned)
 ```
 
 ```{r}
-# Check for columns with missing values
-colSums(is.na(mc2_edges))
+glimpse(mc2_edges_cleaned)
 ```
 
 ```{r}
-mc2_edges[duplicated(mc2_edges),]
+glimpse(mc2_nodes_cleaned)
 ```
+
+Saving the Cleaned Data
 
 ```{r}
-view(mc2_edges)
-```         
-# Subsetting data based on event category
-E_TransponderPing <- subset(mc2_edges,  mc2_edges$type == "Event.TransportEvent.TransponderPing")
-E_HarborRpt <- subset(mc2_edges,  mc2_edges$type == "Event.HarborReport")
-E_Tx <- subset(mc2_edges, mc2_edges$type == "Event.Transaction")
+write_rds(mc2_edges_cleaned, "data/rds/mc2_edges_cleaned.rds")
+write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
 ```
 
-```         
-#assigning to mc2_edges2
-mc2_edges <- as_tibble(mc2_data$links)
 
-# Breaking into subsets based on event category
-E_TransponderPing <- subset(mc2_edges,  mc2_edges$type == "Event.TransportEvent.TransponderPing")
-E_HarborRpt <- subset(mc2_edges,  mc2_edges$type == "Event.HarborReport")
-E_Tx <- subset(mc2_edges, mc2_edges$type == "Event.Transaction")
+```{r}
+# Display distinct entries in event2
+mc2_edges_cleaned %>% 
+  distinct(event2) %>%
+  pull(event2)
+```
 
-# Dropping columns that are NULL - check if code drops where data is 1 null or all null
 
+```{r}
+# Display distinct entries in event3
+mc2_edges_cleaned %>% 
+  distinct(event3) %>%
+  pull(event3)
+```
+
+Subset the Data Based on Event Categories:
+
+
+```{r}
+
+# Handling Transactions
+
+# Subset Transactions Data
+E_Tx <- subset(mc2_edges_cleaned, event2 == "Transaction")
+
+# Clean Transactions Data
 E_Tx_c <- E_Tx %>%
-  select_if(~ !any(is.na(.)))
+  rename(cargo_id = target, dest = source, tx_date = date) %>%
+  mutate(tx_date = tx_date - 1)
 
+
+# Handling Harbor Reports
+
+# Subset Harbor Report Data
+E_HarborRpt <- subset(mc2_edges_cleaned, event2 == "HarborReport")
+
+# Clean Harbor Report Data
+E_Hbrpt_c <- E_HarborRpt %>%
+  rename(vessel_id = source, port = target, arr_date = date)
+
+
+# Handling Transponder Pings
+
+# Subset Transponder Ping Data
+E_TransponderPing <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+
+# Clean Transponder Ping Data
 E_Tping_c <- E_TransponderPing %>%
+  rename(vessel_id = target, ping_source = source, start_time = time) 
+
+```
+
+
+Final Cleaned DataFrames
+tx_c: Cleaned and joined transactions data, associating cargos with fish species.
+E_Hbrpt_c: Cleaned harbor report data with relevant columns.
+E_Tping_c: Cleaned transponder ping data with relevant columns.
+
+
+```{r}
+N_fish <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Commodity.Fish") %>%
+  rename(fish_species = name, fish_id = id)
+
+N_Delivery_doc <- mc2_nodes_cleaned %>%
+  filter(type == "Entity.Document.DeliveryReport") %>%
+  rename(deliver_date = date, cargo_id = id)
+
+N_vessel <- mc2_nodes_cleaned %>%
+  filter(grepl("Entity.Vessel", type)) %>%
+  mutate(vessel_type = case_when(
+    grepl("FishingVessel", type, ignore.case = TRUE) ~ "Fishing",
+    grepl("Ferry.Passenger", type, ignore.case = TRUE) ~ "Ferry_Passenger",
+    grepl("Ferry.Cargo", type, ignore.case = TRUE) ~ "Ferry_Cargo",
+    grepl("Research", type, ignore.case = TRUE) ~ "Research", 
+    grepl("Other", type, ignore.case = TRUE) ~ "Other", 
+    grepl("Tour", type, ignore.case = TRUE) ~ "Tour", 
+    grepl("CargoVessel", type, ignore.case = TRUE) ~ "Cargo_Vessel"
+  )) %>% 
+  rename(vessel_id = id, vessel_name = name, vessel_company = company)
+
+```
+
+```{r}
+# Handling Transactions
+E_Tx <- subset(mc2_edges_cleaned, event2 == "Transaction")
+E_Tx_c <- E_Tx %>%
+  rename(cargo_id = target, dest = source, tx_date = date) %>%
+  mutate(tx_date = tx_date - 1)
+
+# Handling Harbor Reports
+E_HarborRpt <- subset(mc2_edges_cleaned, event2 == "HarborReport")
+E_Hbrpt_c <- E_HarborRpt %>%
+  rename(vessel_id = source, port = target, arr_date = date)
+
+# Handling Transponder Pings
+E_TransponderPing <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+E_Tping_c <- E_TransponderPing %>%
+  rename(vessel_id = target, ping_source = source, start_time = time)
+```
+
+```{r}
+# Divide different nodes into different dataset
+N_fish <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Commodity.Fish") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`type`,`Activities`, `fish_species_present`)) %>%
+  rename(fish_species = name, 
+         fish_id = id)
+
+NL_City <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Location.City") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`type`, `fish_species_present`)) %>%
+  rename(city_name = Name, 
+         city_id = id)
+
+
+NL_Point <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Location.Point") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`kind`, `fish_species_present`)) %>%
+  rename(point_name = Name, 
+         point_id = id)
+
+NL_Region <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Location.Region") %>%
+  select_if(~ !any(is.na(.))) %>%
+  select(-c(`type`, `Description`)) %>%
+  rename(region_name = Name, 
+         region_id = id, 
+         region_kind = kind)
+
+N_Delivery_doc <- subset(mc2_nodes,  mc2_nodes$type == "Entity.Document.DeliveryReport") %>%
+  select_if(~ !any(is.na(.))) %>%
+  rename(deliver_date = date,
+         cargo_id = id) %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) 
+
+N_vessel <- mc2_nodes %>%
+  filter(grepl("Entity.Vessel", type)) %>%
+  mutate(vessel_type = case_when(
+    grepl("FishingVessel", type, ignore.case = TRUE) ~ "Fishing",
+    grepl("Ferry.Passenger", type, ignore.case = TRUE) ~ "Ferry_Passenger",
+    grepl("Ferry.Cargo", type, ignore.case = TRUE) ~ "Ferry_Cargo",
+    grepl("Research", type, ignore.case = TRUE) ~ "Research", 
+    grepl("Other", type, ignore.case = TRUE) ~ "Other", 
+    grepl("Tour", type, ignore.case = TRUE) ~ "Tour", 
+    grepl("CargoVessel", type, ignore.case = TRUE) ~ "Cargo_Vessel"
+    )) %>%
+  select(-c(`type`, `Activities`, `fish_species_present`)) %>%
+  mutate(company = ifelse(is.na(company), "Unknown", company)) %>% # Handle NA values by replacing NA with unknown
+  rename(vessel_id = id, 
+         vessel_name = Name,
+         vessel_company = company) %>%
   select_if(~ !any(is.na(.)))
 
-# Exclude dropping of null for Habor report due to last 3 columns
 
-#E_Hbrpt_c <- E_HarborRpt %>%
-#  select_if(~ !any(is.na(.)))
 ```
-
-
-
-
-
-View(nodes_df) \# View(links_df)
-
-```         
-```
-
-# View(nodes_df)
-
-View(links_df)
-
-```         
-```
-
-# Read the JSON file as plain text
-
-json_text \<- readLines("data/mc3.json", warn = FALSE)
-
-# Replace NaN with null
-
-json_text \<- gsub("NaN", "null", json_text)
-
-# Write the modified JSON text back to a file (optional, for verification)
-
-writeLines(json_text, "data/mc3_fixed.json")
-
-# Parse the modified JSON text
-
-mc3_data \<- fromJSON(json_text)
-
-# Display the structure of the loaded data
-
-str(mc3_data)
-
-# If mc3_data is a list, convert it to a data frame
-
-# Assuming mc3_data has a structure similar to mc2_data with nodes and links
-
-if (is.list(mc3_data)) { if ("nodes" %in% names(mc3_data)) { nodes_df \<- as.data.frame(mc3_data$nodes)
-    print("Nodes Data Frame:")
-    print(head(nodes_df))
-  }
-  if ("links" %in% names(mc3_data)) {
-    links_df <- as.data.frame(mc3_data$links) print("Links Data Frame:") print(head(links_df)) } } else { \# If mc3_data is directly a data frame print("Data Frame:") print(head(mc3_data)) }
-
-```         
-```
-
-mc3_data \<- fromJSON("data/mc3.json")
-
-```         
-```
-
-str(mc1_data)
-
-```         
-```
-
-# View the first few rows of the nodes data frame
-
-head(mc2_data\$nodes)
-
-```         
-```
-
-# Summarize the key variables in the nodes data frame
-
-summary(mc2_data\$nodes)
-
-```         
-```
-
-# View the first few rows of the links data frame
-
-head(mc2_data\$links)
-
-```         
-```
-
-# Summarize the key variables in the links data frame
-
-summary(mc2_data\$links)
-
-```         
-```
-
-# Check for missing values in nodes and edges
-
-summary(mc2_data$nodes)
-summary(mc2_data$links)
-
-```         
-```
-
-# Load necessary libraries
-
-library(tidyverse) library(tidygraph) library(ggraph)
-
-# Check for missing values in nodes and edges
-
-sum(is.na(mc2_data$nodes$id)) \# Check for missing node ids sum(is.na(mc2_data$links$source)) \# Check for missing edge sources sum(is.na(mc2_data$links$target)) \# Check for missing edge targets
-
-# Remove rows with missing id, source, or target
-
-mc2_data$nodes <- mc2_data$nodes %\>% filter(!is.na(id)) mc2_data$links <- mc2_data$links %\>% filter(!is.na(source) & !is.na(target))
-
-# Ensure ids are unique in nodes
-
-mc2_data$nodes <- mc2_data$nodes %\>% distinct(id, .keep_all = TRUE)
-
-# Convert id, source, and target to character
-
-mc2_data$nodes$id \<- as.character(mc2_data$nodes$id) mc2_data$links$source \<- as.character(mc2_data$links$source) mc2_data$links$target \<- as.character(mc2_data$links$target)
-
-# Check again if all sources and targets are in node ids
-
-all(mc2_data$links$source %in% mc2_data$nodes$id) all(mc2_data$links$target %in% mc2_data$nodes$id)
-
-# Create the tidygraph object
-
-graph \<- tbl_graph(nodes = mc2_data$nodes, edges = mc2_data$links, directed = TRUE)
-
-# Plot the graph
-
-ggraph(graph, layout = "fr") + geom_edge_link(aes(start_cap = label_rect(node1.name), end_cap = label_rect(node2.name))) + geom_node_point() + geom_node_text(aes(label = name), vjust = 1, hjust = 1)
-
-```         
-```
-
-# Check for NaN values in the dwell column
-
-sum(is.na(mc2_data$links$dwell)) \# Count of NaN values in dwell
-
-# Optionally, replace NaN values in dwell with 0 or any appropriate value
-
-mc2_data$links$dwell\[is.na(mc2_data$links$dwell)\] \<- 0
-
-```         
-```
-
-# Check for missing values in nodes and edges
-
-sum(is.na(mc2_data$nodes$id)) \# Count of missing node ids sum(is.na(mc2_data$links$source)) \# Count of missing edge sources sum(is.na(mc2_data$links$target)) \# Count of missing edge targets
-
-# Check for missing values in dwell column
-
-sum(is.na(mc2_data$links$dwell)) \# Count of missing dwell values
-
-```         
-```
-
-# Check for NaN values in the nodes and edges data frames
-
-sum(is.nan(mc2_data$nodes$tonnage)) sum(is.nan(mc2_data$nodes$length_overall)) sum(is.nan(mc2_data$links$dwell))
-
-# Replace NaN values with appropriate defaults (e.g., 0 or another sentinel value)
-
-mc2_data$nodes$tonnage\[is.nan(mc2_data$nodes$tonnage)\] \<- 0 mc2_data$nodes$length_overall\[is.nan(mc2_data$nodes$length_overall)\] \<- 0 mc2_data$links$dwell\[is.nan(mc2_data$links$dwell)\] \<- 0
-
-# Check for infinite values and replace them
-
-sum(is.infinite(mc2_data$nodes$tonnage)) sum(is.infinite(mc2_data$nodes$length_overall)) sum(is.infinite(mc2_data$links$dwell))
-
-mc2_data$nodes$tonnage\[is.infinite(mc2_data$nodes$tonnage)\] \<- 0 mc2_data$nodes$length_overall\[is.infinite(mc2_data$nodes$length_overall)\] \<- 0 mc2_data$links$dwell\[is.infinite(mc2_data$links$dwell)\] \<- 0 \`\`\`
