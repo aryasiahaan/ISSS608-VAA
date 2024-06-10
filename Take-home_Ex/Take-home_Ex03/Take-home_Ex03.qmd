@@ -49,15 +49,14 @@ The dataset is in the form of a json file and it is available for download at th
 ```{r}
 mc2_data <- fromJSON("data/mc2.json")
 ```
-This line loads the JSON dataset into R using the jsonlite package. The dataset is stored in the mc2_data variable.
 
+This line loads the JSON dataset into R using the jsonlite package. The dataset is stored in the mc2_data variable.
 
 ## Data Preparation
 
 ### Wrangling and tidying edges
 
 #### Extracting edges
-
 
 ```{r}
 # Wrangling and tidying edges
@@ -68,12 +67,11 @@ mc2_edges <- mc2_edges %>%
   mutate(date_only = as.Date(time))
 glimpse(mc2_edges)
 ```
-The code above converts the 'links' part of the dataset into a tibble and removes duplicates. It then converts date and time information into proper datetime formats using lubridate, and extracts just the date to a new column.
 
+The code above converts the 'links' part of the dataset into a tibble and removes duplicates. It then converts date and time information into proper datetime formats using lubridate, and extracts just the date to a new column.
 
 #### Splitting and Tidying the 'type' Column
 
-  
 ```{r}
 word_list <- strsplit(mc2_edges$type, "\\.")
 max_elements <- max(lengths(word_list)) #to find the maximum number of elements in any split
@@ -91,8 +89,8 @@ word_df <- as_tibble(word_df) %>%
 mc2_edges <- mc2_edges %>%
   cbind(word_df)
 ```
-This code splits the 'type' column into multiple components, pads shorter entries with NAs, and integrates them back into the mc2_edges dataframe as new columns.
 
+This code splits the 'type' column into multiple components, pads shorter entries with NAs, and integrates them back into the mc2_edges dataframe as new columns.
 
 #### Dropping Unnecessary Columns
 
@@ -102,21 +100,20 @@ mc2_edges_cleaned <- mc2_edges %>%
 
 glimpse(mc2_edges_cleaned)
 ```
+
 Removes unnecessary columns from the dataset that are not needed for analysis, cleaning up the data. Glimpse() is then used to display the structure of the data.
 
 ### Wrangling and tidying nodes
 
 #### Extracting Nodes and Removing Duplicates
 
-
-
 ```{r}
 mc2_nodes <- as_tibble(mc2_data$nodes) %>%
   distinct()
 glimpse(mc2_nodes)
 ```
-This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data using glimpse().
 
+This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data using glimpse().
 
 From the table above, beside the date data type and inappropriate field name issues we discussed earlier, two additional data issues can be observed. They are:
 
@@ -138,7 +135,6 @@ mc2_nodes_cleaned <- mc2_nodes_cleaned %>%
   mutate(fish_species_present = gsub("[)]", "", fish_species_present)) 
 ```
 
-
 #### Dropping unnecessary Columns
 
 ```{r}
@@ -146,6 +142,7 @@ mc2_nodes_cleaned <- mc2_nodes_cleaned %>%
   select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `style`))
 glimpse(mc2_nodes_cleaned)
 ```
+
 Removes additional unneeded columns from the nodes data frame.
 
 ### Further Data Subsetting and Renaming
@@ -157,6 +154,7 @@ transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
 transaction <- subset(mc2_edges_cleaned, event2 == "Transaction")
 harbor_report <- subset(mc2_edges_cleaned,  event2 == "HarborReport")
 ```
+
 Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.
 
 #### Handling Vessel Data
@@ -179,9 +177,11 @@ vessel <- mc2_nodes_cleaned %>%
          vessel_name = Name, 
          vessel_company = company)
 ```
+
 Filters and processes data related to vessels, categorizing them by type and cleaning up their information for better clarity.
 
 #### Handling Fish Data
+
 ```{r}
 fish <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Commodity.Fish") %>%
   select_if(~ !any(is.na(.))) %>% 
@@ -189,7 +189,6 @@ fish <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Commodity.F
   rename(fish_species = name, 
          fish_id = id)
 ```
-
 
 #### Subsetting City Data
 
@@ -200,9 +199,11 @@ city <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.Ci
   rename(city_name = Name, 
          city_id = id)
 ```
+
 This code processes the city-related data by filtering cities, excluding any incomplete records, and renaming fields to reflect their content more accurately (city names and IDs).
 
 #### Subsetting Point Location
+
 ```{r}
 point <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.Point") %>%
   select_if(~ !any(is.na(.))) %>%
@@ -210,9 +211,11 @@ point <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.P
   rename(point_name = Name, 
          point_id = id)
 ```
+
 This snippet focuses on geographical points, cleaning up the data by removing unnecessary columns and renaming the remaining columns to make them more intuitive (point names and IDs).
 
-#### Subsetting Region Data 
+#### Subsetting Region Data
+
 ```{r}
 region <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.Region") %>%
   select_if(~ !any(is.na(.))) %>%
@@ -221,9 +224,11 @@ region <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.
          region_id = id, 
          region_kind = kind)
 ```
+
 Extracts and cleans data related to geographic regions, ensuring all entries are complete and renaming columns to better describe their contents, including region type.
 
 #### Subsetting Delivery Report Data
+
 ```{r}
 delivery_report <- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Document.DeliveryReport") %>%
   select_if(~ !any(is.na(.))) %>%
@@ -245,6 +250,7 @@ fishing_vessel <- mc2_nodes_cleaned %>%
   select(-c(type, Activities, fish_species_present, Description, kind, name, qty_tons, date)) %>%
   rename(fishing_vessel_id = id, fishing_vessel_name = Name)
 ```
+
 Isolates data concerning fishing vessels, classifying them appropriately and ensuring all records are complete. It renames columns for greater clarity and focuses on identifying and naming the vessels.
 
 #### Cargo Vessel Data
@@ -258,11 +264,13 @@ cargo_vessel <- mc2_nodes_cleaned %>%
   select(-c(type, Activities, fish_species_present, Description, kind, name, qty_tons, date)) %>%
   rename(cargo_vessel_id = id, cargo_vessel_name = Name)
 ```
+
 Similar to the fishing vessels, this snippet deals with cargo vessels, tidying the data and ensuring that the vessel type and company fields are correctly populated.
 
 ### Transaction and Harbor Report Data Processing
 
 #### Transaction Data
+
 ```{r}
 # Load and clean the transaction data
 transactions_cleaned <- mc2_edges_cleaned %>%
@@ -270,6 +278,7 @@ transactions_cleaned <- mc2_edges_cleaned %>%
   select(date, source, target) %>%
   rename(cargo_id = source)
 ```
+
 Focuses on transaction data from the edges, renaming columns to better represent the transaction's nature—linking transactions via cargo IDs.
 
 #### Harbor Report Data
@@ -282,10 +291,5 @@ harbor_report_cleaned <- mc2_edges_cleaned %>%
   rename(vessel_id = source, port = target)
 
 ```
+
 Cleans and prepares harbor report data, linking reports to specific vessels and ports, and renaming columns for better readability and further analysis.
-
-
-
-
-
-
