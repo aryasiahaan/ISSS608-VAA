@@ -103,35 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -312,31 +283,11 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#wrangling-and-tidying-edges" id="toc-wrangling-and-tidying-edges" class="nav-link" data-scroll-target="#wrangling-and-tidying-edges">Wrangling and tidying edges</a></li>
   <li><a href="#wrangling-and-tidying-nodes" id="toc-wrangling-and-tidying-nodes" class="nav-link" data-scroll-target="#wrangling-and-tidying-nodes">Wrangling and tidying nodes</a></li>
+  <li><a href="#further-data-subsetting-and-renaming" id="toc-further-data-subsetting-and-renaming" class="nav-link" data-scroll-target="#further-data-subsetting-and-renaming">Further Data Subsetting and Renaming</a></li>
+  <li><a href="#vessel-specific-data-preparation" id="toc-vessel-specific-data-preparation" class="nav-link" data-scroll-target="#vessel-specific-data-preparation">Vessel-Specific Data Preparation</a></li>
+  <li><a href="#transaction-and-harbor-report-data-processing" id="toc-transaction-and-harbor-report-data-processing" class="nav-link" data-scroll-target="#transaction-and-harbor-report-data-processing">Transaction and Harbor Report Data Processing</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#extract-cargo-to-fish-relation-data-from-transaction-event-data" id="toc-extract-cargo-to-fish-relation-data-from-transaction-event-data" class="nav-link" data-scroll-target="#extract-cargo-to-fish-relation-data-from-transaction-event-data">Extract Cargo to Fish relation data from Transaction Event data</a></li>
-  <li><a href="#match-cargo-id-in-delivery-documents-to-fish-id-from-transactions" id="toc-match-cargo-id-in-delivery-documents-to-fish-id-from-transactions" class="nav-link" data-scroll-target="#match-cargo-id-in-delivery-documents-to-fish-id-from-transactions">Match Cargo ID in Delivery Documents to Fish ID from Transactions</a></li>
-  <li><a href="#extract-cargo-to-port-relation-data-from-transaction-event-data" id="toc-extract-cargo-to-port-relation-data-from-transaction-event-data" class="nav-link" data-scroll-target="#extract-cargo-to-port-relation-data-from-transaction-event-data">Extract Cargo to Port relation data from Transaction Event data</a></li>
-  <li><a href="#match-cargo-id-in-delivery-documents-to-ports-from-transactions" id="toc-match-cargo-id-in-delivery-documents-to-ports-from-transactions" class="nav-link" data-scroll-target="#match-cargo-id-in-delivery-documents-to-ports-from-transactions">Match Cargo ID in Delivery Documents to Ports from Transactions</a></li>
-  <li><a href="#filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values" id="toc-filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values" class="nav-link" data-scroll-target="#filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values">Filter E_Tping_Fishing to include only rows with ping_source values that match port values</a></li>
-  <li><a href="#verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering" id="toc-verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering" class="nav-link" data-scroll-target="#verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering">Verify the structure of E_Tping_Fishing_filtered to ensure correct filtering</a></li>
-  <li><a href="#merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship" id="toc-merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship" class="nav-link" data-scroll-target="#merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship">Merge the datasets based on the date and port, acknowledging many-to-many relationship</a></li>
-  <li><a href="#verify-the-structure-of-tping_to_delivery-to-ensure-the-port-column-is-included" id="toc-verify-the-structure-of-tping_to_delivery-to-ensure-the-port-column-is-included" class="nav-link" data-scroll-target="#verify-the-structure-of-tping_to_delivery-to-ensure-the-port-column-is-included">Verify the structure of Tping_to_Delivery to ensure the port column is included</a></li>
-  <li><a href="#filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values-1" id="toc-filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values-1" class="nav-link" data-scroll-target="#filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values-1">Filter E_Tping_Fishing to include only rows with ping_source values that match port values</a></li>
-  <li><a href="#verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering-1" id="toc-verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering-1" class="nav-link" data-scroll-target="#verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering-1">Verify the structure of E_Tping_Fishing_filtered to ensure correct filtering</a></li>
-  <li><a href="#merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-1" id="toc-merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-1" class="nav-link" data-scroll-target="#merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-1">Merge the datasets based on the date and port, acknowledging many-to-many relationship</a></li>
-  <li><a href="#verify-the-structure-of-tping_to_delivery" id="toc-verify-the-structure-of-tping_to_delivery" class="nav-link" data-scroll-target="#verify-the-structure-of-tping_to_delivery">Verify the structure of Tping_to_Delivery</a></li>
-  <li><a href="#verify-the-unique-values-in-ping_source-and-port" id="toc-verify-the-unique-values-in-ping_source-and-port" class="nav-link" data-scroll-target="#verify-the-unique-values-in-ping_source-and-port">Verify the unique values in ping_source and port</a></li>
-  <li><a href="#merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-2" id="toc-merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-2" class="nav-link" data-scroll-target="#merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-2">Merge the datasets based on the date and port, acknowledging many-to-many relationship</a></li>
-  <li><a href="#verify-the-structure-of-tping_to_delivery-1" id="toc-verify-the-structure-of-tping_to_delivery-1" class="nav-link" data-scroll-target="#verify-the-structure-of-tping_to_delivery-1">Verify the structure of Tping_to_Delivery</a></li>
-  <li><a href="#remove-duplicate-rows-based-on-vessel_company-and-fish_species" id="toc-remove-duplicate-rows-based-on-vessel_company-and-fish_species" class="nav-link" data-scroll-target="#remove-duplicate-rows-based-on-vessel_company-and-fish_species">Remove duplicate rows based on vessel_company and fish_species</a></li>
-  <li><a href="#match-cargo-id-in-delivery-documents-to-ports-from-transactions-1" id="toc-match-cargo-id-in-delivery-documents-to-ports-from-transactions-1" class="nav-link" data-scroll-target="#match-cargo-id-in-delivery-documents-to-ports-from-transactions-1">Match Cargo ID in Delivery Documents to Ports from Transactions</a></li>
-  <li><a href="#check-the-structure-of-tping_to_delivery" id="toc-check-the-structure-of-tping_to_delivery" class="nav-link" data-scroll-target="#check-the-structure-of-tping_to_delivery">Check the structure of Tping_to_Delivery</a></li>
-  <li><a href="#visualize-vessel-activities-by-port-and-date" id="toc-visualize-vessel-activities-by-port-and-date" class="nav-link" data-scroll-target="#visualize-vessel-activities-by-port-and-date">Visualize Vessel Activities by Port and Date</a></li>
-  <li><a href="#handling-transactions" id="toc-handling-transactions" class="nav-link" data-scroll-target="#handling-transactions">Handling Transactions</a></li>
-  <li><a href="#subset-transactions-data" id="toc-subset-transactions-data" class="nav-link" data-scroll-target="#subset-transactions-data">Subset Transactions Data</a></li>
-  <li><a href="#transactions" id="toc-transactions" class="nav-link" data-scroll-target="#transactions">Transactions</a></li>
-  <li><a href="#verify-the-content-of-the-city_id-column" id="toc-verify-the-content-of-the-city_id-column" class="nav-link" data-scroll-target="#verify-the-content-of-the-city_id-column">Verify the content of the city_id column</a></li>
   </ul>
 </nav>
     </div>
@@ -418,6 +369,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mc2_data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/mc2.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>This line loads the JSON dataset into R using the jsonlite package. The dataset is stored in the mc2_data variable.</p>
 </section>
 </section>
 <section id="data-preparation" class="level2">
@@ -426,7 +378,6 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="wrangling-and-tidying-edges">Wrangling and tidying edges</h3>
 <section id="extracting-edges" class="level4">
 <h4 class="anchored" data-anchor-id="extracting-edges">Extracting edges</h4>
-<p>Converts the links part of mc2_data to a tibble and removes duplicate rows, then displays the structure of the data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrangling and tidying edges</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mc2_edges <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc2_data<span class="sc">$</span>links) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
@@ -458,10 +409,10 @@ $ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
 $ date_only           &lt;date&gt; 2035-09-16, 2035-09-20, 2035-09-28, 2035-10-04, 2…</code></pre>
 </div>
 </div>
+<p>The code above converts the ‘links’ part of the dataset into a tibble and removes duplicates. It then converts date and time information into proper datetime formats using lubridate, and extracts just the date to a new column.</p>
 </section>
 <section id="splitting-and-tidying-the-type-column" class="level4">
 <h4 class="anchored" data-anchor-id="splitting-and-tidying-the-type-column">Splitting and Tidying the ‘type’ Column</h4>
-<p>This splits the type column into multiple columns (event2 and event3) and appends these columns back to the mc2_edges dataframe.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>word_list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(mc2_edges<span class="sc">$</span>type, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>max_elements <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">lengths</span>(word_list)) <span class="co">#to find the maximum number of elements in any split</span></span>
@@ -479,15 +430,15 @@ $ date_only           &lt;date&gt; 2035-09-16, 2035-09-20, 2035-09-28, 2035-10-0
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>mc2_edges <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(word_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>This code splits the ‘type’ column into multiple components, pads shorter entries with NAs, and integrates them back into the mc2_edges dataframe as new columns.</p>
 </section>
-<section id="handling-unnecessary-columns" class="level4">
-<h4 class="anchored" data-anchor-id="handling-unnecessary-columns">Handling unnecessary Columns</h4>
+<section id="dropping-unnecessary-columns" class="level4">
+<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns">Dropping Unnecessary Columns</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dropping Unnecessary Columns</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mc2_edges_cleaned <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">_last_edited_by</span><span class="st">`</span>, <span class="st">`</span><span class="at">_date_added</span><span class="st">`</span>, <span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span>, <span class="st">`</span><span class="at">_raw_source</span><span class="st">`</span>, <span class="st">`</span><span class="at">_algorithm</span><span class="st">`</span>, <span class="st">`</span><span class="at">key</span><span class="st">`</span>, <span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">data_author</span><span class="st">`</span>, <span class="st">`</span><span class="at">aphorism</span><span class="st">`</span>, <span class="st">`</span><span class="at">holiday_greeting</span><span class="st">`</span>, <span class="st">`</span><span class="at">wisdom</span><span class="st">`</span>, <span class="st">`</span><span class="at">saying of the sea</span><span class="st">`</span>))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mc2_edges_cleaned <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">_last_edited_by</span><span class="st">`</span>, <span class="st">`</span><span class="at">_date_added</span><span class="st">`</span>, <span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span>, <span class="st">`</span><span class="at">_raw_source</span><span class="st">`</span>, <span class="st">`</span><span class="at">_algorithm</span><span class="st">`</span>, <span class="st">`</span><span class="at">key</span><span class="st">`</span>, <span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">data_author</span><span class="st">`</span>, <span class="st">`</span><span class="at">aphorism</span><span class="st">`</span>, <span class="st">`</span><span class="at">holiday_greeting</span><span class="st">`</span>, <span class="st">`</span><span class="at">wisdom</span><span class="st">`</span>, <span class="st">`</span><span class="at">saying of the sea</span><span class="st">`</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 271,643
 Columns: 8
@@ -501,12 +452,13 @@ $ event2    &lt;chr&gt; "TransportEvent", "TransportEvent", "TransportEvent", "T
 $ event3    &lt;chr&gt; "TransponderPing", "TransponderPing", "TransponderPing", "Tr…</code></pre>
 </div>
 </div>
+<p>Removes unnecessary columns from the dataset that are not needed for analysis, cleaning up the data. Glimpse() is then used to display the structure of the data.</p>
 </section>
 </section>
 <section id="wrangling-and-tidying-nodes" class="level3">
 <h3 class="anchored" data-anchor-id="wrangling-and-tidying-nodes">Wrangling and tidying nodes</h3>
-<p>Extracting Nodes and Removing Duplicates</p>
-<p>This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data.</p>
+<section id="extracting-nodes-and-removing-duplicates" class="level4">
+<h4 class="anchored" data-anchor-id="extracting-nodes-and-removing-duplicates">Extracting Nodes and Removing Duplicates</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc2_data<span class="sc">$</span>nodes) <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
@@ -536,25 +488,27 @@ $ style                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N
 $ fish_species_present &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, …</code></pre>
 </div>
 </div>
+<p>This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data using glimpse().</p>
 <p>From the table above, beside the date data type and inappropriate field name issues we discussed earlier, two additional data issues can be observed. They are:</p>
 <p>The values in Activities and fish_species_present fields are in list data type, which will affect the ability to process and to analyse the data. As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e.&nbsp;removing c(““)).</p>
 <p>Tidying text field In the code chunk below, mutate() of dplyr and gsub() of Base R are used to perform the data tidying task.</p>
 <p>This cleans up the Activities and fish_species_present columns by removing unnecessary characters.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_cleaned <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Activities =</span> <span class="fu">gsub</span>(<span class="st">"c[(]"</span>, <span class="st">""</span>, Activities)) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Activities =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>, Activities)) <span class="sc">%&gt;%</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Activities =</span> <span class="fu">gsub</span>(<span class="st">"[)]"</span>, <span class="st">""</span>, Activities)) </span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>mc2_nodes_cleaned <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fish_species_present =</span> <span class="fu">gsub</span>(<span class="st">"c[(]"</span>, <span class="st">""</span>, fish_species_present)) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fish_species_present =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>, fish_species_present)) <span class="sc">%&gt;%</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fish_species_present =</span> <span class="fu">gsub</span>(<span class="st">"[)]"</span>, <span class="st">""</span>, fish_species_present)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="dropping-unnecessary-columns" class="level4">
-<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns">Dropping unnecessary Columns</h4>
+</section>
+<section id="dropping-unnecessary-columns-1" class="level4">
+<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns-1">Dropping unnecessary Columns</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_cleaned <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_cleaned <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">_last_edited_by</span><span class="st">`</span>, <span class="st">`</span><span class="at">_date_added</span><span class="st">`</span>, <span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span>, <span class="st">`</span><span class="at">_raw_source</span><span class="st">`</span>, <span class="st">`</span><span class="at">_algorithm</span><span class="st">`</span>, <span class="st">`</span><span class="at">style</span><span class="st">`</span>))</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_nodes_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -576,325 +530,154 @@ $ length_overall       &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N
 $ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "…</code></pre>
 </div>
 </div>
+<p>Removes additional unneeded columns from the nodes data frame.</p>
+</section>
+</section>
+<section id="further-data-subsetting-and-renaming" class="level3">
+<h3 class="anchored" data-anchor-id="further-data-subsetting-and-renaming">Further Data Subsetting and Renaming</h3>
+<section id="creating-subset-data" class="level4">
+<h4 class="anchored" data-anchor-id="creating-subset-data">Creating Subset Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating subsets for nodes data</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>N_fish <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Entity.Commodity.Fish"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Activities</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">fish_species =</span> name, <span class="at">fish_id =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned,  event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.</p>
+</section>
+<section id="handling-vessel-data" class="level4">
+<h4 class="anchored" data-anchor-id="handling-vessel-data">Handling Vessel Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>NL_City <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Entity.Location.City"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">city_name =</span> Name, <span class="at">city_id =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Entity.Vessel"</span>, type)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vessel_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"FishingVessel"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Fishing"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Ferry.Passenger"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Ferry_Passenger"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Ferry.Cargo"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Ferry_Cargo"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Research"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Research"</span>, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Other"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Other"</span>, </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Tour"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Tour"</span>, </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"CargoVessel"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Cargo_Vessel"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">company =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(company), <span class="st">"Unknown"</span>, company)) <span class="sc">%&gt;%</span> <span class="co"># Handle NA values by replacing NA with unknown</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>( <span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Activities</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>, <span class="st">`</span><span class="at">Description</span><span class="st">`</span>, <span class="st">`</span><span class="at">kind</span><span class="st">`</span>, <span class="st">`</span><span class="at">name</span><span class="st">`</span>, <span class="st">`</span><span class="at">qty_tons</span><span class="st">`</span>,<span class="st">`</span><span class="at">date</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">vessel_id =</span> id, </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">vessel_name =</span> Name, </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">vessel_company =</span> company)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Filters and processes data related to vessels, categorizing them by type and cleaning up their information for better clarity.</p>
+</section>
+<section id="handling-fish-data" class="level4">
+<h4 class="anchored" data-anchor-id="handling-fish-data">Handling Fish Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NL_Point <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Entity.Location.Point"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">kind</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">point_name =</span> Name, <span class="at">point_id =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_nodes_cleaned,  mc2_nodes_cleaned<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"Entity.Commodity.Fish"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">any</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Activities</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">fish_species =</span> name, </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">fish_id =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="subsetting-city-data" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-city-data">Subsetting City Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>NL_Region <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Entity.Location.Region"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Description</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">region_name =</span> Name, <span class="at">region_id =</span> id, <span class="at">region_kind =</span> kind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_nodes_cleaned,  mc2_nodes_cleaned<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"Entity.Location.City"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">any</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">city_name =</span> Name, </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">city_id =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>This code processes the city-related data by filtering cities, excluding any incomplete records, and renaming fields to reflect their content more accurately (city names and IDs).</p>
+</section>
+<section id="subsetting-point-location" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-point-location">Subsetting Point Location</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>N_Delivery_doc <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">"Entity.Document.DeliveryReport"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as.Date</span>(date)) <span class="sc">%&gt;%</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">deliver_date =</span> date, <span class="at">cargo_id =</span> id) <span class="sc">%&gt;%</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Activities</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>point <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_nodes_cleaned,  mc2_nodes_cleaned<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"Entity.Location.Point"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">any</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">kind</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">point_name =</span> Name, </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">point_id =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>This snippet focuses on geographical points, cleaning up the data by removing unnecessary columns and renaming the remaining columns to make them more intuitive (point names and IDs).</p>
+</section>
+<section id="subsetting-region-data" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-region-data">Subsetting Region Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(N_Delivery_doc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 5,307
-Columns: 11
-$ name           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ cargo_id       &lt;chr&gt; "cargo_2035_2394778c", "cargo_2035_23956ba0", "cargo_20…
-$ Name           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ Description    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ kind           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ qty_tons       &lt;dbl&gt; 24.375, 18.125, 20.625, 13.125, 13.125, 7.500, 36.250, …
-$ deliver_date   &lt;date&gt; 2035-11-03, 2035-08-16, 2035-08-20, 2035-11-07, 2035-0…
-$ flag_country   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ company        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ tonnage        &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ length_overall &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…</code></pre>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_nodes_cleaned,  mc2_nodes_cleaned<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"Entity.Location.Region"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">any</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Description</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">region_name =</span> Name, </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">region_id =</span> id, </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">region_kind =</span> kind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
+<p>Extracts and cleans data related to geographic regions, ensuring all entries are complete and renaming columns to better describe their contents, including region type.</p>
+</section>
+<section id="subsetting-delivery-report-data" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-delivery-report-data">Subsetting Delivery Report Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>N_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Entity.Vessel"</span>, type)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vessel_type =</span> <span class="fu">case_when</span>(</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"FishingVessel"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Fishing"</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Ferry.Passenger"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Ferry_Passenger"</span>,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Ferry.Cargo"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Ferry_Cargo"</span>,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Research"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Research"</span>, </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Other"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Other"</span>, </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"Tour"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Tour"</span>, </span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"CargoVessel"</span>, type, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>) <span class="sc">~</span> <span class="st">"Cargo_Vessel"</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Activities</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">company =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(company), <span class="st">"Unknown"</span>, company)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">vessel_id =</span> id, <span class="at">vessel_name =</span> Name, <span class="at">vessel_company =</span> company) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>delivery_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_nodes_cleaned,  mc2_nodes_cleaned<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"Entity.Document.DeliveryReport"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">any</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">delivery_date =</span> date,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">cargo_id =</span> id) <span class="sc">%&gt;%</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">Activities</span><span class="st">`</span>, <span class="st">`</span><span class="at">fish_species_present</span><span class="st">`</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+</section>
+<section id="vessel-specific-data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="vessel-specific-data-preparation">Vessel-Specific Data Preparation</h3>
+<section id="fishing-vessel-data" class="level4">
+<h4 class="anchored" data-anchor-id="fishing-vessel-data">Fishing Vessel Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Handling Transponder Pings</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>E_TransponderPing <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>E_TransponderPing <span class="ot">&lt;-</span> E_TransponderPing <span class="sc">%&gt;%</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">vessel_id =</span> target) <span class="sc">%&gt;%</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(N_vessel <span class="sc">%&gt;%</span> <span class="fu">select</span>(vessel_id, vessel_type, vessel_company), <span class="at">by =</span> <span class="st">"vessel_id"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(vessel_type <span class="sc">==</span> <span class="st">"Fishing"</span>) </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Handling Transactions</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>E_Transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>E_Transaction <span class="ot">&lt;-</span> E_Transaction <span class="sc">%&gt;%</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">cargo_id =</span> source, </span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">destination =</span> target,</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">transaction_date =</span> date) <span class="sc">%&gt;%</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transaction_date =</span> transaction_date <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and clean the fishing vessel data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fishing_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Entity.Vessel.FishingVessel"</span>, type)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vessel_type =</span> <span class="st">"Fishing"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">company =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(company), <span class="st">"Unknown"</span>, company)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(type, Activities, fish_species_present, Description, kind, name, qty_tons, date)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">fishing_vessel_id =</span> id, <span class="at">fishing_vessel_name =</span> Name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Isolates data concerning fishing vessels, classifying them appropriately and ensuring all records are complete. It renames columns for greater clarity and focuses on identifying and naming the vessels.</p>
+</section>
+<section id="cargo-vessel-data" class="level4">
+<h4 class="anchored" data-anchor-id="cargo-vessel-data">Cargo Vessel Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(E_Transaction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 10,614
-Columns: 8
-$ time             &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ dwell            &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ cargo_id         &lt;chr&gt; "cargo_2035_2394778c", "cargo_2035_2394778c", "cargo_…
-$ destination      &lt;chr&gt; "gadusnspecificatae4ba", "City of South Paackland", "…
-$ transaction_date &lt;dttm&gt; 2035-11-02 23:59:59, 2035-11-02 23:59:59, 2035-08-15…
-$ date_only        &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ event2           &lt;chr&gt; "Transaction", "Transaction", "Transaction", "Transac…
-$ event3           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and clean the cargo vessel data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cargo_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"Entity.Vessel.CargoVessel"</span>, type)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vessel_type =</span> <span class="st">"Cargo"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">company =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(company), <span class="st">"Unknown"</span>, company)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(type, Activities, fish_species_present, Description, kind, name, qty_tons, date)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">cargo_vessel_id =</span> id, <span class="at">cargo_vessel_name =</span> Name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Similar to the fishing vessels, this snippet deals with cargo vessels, tidying the data and ensuring that the vessel type and company fields are correctly populated.</p>
+</section>
+</section>
+<section id="transaction-and-harbor-report-data-processing" class="level3">
+<h3 class="anchored" data-anchor-id="transaction-and-harbor-report-data-processing">Transaction and Harbor Report Data Processing</h3>
+<section id="transaction-data" class="level4">
+<h4 class="anchored" data-anchor-id="transaction-data">Transaction Data</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and clean the transaction data</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>transactions_cleaned <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event2 <span class="sc">==</span> <span class="st">"Transaction"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, source, target) <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">cargo_id =</span> source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Focuses on transaction data from the edges, renaming columns to better represent the transaction’s nature—linking transactions via cargo IDs.</p>
+</section>
+<section id="harbor-report-data" class="level4">
+<h4 class="anchored" data-anchor-id="harbor-report-data">Harbor Report Data</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and clean the harbor report data</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>harbor_report_cleaned <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, source, target) <span class="sc">%&gt;%</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">vessel_id =</span> source, <span class="at">port =</span> target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Cleans and prepares harbor report data, linking reports to specific vessels and ports, and renaming columns for better readability and further analysis.</p>
+
+
 </section>
 </section>
 </section>
-</section>
-<section id="extract-cargo-to-fish-relation-data-from-transaction-event-data" class="level1">
-<h1>Extract Cargo to Fish relation data from Transaction Event data</h1>
-<p>Cargo_to_Fish &lt;- E_Tx_c %&gt;% filter(cargo_id %in% N_fish$fish_id) %&gt;% select(cargo_id, fish_id = dest)</p>
-</section>
-<section id="match-cargo-id-in-delivery-documents-to-fish-id-from-transactions" class="level1">
-<h1>Match Cargo ID in Delivery Documents to Fish ID from Transactions</h1>
-<p>N_Delivery_doc &lt;- N_Delivery_doc %&gt;% left_join(Cargo_to_Fish, by = “cargo_id”) %&gt;% left_join(N_fish %&gt;% select(fish_id, fish_species), by = c(“fish_id” = “fish_id”))</p>
-</section>
-<section id="extract-cargo-to-port-relation-data-from-transaction-event-data" class="level1">
-<h1>Extract Cargo to Port relation data from Transaction Event data</h1>
-<p>Cargo_to_City &lt;- E_Tx_c %&gt;% filter(dest %in% NL_City$city_id) %&gt;% select(cargo_id, port = dest)</p>
-</section>
-<section id="match-cargo-id-in-delivery-documents-to-ports-from-transactions" class="level1">
-<h1>Match Cargo ID in Delivery Documents to Ports from Transactions</h1>
-<p>N_Delivery_doc &lt;- N_Delivery_doc %&gt;% left_join(Cargo_to_City, by = “cargo_id”)</p>
-<pre><code>
-</code></pre>
-</section>
-<section id="filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values" class="level1">
-<h1>Filter E_Tping_Fishing to include only rows with ping_source values that match port values</h1>
-<p>E_Tping_Fishing_filtered &lt;- E_Tping_Fishing %&gt;% filter(ping_source %in% unique(N_Delivery_doc$port))</p>
-</section>
-<section id="verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering" class="level1">
-<h1>Verify the structure of E_Tping_Fishing_filtered to ensure correct filtering</h1>
-<p>glimpse(E_Tping_Fishing_filtered)</p>
-</section>
-<section id="merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship" class="level1">
-<h1>Merge the datasets based on the date and port, acknowledging many-to-many relationship</h1>
-<p>Tping_to_Delivery &lt;- E_Tping_Fishing_filtered %&gt;% left_join( N_Delivery_doc %&gt;% select(deliver_date, port, cargo_id, qty_tons, fish_id, fish_species), by = c(“date_only” = “deliver_date”, “ping_source” = “port”), relationship = “many-to-many” )</p>
-</section>
-<section id="verify-the-structure-of-tping_to_delivery-to-ensure-the-port-column-is-included" class="level1">
-<h1>Verify the structure of Tping_to_Delivery to ensure the port column is included</h1>
-<p>glimpse(Tping_to_Delivery)</p>
-<pre><code>
-</code></pre>
-</section>
-<section id="filter-e_tping_fishing-to-include-only-rows-with-ping_source-values-that-match-port-values-1" class="level1">
-<h1>Filter E_Tping_Fishing to include only rows with ping_source values that match port values</h1>
-<p>E_Tping_Fishing_filtered &lt;- E_Tping_Fishing %&gt;% filter(ping_source %in% unique(N_Delivery_doc$port))</p>
-</section>
-<section id="verify-the-structure-of-e_tping_fishing_filtered-to-ensure-correct-filtering-1" class="level1">
-<h1>Verify the structure of E_Tping_Fishing_filtered to ensure correct filtering</h1>
-<p>glimpse(E_Tping_Fishing_filtered)</p>
-</section>
-<section id="merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-1" class="level1">
-<h1>Merge the datasets based on the date and port, acknowledging many-to-many relationship</h1>
-<p>Tping_to_Delivery &lt;- E_Tping_Fishing_filtered %&gt;% left_join( N_Delivery_doc %&gt;% select(deliver_date, port, cargo_id, qty_tons, fish_id, fish_species), by = c(“date_only” = “deliver_date”, “ping_source” = “port”), relationship = “many-to-many” )</p>
-</section>
-<section id="verify-the-structure-of-tping_to_delivery" class="level1">
-<h1>Verify the structure of Tping_to_Delivery</h1>
-<p>glimpse(Tping_to_Delivery)</p>
-<pre><code></code></pre>
-</section>
-<section id="verify-the-unique-values-in-ping_source-and-port" class="level1">
-<h1>Verify the unique values in ping_source and port</h1>
-<p>unique_ping_source &lt;- unique(E_Tping_Fishing<span class="math inline">\(ping_source)
-unique_port &lt;- unique(N_Delivery_doc\)</span>port)</p>
-<p>print(unique_ping_source) print(unique_port)</p>
-<pre><code></code></pre>
-</section>
-<section id="merge-the-datasets-based-on-the-date-and-port-acknowledging-many-to-many-relationship-2" class="level1">
-<h1>Merge the datasets based on the date and port, acknowledging many-to-many relationship</h1>
-<p>Tping_to_Delivery &lt;- E_Tping_Fishing %&gt;% filter(ping_source %in% NL_City$city_id) %&gt;% left_join( N_Delivery_doc %&gt;% select(deliver_date, port, cargo_id, qty_tons, fish_id, fish_species), by = c(“date_only” = “deliver_date”, “ping_source” = “port”), relationship = “many-to-many” )</p>
-</section>
-<section id="verify-the-structure-of-tping_to_delivery-1" class="level1">
-<h1>Verify the structure of Tping_to_Delivery</h1>
-<p>glimpse(Tping_to_Delivery)</p>
-<pre><code>
-
-
-
-</code></pre>
-<pre><code># Verify the structure of Tping_to_Delivery
-glimpse(Tping_to_Delivery)</code></pre>
-</section>
-<section id="remove-duplicate-rows-based-on-vessel_company-and-fish_species" class="level1">
-<h1>Remove duplicate rows based on vessel_company and fish_species</h1>
-<p>distinct_species &lt;- Tping_to_Delivery %&gt;% distinct(vessel_company, fish_species) %&gt;% na.omit() %&gt;% select(vessel_company, fish_species)</p>
-</section>
-<section id="match-cargo-id-in-delivery-documents-to-ports-from-transactions-1" class="level1">
-<h1>Match Cargo ID in Delivery Documents to Ports from Transactions</h1>
-<p>N_Delivery_doc &lt;- N_Delivery_doc %&gt;% left_join(Cargo_to_City, by = “cargo_id”)</p>
-<pre><code></code></pre>
-</section>
-<section id="check-the-structure-of-tping_to_delivery" class="level1">
-<h1>Check the structure of Tping_to_Delivery</h1>
-<p>glimpse(Tping_to_Delivery)</p>
-<pre><code></code></pre>
-</section>
-<section id="visualize-vessel-activities-by-port-and-date" class="level1">
-<h1>Visualize Vessel Activities by Port and Date</h1>
-<p>ggplot(vessel_activity, aes(x = date, y = total_qty_tons, color = fish_species)) + geom_line() + facet_wrap(~ port) + labs(title = “Vessel Activities by Port and Date”, x = “Date”, y = “Total Quantity of Fish (Tons)”) + theme_minimal()</p>
-<pre><code>
-Subset the Data Based on Event Categories:</code></pre>
-</section>
-<section id="handling-transactions" class="level1">
-<h1>Handling Transactions</h1>
-</section>
-<section id="subset-transactions-data" class="level1">
-<h1>Subset Transactions Data</h1>
-<p>E_Tx &lt;- subset(mc2_edges_cleaned, event2 == “Transaction”)</p>
-</section>
-<section id="transactions" class="level1">
-<h1>Transactions</h1>
-<p>E_Tx_c &lt;- E_Tx %&gt;% rename( cargo_id = source, dest = target, tx_date = date) %&gt;% mutate(tx_date = tx_date - 1) %&gt;% # adjustment for records select(-c(time, dwell))</p>
-<pre><code></code></pre>
-</section>
-<section id="verify-the-content-of-the-city_id-column" class="level1">
-<h1>Verify the content of the city_id column</h1>
-<p>unique(NL_City$city_id)</p>
-<pre><code>
-
-# Handling Harbor Reports
-
-# Subset Harbor Report Data
-E_HarborRpt &lt;- subset(mc2_edges_cleaned, event2 == "HarborReport")
-
-# Clean Harbor Report Data
-E_Hbrpt_c &lt;- E_HarborRpt %&gt;%
-  rename(vessel_id = source, port = target, arr_date = date)
-
-
-# Handling Transponder Pings
-
-# Subset Transponder Ping Data
-E_TransponderPing &lt;- subset(mc2_edges_cleaned, event3 == "TransponderPing")
-
-# Clean Transponder Ping Data
-E_Tping_c &lt;- E_TransponderPing %&gt;%
-  rename(vessel_id = target, ping_source = source, start_time = time) 
-
-
-</code></pre>
-<p>Final Cleaned DataFrames tx_c: Cleaned and joined transactions data, associating cargos with fish species. E_Hbrpt_c: Cleaned harbor report data with relevant columns. E_Tping_c: Cleaned transponder ping data with relevant columns.</p>
-<pre><code>N_fish &lt;- mc2_nodes_cleaned %&gt;%
-  filter(type == "Entity.Commodity.Fish") %&gt;%
-  select_if(~ !any(is.na(.))) %&gt;%
-  select(-c(`type`, `Activities`, `fish_species_present`)) %&gt;%
-  rename(fish_species = name, fish_id = id)
-
-N_Delivery_doc &lt;- mc2_nodes_cleaned %&gt;%
-  filter(type == "Entity.Document.DeliveryReport") %&gt;%
-  select_if(~ !any(is.na(.))) %&gt;%
-  rename(deliver_date = date, cargo_id = id) %&gt;%
-  select(-c(`type`, `Activities`, `fish_species_present`)) %&gt;%
-  mutate(deliver_date = as.Date(deliver_date))
-
-
-N_vessel &lt;- mc2_nodes_cleaned %&gt;%
-  filter(grepl("Entity.Vessel", type)) %&gt;%
-  mutate(vessel_type = case_when(
-    grepl("FishingVessel", type, ignore.case = TRUE) ~ "Fishing",
-    grepl("Ferry.Passenger", type, ignore.case = TRUE) ~ "Ferry_Passenger",
-    grepl("Ferry.Cargo", type, ignore.case = TRUE) ~ "Ferry_Cargo",
-    grepl("Research", type, ignore.case = TRUE) ~ "Research", 
-    grepl("Other", type, ignore.case = TRUE) ~ "Other", 
-    grepl("Tour", type, ignore.case = TRUE) ~ "Tour", 
-    grepl("CargoVessel", type, ignore.case = TRUE) ~ "Cargo_Vessel"
-  )) %&gt;%
-  select(-c(`type`, `Activities`, `fish_species_present`)) %&gt;%
-  mutate(company = ifelse(is.na(company), "Unknown", company)) %&gt;%
-  rename(vessel_id = id, vessel_name = name, vessel_company = company) %&gt;%
-  select_if(~ !any(is.na(.)))
-
-NL_City &lt;- subset(mc2_nodes_cleaned, mc2_nodes_cleaned$type == "Entity.Location.City") %&gt;%
-  select_if(~ !any(is.na(.))) %&gt;%
-  select(-c(`type`, `fish_species_present`)) %&gt;%
-  rename(city_name = Name, city_id = id)
-
-NL_Point &lt;- subset(mc2_nodes_cleaned, mc2_nodes_cleaned$type == "Entity.Location.Point") %&gt;%
-  select_if(~ !any(is.na(.))) %&gt;%
-  select(-c(`kind`, `fish_species_present`)) %&gt;%
-  rename(point_name = Name, point_id = id)
-
-NL_Region &lt;- subset(mc2_nodes_cleaned, mc2_nodes_cleaned$type == "Entity.Location.Region") %&gt;%
-  select_if(~ !any(is.na(.))) %&gt;%
-  select(-c(`type`, `Description`)) %&gt;%
-  rename(region_name = Name, region_id = id, region_kind = kind)
-</code></pre>
-<pre><code># Join data tables to include vessel_type, vessel_company in transponder ping data and filter only Fishing vessel type
-E_Tping_Fishing &lt;- E_Tping_c %&gt;%
-  left_join(N_vessel %&gt;% select(vessel_id, vessel_type, vessel_company), by = "vessel_id") %&gt;%
-  filter(vessel_type == "Fishing") %&gt;%
-  mutate(date_only = as.Date(start_time))
-
-# Extract Cargo to Fish relation data from Transaction Event data
-Cargo_to_Fish &lt;- E_Tx_c %&gt;%
-  filter(cargo_id %in% N_fish$fish_id) %&gt;%
-  select(cargo_id, fish_id = dest)
-
-# Match Cargo ID in Delivery Documents to Fish ID from Transactions
-N_Delivery_doc &lt;- N_Delivery_doc %&gt;%
-  left_join(Cargo_to_Fish, by = "cargo_id") %&gt;%
-  left_join(N_fish %&gt;% select(fish_id, fish_species), by = c("fish_id" = "fish_id"))
-
-# Extract Cargo to Port relation data from Transaction Event data
-Cargo_to_City &lt;- E_Tx_c %&gt;%
-  filter(dest %in% NL_City$city_id) %&gt;%
-  select(cargo_id, port = dest)
-
-# Match Cargo ID in Delivery Documents to Ports from Transactions
-N_Delivery_doc &lt;- N_Delivery_doc %&gt;%
-  left_join(Cargo_to_City, by = "cargo_id")
-
-# Merge the datasets based on the date and port
-Tping_to_Delivery &lt;- E_Tping_Fishing %&gt;%
-  filter(ping_source %in% NL_City$city_id) %&gt;%
-  left_join(N_Delivery_doc %&gt;% select("deliver_date", "port", "cargo_id", "qty_tons", "fish_id", "fish_species"), by = c("date_only" = "deliver_date", "ping_source" = "port"))
-
-# Remove duplicate rows based on vessel_company and fish_species
-distinct_species &lt;- Tping_to_Delivery %&gt;%
-  distinct(vessel_company, fish_species) %&gt;%
-  na.omit() %&gt;%
-  select(vessel_company, fish_species)</code></pre>
-
-
 </section>
 
 </main> <!-- /main -->
