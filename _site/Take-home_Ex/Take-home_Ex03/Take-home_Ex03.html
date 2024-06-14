@@ -724,22 +724,288 @@ $ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL
 </div>
 </div>
 <p>This particular column contains variety of different data, some of them seems interesting and useful for analysis, they are:</p>
-<p>Entity.Commodity.Fish Entity.Document.DeliveryReport</p>
-<p>Entity.Location.City Entity.Location.Point Entity.Location.Region</p>
-<p>Entity.Vessel.CargoVessel Entity.Vessel.FishingVessel</p>
+<ul>
+<li><p>Entity.Commodity.Fish</p></li>
+<li><p>Entity.Document.DeliveryReport</p></li>
+<li><p>Entity.Location.City</p></li>
+<li><p>Entity.Location.Point</p></li>
+<li><p>Entity.Location.Region</p></li>
+<li><p>Entity.Vessel.CargoVessel</p></li>
+<li><p>Entity.Vessel.FishingVessel</p></li>
+</ul>
 <p>The others seems unnecessary.</p>
 <p>I will try to make separate dataframe for each of them.</p>
 <p>Here I can see the type of vessel and how many of each are recorded in the dataframe.</p>
 <p>I’m only interested in the fishing vessel and the cargo vessel, and apparently there 178 fishing vessels and 100 cargo vessels, next so I will try to filter all the rows that only contain fishing vessels and cargo vessels</p>
 <p>Filter all the rows containing fishing_vessel</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vessel_info <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.FishingVessel"</span>, <span class="st">"Entity.Vessel.CargoVessel"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels and rename specific columns while keeping all others</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fishing_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.FishingVessel"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">vessel_type =</span> type,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fishing_vessel_id =</span> id,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fishing_vessel_name =</span> Name</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now I want to find out all the companies that own these fishing vessels</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(fishing_vessel<span class="sc">$</span>company)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Roth, Logan and Moreno"                   
+ [2] "Brown-Haas"                               
+ [3] "Smith, Davis and Acosta"                  
+ [4] "Cisneros-Meyer"                           
+ [5] "FlounderLeska Marine BV"                  
+ [6] "House Group"                              
+ [7] "Weaver-Baker"                             
+ [8] "Stewart, Perkins and Sanchez"             
+ [9] "ScaniaSeafood Holdings Ltd. Liability Co" 
+[10] "Mccormick Group"                          
+[11] "Parks Ltd"                                
+[12] "Taylor-Sawyer"                            
+[13] "Nielsen, Valentine and Bell"              
+[14] "Jacobson Inc"                             
+[15] "Ballard-Bailey"                           
+[16] "Steele PLC"                               
+[17] "WestRiver Shipping KgaA"                  
+[18] "Robinson, Mcmillan and Watson"            
+[19] "Lowery-Myers"                             
+[20] "Dyer-Campbell"                            
+[21] "Adkins LLC"                               
+[22] "BaringoAmerica Marine Ges.m.b.H."         
+[23] "Terry, Smith and Lyons"                   
+[24] "Schmidt Ltd"                              
+[25] "Ritter Ltd"                               
+[26] "Decker PLC"                               
+[27] "Faulkner, Shaffer and Moyer"              
+[28] "Brown-Allen"                              
+[29] "Bell, Reynolds and Forbes"                
+[30] "French Ltd"                               
+[31] "Rivera Group"                             
+[32] "Bowers Group"                             
+[33] "MonarchCreek Shipping S.p.A."             
+[34] "Mendez-Tyler"                             
+[35] "Mooney, Stevenson and Miller"             
+[36] "Garcia-Wallace"                           
+[37] "Cox-Mason"                                
+[38] "Garcia-Sanchez"                           
+[39] "Sutton PLC"                               
+[40] "Rasmussen, Nelson and King"               
+[41] "Brown, Clarke and Martinez"               
+[42] "Gomez-Mccormick"                          
+[43] "Solis-Lopez"                              
+[44] "SouthSeafood Express Corp"                
+[45] "Clark, Hall and Cole"                     
+[46] "Cox-Donovan"                              
+[47] "Solis PLC"                                
+[48] "Newton-Meyer"                             
+[49] "Mcpherson-Wright"                         
+[50] "Cordova, Ritter and Flores"               
+[51] "Miller, Smith and Reed"                   
+[52] "Barnes and Sons"                          
+[53] "Bennett, Jones and Miller"                
+[54] "Mercado, French and Graham"               
+[55] "Brewer-Massey"                            
+[56] "Norman LLC"                               
+[57] "Wiley LLC"                                
+[58] "Davis, Harris and West"                   
+[59] "Goodman LLC"                              
+[60] "Reid, Thomas and Gill"                    
+[61] "Henry-Alvarez"                            
+[62] "Lane Group"                               
+[63] "Smith, Collins and Johnson"               
+[64] "Franco, Olson and Long"                   
+[65] "Dry CreekWorldLogistics Ltd. Liability Co"
+[66] "Rodriguez, Henry and Woodard"             
+[67] "Thompson-Padilla"                         
+[68] "Carter, Mcdonald and Miller"              
+[69] "Williams, Horn and Morales"               
+[70] "Callahan-Green"                           
+[71] "Green, Vincent and Thompson"              
+[72] "Lake Malawi  Corp United"                 
+[73] "Wolf and Sons"                            
+[74] "Hernandez Group"                          
+[75] "Horne Group"                              
+[76] "Fischer, Graham and Robinson"             
+[77] "Chavez and Sons"                          
+[78] "Maacama Ocean Worldwide LLC"              
+[79] "Jordan and Sons"                          
+[80] "Martin-Case"                              
+[81] "Murphy and Sons"                          
+[82] "Collins, Johnson and Lloyd"               
+[83] "Sparmans Marine Carriers Oyj"             
+[84] "Mullins-Carrillo"                         
+[85] "Riley Inc"                                
+[86] "NortheastSeafood Carriers Ltd"            
+[87] "Chambers, Hall and Walker"                
+[88] "Osborne and Sons"                         
+[89] "Conley, Benton and Miller"                
+[90] "Saltwater Sisters Company Marine"         
+[91] "Costa de Oro Enterprises"                 
+[92] "Bailey-Mccullough"                        
+[93] "Chase, Long and Anderson"                 
+[94] "Vasquez-Gonzalez"                         
+[95] "Harper and Sons"                          
+[96] "Tainamarine Fishing Co"                   
+[97] "Mcdonald-Jones"                           
+[98] "George-Brown"                             
+[99] "SamakaDredgeTransport OJSC"               </code></pre>
+</div>
+</div>
+<p>From the result above I see “SouthSeafood Express Corp” is listed, now I want to isolate all the fishing vessels belong to “SouthSeafood Express Corp”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels owned by "SouthSeafood Express Corp"</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>southseafood_fishing_vessels <span class="ot">&lt;-</span> fishing_vessel <span class="sc">%&gt;%</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(company <span class="sc">==</span> <span class="st">"SouthSeafood Express Corp"</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(southseafood_fishing_vessels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 14
+  vessel_type name  fishing_vessel_id fishing_vessel_name Description Activities
+  &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;               &lt;chr&gt;       &lt;chr&gt;     
+1 Entity.Ves… &lt;NA&gt;  snappersnatcher7… Snapper Snatcher    &lt;NA&gt;        NULL      
+2 Entity.Ves… &lt;NA&gt;  roachrobberdb6    Roach Robber        &lt;NA&gt;        NULL      
+# ℹ 8 more variables: kind &lt;chr&gt;, qty_tons &lt;dbl&gt;, date &lt;date&gt;,
+#   flag_country &lt;chr&gt;, company &lt;chr&gt;, tonnage &lt;int&gt;, length_overall &lt;int&gt;,
+#   fish_species_present &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>So the vessels belong to “SouthSeafood Express Corp” are</p>
+<ul>
+<li><p>Snapper Snatcher (snappersnatcher7be)</p></li>
+<li><p>Roach Robber (roachrobberdb6)</p></li>
+</ul>
+<p>After identifying the name of the fishing vessels belong to “SouthSeafood Express Corp”, I need to check whether this information is also contained in the mc2_edges_cleaned dataframe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if specific values are in the source column</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>values_exist <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"snappersnatcher7be"</span>, <span class="st">"roachrobberdb6"</span>) <span class="sc">%in%</span> mc2_edges_cleaned<span class="sc">$</span>source</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(values_exist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE TRUE</code></pre>
+</div>
+</div>
+<p>The output [1] TRUE TRUE indicates that both identifiers “snappersnatcher7be” and “roachrobberdb6” are present in the source column of mc2_edges_cleaned dataframe.</p>
+<p>The next steps will involve deeper analysis and visualization to understand the activities and patterns associated with these vessels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract relevant data for the specified vessels</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>southseafood_activities <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"snappersnatcher7be"</span>, <span class="st">"roachrobberdb6"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(vessel_info<span class="sc">$</span>Activities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter cargo vessels and select specific columns with renaming</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>cargo_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.CargoVessel"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">vessel_type =</span> type,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">cargo_vessel_id =</span> id,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cargo_vessel_name =</span> Name,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    company</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(fishing_vessel<span class="sc">$</span>company)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "NULL"</code></pre>
+<pre><code> [1] "Roth, Logan and Moreno"                   
+ [2] "Brown-Haas"                               
+ [3] "Smith, Davis and Acosta"                  
+ [4] "Cisneros-Meyer"                           
+ [5] "FlounderLeska Marine BV"                  
+ [6] "House Group"                              
+ [7] "Weaver-Baker"                             
+ [8] "Stewart, Perkins and Sanchez"             
+ [9] "ScaniaSeafood Holdings Ltd. Liability Co" 
+[10] "Mccormick Group"                          
+[11] "Parks Ltd"                                
+[12] "Taylor-Sawyer"                            
+[13] "Nielsen, Valentine and Bell"              
+[14] "Jacobson Inc"                             
+[15] "Ballard-Bailey"                           
+[16] "Steele PLC"                               
+[17] "WestRiver Shipping KgaA"                  
+[18] "Robinson, Mcmillan and Watson"            
+[19] "Lowery-Myers"                             
+[20] "Dyer-Campbell"                            
+[21] "Adkins LLC"                               
+[22] "BaringoAmerica Marine Ges.m.b.H."         
+[23] "Terry, Smith and Lyons"                   
+[24] "Schmidt Ltd"                              
+[25] "Ritter Ltd"                               
+[26] "Decker PLC"                               
+[27] "Faulkner, Shaffer and Moyer"              
+[28] "Brown-Allen"                              
+[29] "Bell, Reynolds and Forbes"                
+[30] "French Ltd"                               
+[31] "Rivera Group"                             
+[32] "Bowers Group"                             
+[33] "MonarchCreek Shipping S.p.A."             
+[34] "Mendez-Tyler"                             
+[35] "Mooney, Stevenson and Miller"             
+[36] "Garcia-Wallace"                           
+[37] "Cox-Mason"                                
+[38] "Garcia-Sanchez"                           
+[39] "Sutton PLC"                               
+[40] "Rasmussen, Nelson and King"               
+[41] "Brown, Clarke and Martinez"               
+[42] "Gomez-Mccormick"                          
+[43] "Solis-Lopez"                              
+[44] "SouthSeafood Express Corp"                
+[45] "Clark, Hall and Cole"                     
+[46] "Cox-Donovan"                              
+[47] "Solis PLC"                                
+[48] "Newton-Meyer"                             
+[49] "Mcpherson-Wright"                         
+[50] "Cordova, Ritter and Flores"               
+[51] "Miller, Smith and Reed"                   
+[52] "Barnes and Sons"                          
+[53] "Bennett, Jones and Miller"                
+[54] "Mercado, French and Graham"               
+[55] "Brewer-Massey"                            
+[56] "Norman LLC"                               
+[57] "Wiley LLC"                                
+[58] "Davis, Harris and West"                   
+[59] "Goodman LLC"                              
+[60] "Reid, Thomas and Gill"                    
+[61] "Henry-Alvarez"                            
+[62] "Lane Group"                               
+[63] "Smith, Collins and Johnson"               
+[64] "Franco, Olson and Long"                   
+[65] "Dry CreekWorldLogistics Ltd. Liability Co"
+[66] "Rodriguez, Henry and Woodard"             
+[67] "Thompson-Padilla"                         
+[68] "Carter, Mcdonald and Miller"              
+[69] "Williams, Horn and Morales"               
+[70] "Callahan-Green"                           
+[71] "Green, Vincent and Thompson"              
+[72] "Lake Malawi  Corp United"                 
+[73] "Wolf and Sons"                            
+[74] "Hernandez Group"                          
+[75] "Horne Group"                              
+[76] "Fischer, Graham and Robinson"             
+[77] "Chavez and Sons"                          
+[78] "Maacama Ocean Worldwide LLC"              
+[79] "Jordan and Sons"                          
+[80] "Martin-Case"                              
+[81] "Murphy and Sons"                          
+[82] "Collins, Johnson and Lloyd"               
+[83] "Sparmans Marine Carriers Oyj"             
+[84] "Mullins-Carrillo"                         
+[85] "Riley Inc"                                
+[86] "NortheastSeafood Carriers Ltd"            
+[87] "Chambers, Hall and Walker"                
+[88] "Osborne and Sons"                         
+[89] "Conley, Benton and Miller"                
+[90] "Saltwater Sisters Company Marine"         
+[91] "Costa de Oro Enterprises"                 
+[92] "Bailey-Mccullough"                        
+[93] "Chase, Long and Anderson"                 
+[94] "Vasquez-Gonzalez"                         
+[95] "Harper and Sons"                          
+[96] "Tainamarine Fishing Co"                   
+[97] "Mcdonald-Jones"                           
+[98] "George-Brown"                             
+[99] "SamakaDredgeTransport OJSC"               </code></pre>
 </div>
 </div>
 </section>
@@ -749,21 +1015,21 @@ $ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL
 <section id="creating-subset-data" class="level4">
 <h4 class="anchored" data-anchor-id="creating-subset-data">Creating Subset Data</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned,  event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned,  event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 2
    type                           count
@@ -783,12 +1049,12 @@ $ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_name_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_name_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_name_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_name_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 2
    name                      count

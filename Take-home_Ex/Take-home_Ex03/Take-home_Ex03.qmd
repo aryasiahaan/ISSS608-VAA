@@ -233,7 +233,6 @@ plot_str(mc2_nodes)
 :::
 
 ::: panel-tabset
-
 ## The plot
 
 ![](images/clipboard-1008176763.png)
@@ -248,8 +247,6 @@ plot_missing(mc2_nodes, title = "Missing Values in mc2_nodes Data")
 ```
 :::
 
-
-
 #### Dropping unnecessary Columns
 
 ```{r}
@@ -260,8 +257,6 @@ glimpse(mc2_nodes_cleaned)
 
 Removes additional unneeded columns from the nodes data frame.
 
-
-
 ```{r}
 
 # Inspect the edges dataframe
@@ -271,17 +266,12 @@ glimpse(mc2_edges_cleaned)
 glimpse(mc2_nodes_cleaned)
 ```
 
-
-
-
-
-
 Let's investigate further on what is in the `type` column from mc2_nodes_cleaned dataframe.
-
 
 ```{r}
 unique(mc2_nodes_cleaned$type)
 ```
+
 ```{r}
 vessel_type_counts <- mc2_nodes_cleaned %>%
   group_by(type) %>%
@@ -290,17 +280,22 @@ vessel_type_counts <- mc2_nodes_cleaned %>%
 # Display the result
 print(vessel_type_counts)
 ```
+
 This particular column contains variety of different data, some of them seems interesting and useful for analysis, they are:
 
-Entity.Commodity.Fish
-Entity.Document.DeliveryReport
+-   Entity.Commodity.Fish
 
-Entity.Location.City
-Entity.Location.Point
-Entity.Location.Region
+-   Entity.Document.DeliveryReport
 
-Entity.Vessel.CargoVessel
-Entity.Vessel.FishingVessel
+-   Entity.Location.City
+
+-   Entity.Location.Point
+
+-   Entity.Location.Region
+
+-   Entity.Vessel.CargoVessel
+
+-   Entity.Vessel.FishingVessel
 
 The others seems unnecessary.
 
@@ -308,62 +303,61 @@ I will try to make separate dataframe for each of them.
 
 Here I can see the type of vessel and how many of each are recorded in the dataframe.
 
-
-
-
 I'm only interested in the fishing vessel and the cargo vessel, and apparently there 178 fishing vessels and 100 cargo vessels, next so I will try to filter all the rows that only contain fishing vessels and cargo vessels
-
 
 Filter all the rows containing fishing_vessel
 
-
 ```{r}
-vessel_info <- mc2_nodes_cleaned %>%
-  filter(type %in% c("Entity.Vessel.FishingVessel", "Entity.Vessel.CargoVessel"))
+# Filter fishing vessels and rename specific columns while keeping all others
+fishing_vessel <- mc2_nodes_cleaned %>%
+  filter(type %in% c("Entity.Vessel.FishingVessel")) %>%
+  rename(
+    vessel_type = type,
+    fishing_vessel_id = id,
+    fishing_vessel_name = Name
+  )
 ```
 
+Now I want to find out all the companies that own these fishing vessels
 
 ```{r}
-unique(vessel_info$Activities)
+unique(fishing_vessel$company)
 ```
 
-```{r}
+From the result above I see "SouthSeafood Express Corp" is listed, now I want to isolate all the fishing vessels belong to "SouthSeafood Express Corp".
 
+```{r}
+# Filter fishing vessels owned by "SouthSeafood Express Corp"
+southseafood_fishing_vessels <- fishing_vessel %>%
+  filter(company == "SouthSeafood Express Corp")
+print(southseafood_fishing_vessels)
 ```
 
-```{r}
+So the vessels belong to "SouthSeafood Express Corp" are
 
-```
+-   Snapper Snatcher (snappersnatcher7be)
 
+-   Roach Robber (roachrobberdb6)
 
-
-
-```{r}
-
-```
+After identifying the name of the fishing vessels belong to "SouthSeafood Express Corp", I need to check whether this information is also contained in the mc2_edges_cleaned dataframe.
 
 ```{r}
+# Check if specific values are in the source column
+values_exist <- c("snappersnatcher7be", "roachrobberdb6") %in% mc2_edges_cleaned$source
 
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-
-
-
-
-
-```{r}
+# Print results
+print(values_exist)
 
 ```
 
+The output \[1\] TRUE TRUE indicates that both identifiers "snappersnatcher7be" and "roachrobberdb6" are present in the source column of mc2_edges_cleaned dataframe.
+
+The next steps will involve deeper analysis and visualization to understand the activities and patterns associated with these vessels.
+
 ```{r}
+# Extract relevant data for the specified vessels
+southseafood_activities <- mc2_edges_cleaned %>%
+  filter(source %in% c("snappersnatcher7be", "roachrobberdb6")) 
 
 ```
 
@@ -374,11 +368,6 @@ unique(vessel_info$Activities)
 ```{r}
 
 ```
-
-
-
-
-
 
 ```{r}
 
@@ -396,15 +385,93 @@ unique(vessel_info$Activities)
 
 ```
 
+```{r}
 
+```
 
+```{r}
 
+```
 
+```{r}
 
+```
 
+```{r}
 
+```
 
+```{r}
 
+```
+
+```{r}
+# Filter cargo vessels and select specific columns with renaming
+cargo_vessel <- mc2_nodes_cleaned %>%
+  filter(type %in% c("Entity.Vessel.CargoVessel")) %>%
+  select(
+    vessel_type = type,
+    cargo_vessel_id = id,
+    cargo_vessel_name = Name,
+    company
+  )
+```
+
+```{r}
+unique(fishing_vessel$company)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ### Further Data Subsetting and Renaming
 
@@ -416,18 +483,11 @@ transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
 
 Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.
 
-
-
 ```{r}
 transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
 transaction <- subset(mc2_edges_cleaned, event2 == "Transaction")
 harbor_report <- subset(mc2_edges_cleaned,  event2 == "HarborReport")
 ```
-
-
-
-
-
 
 ```{r}
 mc2_nodes_type_counts <- mc2_nodes %>%
