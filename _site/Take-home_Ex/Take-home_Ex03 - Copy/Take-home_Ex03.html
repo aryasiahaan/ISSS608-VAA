@@ -288,6 +288,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#wrangling-and-tidying-edges" id="toc-wrangling-and-tidying-edges" class="nav-link" data-scroll-target="#wrangling-and-tidying-edges">Wrangling and tidying edges</a></li>
   <li><a href="#wrangling-and-tidying-nodes" id="toc-wrangling-and-tidying-nodes" class="nav-link" data-scroll-target="#wrangling-and-tidying-nodes">Wrangling and tidying nodes</a></li>
   <li><a href="#further-data-subsetting-and-renaming" id="toc-further-data-subsetting-and-renaming" class="nav-link" data-scroll-target="#further-data-subsetting-and-renaming">Further Data Subsetting and Renaming</a></li>
+  <li><a href="#vessel-specific-data-preparation" id="toc-vessel-specific-data-preparation" class="nav-link" data-scroll-target="#vessel-specific-data-preparation">Vessel-Specific Data Preparation</a></li>
+  <li><a href="#transaction-and-harbor-report-data-processing" id="toc-transaction-and-harbor-report-data-processing" class="nav-link" data-scroll-target="#transaction-and-harbor-report-data-processing">Transaction and Harbor Report Data Processing</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -385,11 +387,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mc2_edges <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc2_data<span class="sc">$</span>links) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Converts the date columns to POSIXct datetime format using the as_datetime function from the lubridate package, then display it with  glimpse() to confirm if the process have been performed correctly.</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>mc2_edges <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_datetime</span>(date), <span class="at">time =</span> <span class="fu">as_datetime</span>(time))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_datetime</span>(date), <span class="at">time =</span> <span class="fu">as_datetime</span>(time)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date_only =</span> <span class="fu">as.Date</span>(time))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 271,643
-Columns: 17
+Columns: 18
 $ type                &lt;chr&gt; "Event.TransportEvent.TransponderPing", "Event.Tra…
 $ time                &lt;dttm&gt; 2035-09-16 04:06:48, 2035-09-20 05:21:33, 2035-09…
 $ dwell               &lt;dbl&gt; 115074.79, 412706.32, 286092.88, 327623.95, 243225…
@@ -406,7 +409,8 @@ $ data_author         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
 $ aphorism            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 $ holiday_greeting    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 $ wisdom              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-$ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</code></pre>
+$ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ date_only           &lt;date&gt; 2035-09-16, 2035-09-20, 2035-09-28, 2035-10-04, 2…</code></pre>
 </div>
 </div>
 <p>The code above converts the ‘links’ part of the dataset into a tibble and removes duplicates. It then converts date and time information into proper datetime formats using lubridate, and extracts just the date to a new column.</p>
@@ -431,381 +435,560 @@ $ `saying of the sea` &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(word_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This code splits the ‘type’ column into multiple components, pads shorter entries with NAs, and integrates them back into the mc2_edges dataframe as new columns.</p>
-<p>After cleaning and preparing mc2_edges dataframe, I want to understand how the newly formed structure looks like, lets use the DataExplorer package to visualize it.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">The code</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p><img src="images/clipboard-2055116904.png" class="img-fluid"></p>
-<p><img src="images/clipboard-1180112888.png" class="img-fluid"></p>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>After cleaning and preparing mc2_edges dataframe, I want to understand how the newly formed structure looks like, lets have a quick look with skim()</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot introduction of the data</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_intro</span>(mc2_edges, <span class="at">title =</span> <span class="st">"Introduction of mc2_edges Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">mc2_edges</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">271643</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Date</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">type</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_last_edited_by</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_date_added</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17308</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_last_edited_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">32521</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_raw_source</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_algorithm</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">source</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5627</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">target</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">312</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">data_author</td>
+<td style="text-align: right;">269156</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">aphorism</td>
+<td style="text-align: right;">269669</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">202</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">147</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">holiday_greeting</td>
+<td style="text-align: right;">270639</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">wisdom</td>
+<td style="text-align: right;">269719</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">202</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">saying of the sea</td>
+<td style="text-align: right;">269750</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">202</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">149</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">event2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">event3</td>
+<td style="text-align: right;">13101</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">min</th>
+<th style="text-align: left;">max</th>
+<th style="text-align: left;">median</th>
+<th style="text-align: right;">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">date_only</td>
+<td style="text-align: right;">13101</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">2035-02-01</td>
+<td style="text-align: left;">2035-11-30</td>
+<td style="text-align: left;">2035-06-28</td>
+<td style="text-align: right;">303</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">dwell</td>
+<td style="text-align: right;">13101</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">19775.47</td>
+<td style="text-align: right;">72424.68</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4694.92</td>
+<td style="text-align: right;">6287.49</td>
+<td style="text-align: right;">12101.13</td>
+<td style="text-align: right;">28735323</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">key</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">208.17</td>
+<td style="text-align: right;">242.47</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">39.00</td>
+<td style="text-align: right;">118.00</td>
+<td style="text-align: right;">290.00</td>
+<td style="text-align: right;">1516</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: POSIXct</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 22%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">min</th>
+<th style="text-align: left;">max</th>
+<th style="text-align: left;">median</th>
+<th style="text-align: right;">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">time</td>
+<td style="text-align: right;">13101</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">2035-02-01</td>
+<td style="text-align: left;">2035-11-30</td>
+<td style="text-align: left;">2035-06-28 19:34:55</td>
+<td style="text-align: right;">244123</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">date</td>
+<td style="text-align: right;">258542</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: left;">2035-02-01</td>
+<td style="text-align: left;">2035-11-30</td>
+<td style="text-align: left;">2035-09-19 00:00:00</td>
+<td style="text-align: right;">303</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-</div>
-</div>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">The code</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<p><img src="images/clipboard-2619173514.png" class="img-fluid"></p>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate and display the data structure plot</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_str</span>(mc2_edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">The code</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<p><img src="images/clipboard-299140884.png" class="img-fluid"></p>
-</div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot missing values</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_missing</span>(mc2_edges, <span class="at">title =</span> <span class="st">"Missing Values in mc2_edges Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<p>After the above EDA, I will remove columns that is unnecessary to answer the task at hand</p>
-</section>
-<section id="dropping-unnecessary-columns" class="level4">
-<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns">Dropping Unnecessary Columns</h4>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mc2_edges_cleaned <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span>, <span class="st">`</span><span class="at">_last_edited_by</span><span class="st">`</span>, <span class="st">`</span><span class="at">_date_added</span><span class="st">`</span>, <span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span>, <span class="st">`</span><span class="at">_raw_source</span><span class="st">`</span>, <span class="st">`</span><span class="at">_algorithm</span><span class="st">`</span>, <span class="st">`</span><span class="at">key</span><span class="st">`</span>,  <span class="st">`</span><span class="at">data_author</span><span class="st">`</span>, <span class="st">`</span><span class="at">aphorism</span><span class="st">`</span>, <span class="st">`</span><span class="at">holiday_greeting</span><span class="st">`</span>, <span class="st">`</span><span class="at">wisdom</span><span class="st">`</span>, <span class="st">`</span><span class="at">saying of the sea</span><span class="st">`</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 271,643
-Columns: 7
-$ time   &lt;dttm&gt; 2035-09-16 04:06:48, 2035-09-20 05:21:33, 2035-09-28 04:31:47,…
-$ dwell  &lt;dbl&gt; 115074.79, 412706.32, 286092.88, 327623.95, 243225.35, 109564.2…
-$ source &lt;chr&gt; "City of Haacklee", "City of Haacklee", "City of Haacklee", "Ci…
-$ target &lt;chr&gt; "perchplundererbc0", "perchplundererbc0", "perchplundererbc0", …
-$ date   &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-$ event2 &lt;chr&gt; "TransportEvent", "TransportEvent", "TransportEvent", "Transpor…
-$ event3 &lt;chr&gt; "TransponderPing", "TransponderPing", "TransponderPing", "Trans…</code></pre>
-</div>
-</div>
-<p>Removes unnecessary columns from the dataset that are not needed for analysis, cleaning up the data. Glimpse() is then used to display the structure of the data.</p>
 </section>
 </section>
 <section id="wrangling-and-tidying-nodes" class="level3">
 <h3 class="anchored" data-anchor-id="wrangling-and-tidying-nodes">Wrangling and tidying nodes</h3>
 <section id="extracting-nodes-and-removing-duplicates" class="level4">
 <h4 class="anchored" data-anchor-id="extracting-nodes-and-removing-duplicates">Extracting Nodes and Removing Duplicates</h4>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(mc2_data<span class="sc">$</span>nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_nodes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 5,637
-Columns: 20
-$ type                 &lt;chr&gt; "Entity.Commodity.Fish", "Entity.Commodity.Fish",…
-$ `_last_edited_by`    &lt;chr&gt; "Clepper Jessen", "Clepper Jessen", "Haenyeo Hyun…
-$ `_date_added`        &lt;chr&gt; "2033-09-04T00:00:00", "2034-01-21T00:00:00", "20…
-$ `_last_edited_date`  &lt;chr&gt; "2035-01-25T00:00:00", "2035-01-04T00:00:00", "20…
-$ `_raw_source`        &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "Oceanus:…
-$ `_algorithm`         &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
-$ name                 &lt;chr&gt; "Cod/Gadus n.specificatae", "Birdseye/Pisces frig…
-$ id                   &lt;chr&gt; "gadusnspecificatae4ba", "piscesfrigus900", "pisc…
-$ Name                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Haacklee…
-$ Description          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ Activities           &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, …
-$ kind                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "city", "…
-$ qty_tons             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ date                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ flag_country         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ company              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ tonnage              &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ length_overall       &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ style                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ fish_species_present &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, …</code></pre>
-</div>
-</div>
+<pre><code>mc2_nodes &lt;- as_tibble(mc2_data$nodes) %&gt;%
+  distinct()
+glimpse(mc2_nodes)</code></pre>
 <p>This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data using glimpse().</p>
 <p>I plan to make use of the date column, but since it is in character format, I will convert it first into date format using lubridate package and glimpse it again to verify the changes.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(date)) </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_nodes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 5,637
-Columns: 20
-$ type                 &lt;chr&gt; "Entity.Commodity.Fish", "Entity.Commodity.Fish",…
-$ `_last_edited_by`    &lt;chr&gt; "Clepper Jessen", "Clepper Jessen", "Haenyeo Hyun…
-$ `_date_added`        &lt;chr&gt; "2033-09-04T00:00:00", "2034-01-21T00:00:00", "20…
-$ `_last_edited_date`  &lt;chr&gt; "2035-01-25T00:00:00", "2035-01-04T00:00:00", "20…
-$ `_raw_source`        &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "Oceanus:…
-$ `_algorithm`         &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
-$ name                 &lt;chr&gt; "Cod/Gadus n.specificatae", "Birdseye/Pisces frig…
-$ id                   &lt;chr&gt; "gadusnspecificatae4ba", "piscesfrigus900", "pisc…
-$ Name                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Haacklee…
-$ Description          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ Activities           &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, …
-$ kind                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "city", "…
-$ qty_tons             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ date                 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ flag_country         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ company              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ tonnage              &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ length_overall       &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ style                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ fish_species_present &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, …</code></pre>
-</div>
-</div>
-<p>There are two more additional data issues can be observed. They are:</p>
+<pre><code>mc2_nodes &lt;- mc2_nodes %&gt;%
+  mutate(date = as_date(date))
+glimpse(mc2_nodes)</code></pre>
+<p>From the table above, two more additional data issues can be observed. They are:</p>
 <p>The values in Activities and fish_species_present fields are in list data type, which will affect the ability to process and to analyse the data. As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e.&nbsp;removing c(““)).</p>
 <p>Tidying text field In the code chunk below, mutate() of dplyr and gsub() of Base R are used to perform the data tidying task.</p>
 <p>This cleans up the Activities and fish_species_present columns by removing unnecessary characters.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Activities =</span> <span class="fu">gsub</span>(<span class="st">"c[(]"</span>, <span class="st">""</span>, Activities)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Activities =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>, Activities)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Activities =</span> <span class="fu">gsub</span>(<span class="st">"[)]"</span>, <span class="st">""</span>, Activities)) </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>mc2_nodes <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fish_species_present =</span> <span class="fu">gsub</span>(<span class="st">"c[(]"</span>, <span class="st">""</span>, fish_species_present)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fish_species_present =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>, fish_species_present)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fish_species_present =</span> <span class="fu">gsub</span>(<span class="st">"[)]"</span>, <span class="st">""</span>, fish_species_present)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Now, lets use DataExplorer package again to visualize it</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">The code</a></li></ul>
-<div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<p><img src="images/clipboard-4088556349.png" class="img-fluid"></p>
-<p><img src="images/clipboard-290209426.png" class="img-fluid"></p>
-</div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot introduction of the data</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_intro</span>(mc2_nodes, <span class="at">title =</span> <span class="st">"Introduction of mc2_nodes Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">The code</a></li></ul>
-<div class="tab-content">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<p><img src="images/clipboard-1740825281.png" class="img-fluid"></p>
-</div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate and display the data structure plot</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_str</span>(mc2_nodes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">The plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">The code</a></li></ul>
-<div class="tab-content">
-<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<p><img src="images/clipboard-1008176763.png" class="img-fluid"></p>
-</div>
-<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot missing values</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_missing</span>(mc2_nodes, <span class="at">title =</span> <span class="st">"Missing Values in mc2_nodes Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="dropping-unnecessary-columns-1" class="level4">
-<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns-1">Dropping unnecessary Columns</h4>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_cleaned <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">_last_edited_by</span><span class="st">`</span>, <span class="st">`</span><span class="at">_date_added</span><span class="st">`</span>, <span class="st">`</span><span class="at">_last_edited_date</span><span class="st">`</span>, <span class="st">`</span><span class="at">_raw_source</span><span class="st">`</span>, <span class="st">`</span><span class="at">_algorithm</span><span class="st">`</span>, <span class="st">`</span><span class="at">style</span><span class="st">`</span>))</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_nodes_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 5,637
-Columns: 14
-$ type                 &lt;chr&gt; "Entity.Commodity.Fish", "Entity.Commodity.Fish",…
-$ name                 &lt;chr&gt; "Cod/Gadus n.specificatae", "Birdseye/Pisces frig…
-$ id                   &lt;chr&gt; "gadusnspecificatae4ba", "piscesfrigus900", "pisc…
-$ Name                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Haacklee…
-$ Description          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ Activities           &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "…
-$ kind                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "city", "…
-$ qty_tons             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ date                 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ flag_country         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ company              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ tonnage              &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ length_overall       &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "…</code></pre>
-</div>
-</div>
-<p>Removes additional unneeded columns from the nodes data frame.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the edges dataframe</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_edges_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 271,643
-Columns: 7
-$ time   &lt;dttm&gt; 2035-09-16 04:06:48, 2035-09-20 05:21:33, 2035-09-28 04:31:47,…
-$ dwell  &lt;dbl&gt; 115074.79, 412706.32, 286092.88, 327623.95, 243225.35, 109564.2…
-$ source &lt;chr&gt; "City of Haacklee", "City of Haacklee", "City of Haacklee", "Ci…
-$ target &lt;chr&gt; "perchplundererbc0", "perchplundererbc0", "perchplundererbc0", …
-$ date   &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-$ event2 &lt;chr&gt; "TransportEvent", "TransportEvent", "TransportEvent", "Transpor…
-$ event3 &lt;chr&gt; "TransponderPing", "TransponderPing", "TransponderPing", "Trans…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the nodes dataframe</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mc2_nodes_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 5,637
-Columns: 14
-$ type                 &lt;chr&gt; "Entity.Commodity.Fish", "Entity.Commodity.Fish",…
-$ name                 &lt;chr&gt; "Cod/Gadus n.specificatae", "Birdseye/Pisces frig…
-$ id                   &lt;chr&gt; "gadusnspecificatae4ba", "piscesfrigus900", "pisc…
-$ Name                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Haacklee…
-$ Description          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ Activities           &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "…
-$ kind                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "city", "…
-$ qty_tons             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ date                 &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ flag_country         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ company              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ tonnage              &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ length_overall       &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "…</code></pre>
-</div>
-</div>
-<p>Let’s investigate further on what is in the <code>type</code> column from mc2_nodes_cleaned dataframe.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mc2_nodes_cleaned<span class="sc">$</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Entity.Commodity.Fish"          "Entity.Location.City"          
- [3] "Entity.Document.DeliveryReport" "Entity.Vessel.FishingVessel"   
- [5] "Entity.Vessel.Other"            "Entity.Vessel.Ferry.Passenger" 
- [7] "Entity.Vessel.CargoVessel"      "Entity.Vessel.Ferry.Cargo"     
- [9] "Entity.Vessel.Research"         "Entity.Vessel.Tour"            
-[11] "Entity.Location.Point"          "Entity.Location.Region"        </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vessel_type_counts <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(vessel_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 2
-   type                           count
-   &lt;chr&gt;                          &lt;int&gt;
- 1 Entity.Commodity.Fish             10
- 2 Entity.Document.DeliveryReport  5307
- 3 Entity.Location.City               6
- 4 Entity.Location.Point             12
- 5 Entity.Location.Region             6
- 6 Entity.Vessel.CargoVessel        100
- 7 Entity.Vessel.Ferry.Cargo          2
- 8 Entity.Vessel.Ferry.Passenger      3
- 9 Entity.Vessel.FishingVessel      178
-10 Entity.Vessel.Other                5
-11 Entity.Vessel.Research             2
-12 Entity.Vessel.Tour                 6</code></pre>
-</div>
-</div>
-<p>This particular column contains variety of different data, some of them seems interesting and useful for analysis, they are:</p>
-<p>Entity.Commodity.Fish Entity.Document.DeliveryReport</p>
-<p>Entity.Location.City Entity.Location.Point Entity.Location.Region</p>
-<p>Entity.Vessel.CargoVessel Entity.Vessel.FishingVessel</p>
-<p>The others seems unnecessary.</p>
-<p>I will try to make separate dataframe for each of them.</p>
-<p>Here I can see the type of vessel and how many of each are recorded in the dataframe.</p>
-<p>I’m only interested in the fishing vessel and the cargo vessel, and apparently there 178 fishing vessels and 100 cargo vessels, next so I will try to filter all the rows that only contain fishing vessels and cargo vessels</p>
-<p>Filter all the rows containing fishing_vessel</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vessel_info <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.FishingVessel"</span>, <span class="st">"Entity.Vessel.CargoVessel"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(vessel_info<span class="sc">$</span>Activities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "NULL"</code></pre>
-</div>
-</div>
+<pre><code>mc2_nodes &lt;- mc2_nodes %&gt;%
+  mutate(Activities = gsub("c[(]", "", Activities)) %&gt;% 
+  mutate(Activities = gsub("\"", "", Activities)) %&gt;%
+  mutate(Activities = gsub("[)]", "", Activities)) 
+
+mc2_nodes &lt;- mc2_nodes %&gt;%
+  mutate(fish_species_present = gsub("c[(]", "", fish_species_present)) %&gt;% 
+  mutate(fish_species_present = gsub("\"", "", fish_species_present)) %&gt;%
+  mutate(fish_species_present = gsub("[)]", "", fish_species_present)) </code></pre>
+<pre><code># Function to get distinct values for each column and prepare data for plotting
+prepare_distinct_values_data &lt;- function(data_frame) {
+  distinct_values &lt;- lapply(data_frame, unique)
+  distinct_counts &lt;- sapply(distinct_values, length)
+  distinct_values_df &lt;- data.frame(
+    Column = names(distinct_values),
+    Number_of_Distinct_Values = distinct_counts,
+    Sample_Distinct_Values = sapply(distinct_values, function(x) paste(head(x, 10), collapse = ", "))
+  )
+  
+  # Create a long format data frame for plotting
+  plot_data &lt;- data.frame(
+    Column = rep(names(distinct_values), times = sapply(distinct_values, length)),
+    Value = unlist(distinct_values),
+    stringsAsFactors = FALSE
+  )
+  
+  return(list(distinct_values_df = distinct_values_df, plot_data = plot_data))
+}
+
+# Get distinct values for each column in mc2_edges
+data &lt;- prepare_distinct_values_data(mc2_edges)
+distinct_values_df &lt;- data$distinct_values_df
+plot_data &lt;- data$plot_data
+
+# Display the summary table
+print(distinct_values_df)
+
+# Plot distinct values for each column
+ggplot(plot_data, aes(x = Value)) +
+  geom_bar() +
+  facet_wrap(~ Column, scales = "free", ncol = 2) +
+  labs(title = "Distinct Values in Each Column", x = "Value", y = "Count") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+</code></pre>
+<pre><code>mc2_edges_list &lt;- list(mc2_edges)
+plot_str(mc2_edges_list)</code></pre>
+<pre><code>mc2_nodes_list &lt;- list(mc2_nodes)
+plot_str(mc2_nodes_list)</code></pre>
+<pre><code>colnames(mc2_edges)</code></pre>
+<pre><code>colnames(mc2_nodes)</code></pre>
+<pre><code>ExpData(data=mc2_edges, type=1) # For summary statistics</code></pre>
+<pre><code>ExpData(data=mc2_edges, type=2) # For visualizations</code></pre>
 </section>
 </section>
 <section id="further-data-subsetting-and-renaming" class="level3">
 <h3 class="anchored" data-anchor-id="further-data-subsetting-and-renaming">Further Data Subsetting and Renaming</h3>
 <section id="creating-subset-data" class="level4">
 <h4 class="anchored" data-anchor-id="creating-subset-data">Creating Subset Data</h4>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<pre><code>transponderping &lt;- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+transaction &lt;- subset(mc2_edges_cleaned, event2 == "Transaction")
+harbor_report &lt;- subset(mc2_edges_cleaned,  event2 == "HarborReport")</code></pre>
 <p>Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned,  event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 2
-   type                           count
-   &lt;chr&gt;                          &lt;int&gt;
- 1 Entity.Commodity.Fish             10
- 2 Entity.Document.DeliveryReport  5307
- 3 Entity.Location.City               6
- 4 Entity.Location.Point             12
- 5 Entity.Location.Region             6
- 6 Entity.Vessel.CargoVessel        100
- 7 Entity.Vessel.Ferry.Cargo          2
- 8 Entity.Vessel.Ferry.Passenger      3
- 9 Entity.Vessel.FishingVessel      178
-10 Entity.Vessel.Other                5
-11 Entity.Vessel.Research             2
-12 Entity.Vessel.Tour                 6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_name_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_name_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 11 × 2
-   name                      count
-   &lt;chr&gt;                     &lt;int&gt;
- 1 Beauvoir/Habeas pisces        1
- 2 Birdseye/Pisces frigus        1
- 3 Cod/Gadus n.specificatae      1
- 4 Harland/Piscis sapidum        1
- 5 Helenaa/Pisces satis          1
- 6 Offidiaa/Piscis osseus        1
- 7 Salmon/Oncorhynchus rosea     1
- 8 Sockfish/Pisces foetida       1
- 9 Tuna/Thunnini n.vera          1
-10 Wrasse/Labridae n.refert      1
-11 &lt;NA&gt;                       5627</code></pre>
-</div>
-</div>
+</section>
+<section id="handling-fish-data" class="level4">
+<h4 class="anchored" data-anchor-id="handling-fish-data">Handling Fish Data</h4>
+<pre><code>fish &lt;- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Commodity.Fish") %&gt;%
+  select_if(~ !any(is.na(.))) %&gt;% 
+  select(-c(`type`, `Activities`, `fish_species_present`)) %&gt;%
+  rename(fish_species = name, 
+         fish_id = id)</code></pre>
+</section>
+<section id="subsetting-city-data" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-city-data">Subsetting City Data</h4>
+<pre><code>city &lt;- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.City") %&gt;%
+  select_if(~ !any(is.na(.))) %&gt;%
+  select(-c(`type`, `fish_species_present`)) %&gt;%
+  rename(city_name = Name, 
+         city_id = id)</code></pre>
+<p>This code processes the city-related data by filtering cities, excluding any incomplete records, and renaming fields to reflect their content more accurately (city names and IDs).</p>
+</section>
+<section id="subsetting-point-location" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-point-location">Subsetting Point Location</h4>
+<pre><code>point &lt;- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.Point") %&gt;%
+  select_if(~ !any(is.na(.))) %&gt;%
+  select(-c(`kind`, `fish_species_present`)) %&gt;%
+  rename(point_name = Name, 
+         point_id = id)</code></pre>
+<p>This snippet focuses on geographical points, cleaning up the data by removing unnecessary columns and renaming the remaining columns to make them more intuitive (point names and IDs).</p>
+</section>
+<section id="subsetting-region-data" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-region-data">Subsetting Region Data</h4>
+<pre><code>region &lt;- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Location.Region") %&gt;%
+  select_if(~ !any(is.na(.))) %&gt;%
+  select(-c(`type`, `Description`)) %&gt;%
+  rename(region_name = Name, 
+         region_id = id, 
+         region_kind = kind)</code></pre>
+<p>Extracts and cleans data related to geographic regions, ensuring all entries are complete and renaming columns to better describe their contents, including region type.</p>
+</section>
+<section id="subsetting-delivery-report-data" class="level4">
+<h4 class="anchored" data-anchor-id="subsetting-delivery-report-data">Subsetting Delivery Report Data</h4>
+<pre><code>delivery_report &lt;- subset(mc2_nodes_cleaned,  mc2_nodes_cleaned$type == "Entity.Document.DeliveryReport") %&gt;%
+  select_if(~ !any(is.na(.))) %&gt;%
+  rename(delivery_date = date,
+         cargo_id = id) %&gt;%
+  select(-c(`type`, `Activities`, `fish_species_present`)) </code></pre>
+</section>
+</section>
+<section id="vessel-specific-data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="vessel-specific-data-preparation">Vessel-Specific Data Preparation</h3>
+<section id="fishing-vessel-data" class="level4">
+<h4 class="anchored" data-anchor-id="fishing-vessel-data">Fishing Vessel Data</h4>
+<pre><code># Load and clean the fishing vessel data
+fishing_vessel &lt;- mc2_nodes_cleaned %&gt;%
+  filter(grepl("Entity.Vessel.FishingVessel", type)) %&gt;%
+  mutate(vessel_type = "Fishing") %&gt;%
+  mutate(company = ifelse(is.na(company), "Unknown", company)) %&gt;%
+  select(-c(type, Activities, fish_species_present, Description, kind, name, qty_tons, date)) %&gt;%
+  rename(fishing_vessel_id = id, fishing_vessel_name = Name)</code></pre>
+<p>Isolates data concerning fishing vessels, classifying them appropriately and ensuring all records are complete. It renames columns for greater clarity and focuses on identifying and naming the vessels.</p>
+</section>
+<section id="cargo-vessel-data" class="level4">
+<h4 class="anchored" data-anchor-id="cargo-vessel-data">Cargo Vessel Data</h4>
+<pre><code># Load and clean the cargo vessel data
+cargo_vessel &lt;- mc2_nodes_cleaned %&gt;%
+  filter(grepl("Entity.Vessel.CargoVessel", type)) %&gt;%
+  mutate(vessel_type = "Cargo") %&gt;%
+  mutate(company = ifelse(is.na(company), "Unknown", company)) %&gt;%
+  select(-c(type, Activities, fish_species_present, Description, kind, name, qty_tons, date)) %&gt;%
+  rename(cargo_vessel_id = id, cargo_vessel_name = Name)</code></pre>
+<p>Similar to the fishing vessels, this snippet deals with cargo vessels, tidying the data and ensuring that the vessel type and company fields are correctly populated.</p>
+</section>
+</section>
+<section id="transaction-and-harbor-report-data-processing" class="level3">
+<h3 class="anchored" data-anchor-id="transaction-and-harbor-report-data-processing">Transaction and Harbor Report Data Processing</h3>
+<section id="transaction-data" class="level4">
+<h4 class="anchored" data-anchor-id="transaction-data">Transaction Data</h4>
+<pre><code># Load and clean the transaction data
+transactions_cleaned &lt;- mc2_edges_cleaned %&gt;%
+  filter(event2 == "Transaction") %&gt;%
+  select(date, source, target) %&gt;%
+  rename(cargo_id = source)</code></pre>
+<p>Focuses on transaction data from the edges, renaming columns to better represent the transaction’s nature—linking transactions via cargo IDs.</p>
+</section>
+<section id="harbor-report-data" class="level4">
+<h4 class="anchored" data-anchor-id="harbor-report-data">Harbor Report Data</h4>
+<pre><code># Load and clean the harbor report data
+harbor_report_cleaned &lt;- mc2_edges_cleaned %&gt;%
+  filter(event2 == "HarborReport") %&gt;%
+  select(date, source, target) %&gt;%
+  rename(vessel_id = source, port = target)
+</code></pre>
+<p>Cleans and prepares harbor report data, linking reports to specific vessels and ports, and renaming columns for better readability and further analysis.</p>
+</section>
+<section id="dropping-unnecessary-columns" class="level4">
+<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns">Dropping Unnecessary Columns</h4>
+<pre><code>mc2_edges_cleaned &lt;- mc2_edges %&gt;%
+  select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `key`, `type`, `data_author`, `aphorism`, `holiday_greeting`, `wisdom`, `saying of the sea`))
+
+glimpse(mc2_edges_cleaned)</code></pre>
+<p>Removes unnecessary columns from the dataset that are not needed for analysis, cleaning up the data. Glimpse() is then used to display the structure of the data.</p>
+</section>
+<section id="dropping-unnecessary-columns-1" class="level4">
+<h4 class="anchored" data-anchor-id="dropping-unnecessary-columns-1">Dropping unnecessary Columns</h4>
+<pre><code>mc2_nodes_cleaned &lt;- mc2_nodes_cleaned %&gt;%
+  select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `style`))
+glimpse(mc2_nodes_cleaned)</code></pre>
+<p>Removes additional unneeded columns from the nodes data frame.</p>
 
 
 </section>
