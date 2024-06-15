@@ -2,7 +2,7 @@
 title: "Take-home Exercise 3"
 author: "Arya Siahaan"
 date: "May 15, 2024"
-date-modified: "June 9, 2024"
+date-modified: "last-modified"
 execute: 
   eval: true
   echo: true
@@ -37,7 +37,7 @@ To support further Fisheye investigations, develop visual analytics workflows th
 The following code chunk utilises the [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) function from the [pacman](https://github.com/trinker/pacman) package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) will load them. If they are not installed, it will first install them and then load them into the R environment.
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, igraph, 
+pacman::p_load(tidyverse, jsonlite, igraph, sf, 
                tidygraph, ggraph, SmartEDA, skimr,
                lubridate, ggplot2, DataExplorer) 
 ```
@@ -362,15 +362,19 @@ southseafood_activities <- mc2_edges_cleaned %>%
 ```
 
 ```{r}
+glimpse(southseafood_activities)
+```
 
+
+
+
+```{r}
+harbor_report <- mc2_edges_cleaned %>%
+  filter(event2 == "HarborReport")
 ```
 
 ```{r}
-
-```
-
-```{r}
-
+unique(mc2_edges_cleaned$source)
 ```
 
 ```{r}
@@ -430,6 +434,132 @@ unique(fishing_vessel$company)
 ```
 
 ```{r}
+OceanusGeography = st_read("data/OceanusGeography.geojson") %>%
+  st_transform(crs = 4326)
+```
+
+```{r}
+class(OceanusGeography)
+```
+
+```{r}
+glimpse(OceanusGeography)
+```
+
+```{r}
+ggplot(data = OceanusGeography) +
+  geom_sf()
+```
+
+
+```{r}
+write_rds(OceanusGeography, "data/rds/OceanusGeography.rds")
+```
+
+
+```{r}
+OceanusLocations <- st_read(dsn = "data/shp",
+  layer = "Oceanus Geography")
+```
+```{r}
+class(OceanusLocations)
+```
+
+```{r}
+glimpse(OceanusLocations)
+```
+
+```{r}
+ggplot(data = OceanusLocations) +
+  geom_sf()
+```
+```{r}
+write_rds(OceanusLocations, 
+  "data/rds/OceanusLocations.rds")
+```
+
+
+```{r}
+vessel_movement_data <- mc2_edges %>%
+  filter(event3 == "TransponderPing") %>%
+  select(time, dwell, source, target)
+```
+
+```{r}
+unique(vessel_movement_data$source)
+```
+
+
+
+
+
+
+
+
+```{r}
+unique(OceanusLocations$Name)
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+vessel_movement_data <- vessel_movement_data %>%
+  mutate(source = gsub("^City of", "", source)) %>%
+  mutate(source = gsub("^\\s+", "", source))
+```
+
+```{r}
+unique(vessel_movement_data$source)
+```
+
+```{r}
+coords <- st_coordinates(OceanusLocations)
+```
+
+```{r}
+OceanusLocations_df <- OceanusLocations %>%
+  st_drop_geometry()
+```
+
+```{r}
+OceanusLocations_df$XCOORD <- coords[, "X"]
+OceanusLocations_df$YCOORD <- coords[, "Y"]
+```
+
+```{r}
+class(OceanusLocations_df)
+```
+
+```{r}
+OceanusLocations_df <- OceanusLocations_df %>%
+  select(Name, X.Kind, XCOORD, YCOORD) %>%
+  rename(Loc_Type = X.Kind)
+```
+
+```{r}
+vessel_movement_data <- vessel_movement_data %>%
+  left_join(OceanusLocations_df,
+            by = c("source" = "Name"))
+```
+
+
+
+```{r}
+write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
+```
+
+```{r}
+
+```
+
+```{r}
 
 ```
 
@@ -440,6 +570,79 @@ unique(fishing_vessel$company)
 ```{r}
 
 ```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
 
 ```{r}
 

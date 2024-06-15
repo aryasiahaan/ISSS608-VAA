@@ -1,6 +1,7 @@
 project:
   type: website
 
+
 website:
   title: "ISSS608-VAA"
   navbar:
@@ -55,6 +56,8 @@ website:
         href: "In-class_Ex/In-class_Ex06/In-class_Ex06a.html"
       - text: "In-class Exercise 6b"
         href: "In-class_Ex/In-class_Ex06/In-class_Ex06b.html"
+      - text: "In-class Exercise 9"
+        href: "In-class_Ex/In-class_Ex09/In-class_Ex09.html"
     - text: "Take-home Exercise"
       menu:
       - text: "Take-home Exercise 1"
