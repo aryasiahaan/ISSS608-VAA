@@ -339,12 +339,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="importing-data" class="level3">
 <h3 class="anchored" data-anchor-id="importing-data"><strong>13.3.2 Importing Data</strong></h3>
 <p>To important <em>respopagsex2000to2018_tidy.csv</em> into R, <strong><em>read_csv()</em></strong> function of <strong>readr</strong> package will be used.</p>
-<p><code>ycd #Reading the data into R environment pop_data &lt;- read_csv("data/respopagsex2000to2018_tidy.csv")}</code></p>
+<p><code>pad #Reading the data into R environment pop_data &lt;- read_csv("data/respopagsex2000to2018_tidy.csv")}</code></p>
 </section>
 <section id="preparing-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="preparing-the-data"><strong>13.3.3 Preparing the Data</strong></h3>
 <p>Next, use the <strong><em>mutate()</em></strong> function of <strong>dplyr</strong> package to derive three new measures, namely: young, active, and old.</p>
-<p><code>ycd #Deriving the young, economy active and old measures agpop_mutated &lt;- pop_data %&gt;%   mutate(`Year` = as.character(Year))%&gt;%   spread(AG, Population) %&gt;%   mutate(YOUNG = rowSums(.[4:8]))%&gt;%   mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%   mutate(OLD = rowSums(.[17:21])) %&gt;%   mutate(TOTAL = rowSums(.[22:24])) %&gt;%   filter(Year == 2018)%&gt;%   filter(TOTAL &gt; 0)}</code></p>
+<p><code>pad #Deriving the young, economy active and old measures agpop_mutated &lt;- pop_data %&gt;%   mutate(`Year` = as.character(Year))%&gt;%   spread(AG, Population) %&gt;%   mutate(YOUNG = rowSums(.[4:8]))%&gt;%   mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%   mutate(OLD = rowSums(.[17:21])) %&gt;%   mutate(TOTAL = rowSums(.[22:24])) %&gt;%   filter(Year == 2018)%&gt;%   filter(TOTAL &gt; 0)}</code></p>
 </section>
 </section>
 <section id="plotting-ternary-diagram-with-r" class="level2">
@@ -352,13 +352,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="plotting-a-static-ternary-diagram" class="level3">
 <h3 class="anchored" data-anchor-id="plotting-a-static-ternary-diagram"><strong>13.4.1 4.1 Plotting a static ternary diagram</strong></h3>
 <p>Use <strong><em>ggtern()</em></strong> function of <strong>ggtern</strong> package to create a simple ternary plot.</p>
-<p><code>ycd #Building the static ternary plot ggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +   geom_point()}</code></p>
-<p><code>ycd #Building the static ternary plot ggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +   geom_point() +   labs(title="Population structure, 2015") +   theme_rgbw()}</code></p>
+<p><code>pad #Building the static ternary plot ggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +   geom_point()}</code></p>
+<p><code>pad #Building the static ternary plot ggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +   geom_point() +   labs(title="Population structure, 2015") +   theme_rgbw()}</code></p>
 </section>
 <section id="plotting-an-interative-ternary-diagram" class="level3">
 <h3 class="anchored" data-anchor-id="plotting-an-interative-ternary-diagram"><strong>13.4.2 Plotting an interative ternary diagram</strong></h3>
 <p>The code below create an interactive ternary plot using <strong><em>plot_ly()</em></strong> function of <strong>Plotly R</strong>.</p>
-<p><code>ycd # reusable function for creating annotation object label &lt;- function(txt) {   list(     text = txt,      x = 0.1, y = 1,     ax = 0, ay = 0,     xref = "paper", yref = "paper",      align = "center",     font = list(family = "serif", size = 15, color = "white"),     bgcolor = "#b3b3b3", bordercolor = "black", borderwidth = 2   ) }  # reusable function for axis formatting axis &lt;- function(txt) {   list(     title = txt, tickformat = ".0%", tickfont = list(size = 10)   ) }  ternaryAxes &lt;- list(   aaxis = axis("Young"),    baxis = axis("Active"),    caxis = axis("Old") )  # Initiating a plotly visualization  plot_ly(   agpop_mutated,    a = ~YOUNG,    b = ~ACTIVE,    c = ~OLD,    color = I("black"),    type = "scatterternary" ) %&gt;%   layout(     annotations = label("Ternary Markers"),      ternary = ternaryAxes   )}</code></p>
+<p><code>pad # reusable function for creating annotation object label &lt;- function(txt) {   list(     text = txt,      x = 0.1, y = 1,     ax = 0, ay = 0,     xref = "paper", yref = "paper",      align = "center",     font = list(family = "serif", size = 15, color = "white"),     bgcolor = "#b3b3b3", bordercolor = "black", borderwidth = 2   ) }  # reusable function for axis formatting axis &lt;- function(txt) {   list(     title = txt, tickformat = ".0%", tickfont = list(size = 10)   ) }  ternaryAxes &lt;- list(   aaxis = axis("Young"),    baxis = axis("Active"),    caxis = axis("Old") )  # Initiating a plotly visualization  plot_ly(   agpop_mutated,    a = ~YOUNG,    b = ~ACTIVE,    c = ~OLD,    color = I("black"),    type = "scatterternary" ) %&gt;%   layout(     annotations = label("Ternary Markers"),      ternary = ternaryAxes   )}</code></p>
 
 
 </section>
