@@ -34,46 +34,104 @@ To support further Fisheye investigations, develop visual analytics workflows th
 
 ### Loading the required R library packages
 
+For the purpose of this exercise, several R packages will be used to perform the following tasks:
+
+-   Importing graph data in json file format into R
+
+-   Extracting the nodes and edges (also known as links) from imported graph data.
+
+-   Wrangling text data type.
+
+-   Importing geographical data in geojson file format into R,
+
+-   Importing geographical data in ESRI shapefile format into R,
+
+-   Extracting movement data from the edges table of a knowledge graph,
+
+-   Deriving a trajectory data from a movement data, and
+
+-   Visualising trajectory data to reveal geo-temporal patterns.
+
 The following code chunk utilises the [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) function from the [pacman](https://github.com/trinker/pacman) package to ensure that the necessary packages are available in the R environment. If the packages are already installed on the computer, [`p_load()`](https://www.rdocumentation.org/packages/pacman/versions/0.5.1/topics/p_load) will load them. If they are not installed, it will first install them and then load them into the R environment.
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, igraph, sf, 
-               tidygraph, ggraph, SmartEDA, skimr,
-               lubridate, ggplot2, DataExplorer) 
+pacman::p_load(tidyverse, jsonlite, DataExplorer,
+               lubridate, ggplot2, tidygraph,
+               ggraph, igraph, sf, skimr) 
 ```
 
 ### Loading The Data
 
-The dataset is in the form of a json file and it is available for download at the [Vast Challenge 2024](https://vast-challenge.github.io/2024/index.html).
+The dataset for this exercise is available for download at the [Vast Challenge 2024](https://vast-challenge.github.io/2024/index.html). As I undertake Mini-Challenge 2, I will utilize the dataset provided in the form of a JSON file named `mc2.json`.
+
+In the code chunk below, `fromJSON()` of **jsonlite** package is used to import `mc2.json` file into R and save the output object.
 
 ```{r}
 mc2_data <- fromJSON("data/mc2.json")
 ```
 
-This line loads the JSON dataset into R using the jsonlite package. The dataset is stored in the mc2_data variable.
+The output is called *`mc2_data`*. It is a large list R object.
 
 ## Data Preparation
 
-### Wrangling and tidying edges
+### Wrangling and tidying *edges* dataframe
 
 #### Extracting edges
 
+The code chunk below extracts the *links* dataframe from `mc2_data` and saves it as a tibble dataframe called `mc2_edges`. The `distinct()` function is used to remove duplicates.
+
 ```{r}
 # Wrangling and tidying edges
-mc2_edges <- as_tibble(mc2_data$links) %>% distinct()
-# Converts the date columns to POSIXct datetime format using the as_datetime function from the lubridate package, then display it with  glimpse() to confirm if the process have been performed correctly.
-mc2_edges <- mc2_edges %>%
-  mutate(date = as_datetime(date), time = as_datetime(time))
+mc2_edges <- as_tibble(mc2_data$links) %>% 
+  distinct()
+```
+
+Next, `glimpse()` of **dplyr** package will be used to reveal the structure of `mc2_edges` tibble data table
+
+```{r}
 glimpse(mc2_edges)
 ```
 
-The code above converts the 'links' part of the dataset into a tibble and removes duplicates. It then converts date and time information into proper datetime formats using lubridate, and extracts just the date to a new column.
+::: {.callout-tip title="Observation"}
+From the table above, the following data issues can be identified:
+
+-   Columns with date and time data type are not in the correct format.
+
+-   The column `type` also seems to contain three different types of information, namely: 'Event', 'TransportEvent', 'TransponderPing'.
+:::
+
+#### **Correcting date data type**
+
+In the code chunk below, `as_datetime()` of **lubridate** package is used to convert fields with character date into **POSIXt** format.
+
+```{r}
+mc2_edges$time <- as_datetime(mc2_edges$time)
+mc2_edges$"date" <- as_datetime("mc2_edges$date")
+```
+
+Next, `glimpse()` will be used again to confirm if the process have been performed correctly.
+
+```{r}
+glimpse(mc2_edges)
+```
+
+As we can see now, the `time` and `date` columns have been converted to **datetime** format.
+
+#### **Splitting words**
+
+![](images/clipboard-4037493927.png)
+
+From the table above, we can see that the text in the `type` column is not tidy. I will tidy the `type` column by splitting it into three new separate columns called `event1`, `event2`, and `event3`. However, I will only keep the columns containing the values 'TransportEvent' and 'TransponderPing', which will be `event2` and `event3`.
 
 #### Splitting and Tidying the 'type' Column
 
 ```{r}
 word_list <- strsplit(mc2_edges$type, "\\.")
+
+# The code chunk below will be used to find the maximum number of elements in any split
 max_elements <- max(lengths(word_list)) #to find the maximum number of elements in any split
+
+#The code chunk below will be used to pad shorter splits with NA values to make them all the same length.
 word_list_padded <- lapply(word_list, 
 function(x) c(x, rep(NA, max_elements - length(x)))) #to pad shorter splits with NA values to make them all the same length.
 word_df <- do.call(rbind, word_list_padded)
@@ -89,9 +147,17 @@ mc2_edges <- mc2_edges %>%
   cbind(word_df)
 ```
 
-This code splits the 'type' column into multiple components, pads shorter entries with NAs, and integrates them back into the mc2_edges dataframe as new columns.
+This code splits the `type` column into multiple components, pads shorter entries with NAs, and integrates them back into the `mc2_edges` dataframe as new columns.
 
-After cleaning and preparing mc2_edges dataframe, I want to understand how the newly formed structure looks like, lets use the DataExplorer package to visualize it.
+![](images/clipboard-2806146328.png)
+
+As we can see here, two new columns, `event2` and `event3`, have been created and appended to the `mc2_edges` dataframe.
+
+### Initial EDA
+
+After cleaning and preparing the `mc2_edges` dataframe, I want to understand how the newly formed structure looks. Let's make use of the **DataExplorer** package to visualize it.
+
+The code below uses the `plot_intro` function, which is part of the **DataExplorer** package. This function provides a high-level summary of the `mc2_edges` dataframe, offering insights into its structure and content.
 
 ::: panel-tabset
 ## The plot
@@ -109,6 +175,8 @@ plot_intro(mc2_edges, title = "Introduction of mc2_edges Data")
 ```
 :::
 
+The `plot_str` function below generates a plot that visualizes the structure of `mc2_edges` dataframe, showing the relationships between different columns and their types.
+
 ::: panel-tabset
 ## The plot
 
@@ -123,6 +191,8 @@ plot_str(mc2_edges)
 
 ```
 :::
+
+The `plot_missing` function below generates a visualization that helps to identify and understand the distribution of missing values within `mc2_edges` dataframe.
 
 ::: panel-tabset
 ## The plot
@@ -139,25 +209,46 @@ plot_missing(mc2_edges, title = "Missing Values in mc2_edges Data")
 ```
 :::
 
-After the above EDA, I will remove columns that is unnecessary to answer the task at hand
+### Further Cleaning
+
+After the initial EDA, I will remove columns from `mc2_edges` dataframe that are unnecessary to complete Mini-Challenge 2.
 
 #### Dropping Unnecessary Columns
 
 ```{r}
 mc2_edges_cleaned <- mc2_edges %>%
   select(-c(`type`, `_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `key`,  `data_author`, `aphorism`, `holiday_greeting`, `wisdom`, `saying of the sea`))
+```
 
+The code above removes unnecessary columns from `mc2_edges` that are not needed for analysis, and then assigns the cleaned-up version to a new dataframe called `mc2_edges_cleaned`.
+
+Next, let's use `glimpse()` to check what `mc2_edges_cleaned` looks like.
+
+```{r}
 glimpse(mc2_edges_cleaned)
 ```
 
-Removes unnecessary columns from the dataset that are not needed for analysis, cleaning up the data. Glimpse() is then used to display the structure of the data.
+Before moving to the next task, it would be wise to save the tidied `mc2_edges_cleaned` dataframe into a physical file for future use. By doing so, repeating the steps above will not be necessary.
 
-### Wrangling and tidying nodes
+The code chunk below will be used to save `mc2_edges_cleaned` into R **rds** file format.
+
+::: callout-warning
+Since the file is going to be saved into the `rds` sub-folder, the `rds` folder must first exist within the `data` folder. If it does not, it needs to be created first.
+:::
+
+```{r}
+write_rds(mc2_edges_cleaned, "data/rds/mc2_edges_cleaned.rds")
+```
+
+This completes the data preparation process for the *links* dataframe of `mc2_data`, which is now stored in the `mc2_edges_cleaned` dataframe and saved as a physical `mc2_edges_cleaned.rds` file.
+
+The next step is to clean and prepare the *nodes* dataframe of `mc2_data`.
+
+### Wrangling and tidying *nodes* dataframe
 
 #### Extracting Nodes and Removing Duplicates
 
 ```{r}
-
 mc2_nodes <- as_tibble(mc2_data$nodes) %>%
   distinct()
 
@@ -365,9 +456,6 @@ southseafood_activities <- mc2_edges_cleaned %>%
 glimpse(southseafood_activities)
 ```
 
-
-
-
 ```{r}
 harbor_report <- mc2_edges_cleaned %>%
   filter(event2 == "HarborReport")
@@ -451,16 +539,15 @@ ggplot(data = OceanusGeography) +
   geom_sf()
 ```
 
-
 ```{r}
 write_rds(OceanusGeography, "data/rds/OceanusGeography.rds")
 ```
-
 
 ```{r}
 OceanusLocations <- st_read(dsn = "data/shp",
   layer = "Oceanus Geography")
 ```
+
 ```{r}
 class(OceanusLocations)
 ```
@@ -473,11 +560,11 @@ glimpse(OceanusLocations)
 ggplot(data = OceanusLocations) +
   geom_sf()
 ```
+
 ```{r}
 write_rds(OceanusLocations, 
   "data/rds/OceanusLocations.rds")
 ```
-
 
 ```{r}
 vessel_movement_data <- mc2_edges %>%
@@ -489,25 +576,9 @@ vessel_movement_data <- mc2_edges %>%
 unique(vessel_movement_data$source)
 ```
 
-
-
-
-
-
-
-
 ```{r}
 unique(OceanusLocations$Name)
 ```
-
-
-
-
-
-
-
-
-
 
 ```{r}
 vessel_movement_data <- vessel_movement_data %>%
@@ -549,8 +620,6 @@ vessel_movement_data <- vessel_movement_data %>%
             by = c("source" = "Name"))
 ```
 
-
-
 ```{r}
 write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
 ```
@@ -583,33 +652,9 @@ write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
 
 ```
 
-
-
 ```{r}
 
 ```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-
 
 ```{r}
 
@@ -643,6 +688,25 @@ write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
 
 ```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ```{r}
 
