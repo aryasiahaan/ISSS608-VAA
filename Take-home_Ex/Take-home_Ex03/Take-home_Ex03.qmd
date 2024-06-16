@@ -76,7 +76,7 @@ The output is called *`mc2_data`*. It is a large list R object.
 
 ### Wrangling and tidying *edges* dataframe
 
-#### Extracting edges
+#### Extracting *edges* and removing duplicates
 
 The code chunk below extracts the *links* dataframe from `mc2_data` and saves it as a tibble dataframe called `mc2_edges`. The `distinct()` function is used to remove duplicates.
 
@@ -100,7 +100,7 @@ From the table above, the following data issues can be identified:
 -   The column `type` also seems to contain three different types of information, namely: 'Event', 'TransportEvent', 'TransponderPing'.
 :::
 
-#### **Correcting date data type**
+#### **Correcting time and date data type from mc2_edges_dataframe**
 
 In the code chunk below, `as_datetime()` of **lubridate** package is used to convert fields with character date into **POSIXt** format.
 
@@ -115,15 +115,17 @@ Next, `glimpse()` will be used again to confirm if the process have been perform
 glimpse(mc2_edges)
 ```
 
+::: {.callout-tip title="Observation"}
 As we can see now, the `time` and `date` columns have been converted to **datetime** format.
+:::
 
 #### **Splitting words**
 
-![](images/clipboard-4037493927.png)
+![](images/clipboard-3479349286.png)
 
 From the table above, we can see that the text in the `type` column is not tidy. I will tidy the `type` column by splitting it into three new separate columns called `event1`, `event2`, and `event3`. However, I will only keep the columns containing the values 'TransportEvent' and 'TransponderPing', which will be `event2` and `event3`.
 
-#### Splitting and Tidying the 'type' Column
+#### Splitting and Tidying the 'type' Column from mc2_edges dataframe
 
 ```{r}
 word_list <- strsplit(mc2_edges$type, "\\.")
@@ -151,9 +153,11 @@ This code splits the `type` column into multiple components, pads shorter entrie
 
 ![](images/clipboard-2806146328.png)
 
+::: {.callout-tip title="Observation"}
 As we can see here, two new columns, `event2` and `event3`, have been created and appended to the `mc2_edges` dataframe.
+:::
 
-### Initial EDA
+### Initial EDA of mc2_edges dataframe
 
 After cleaning and preparing the `mc2_edges` dataframe, I want to understand how the newly formed structure looks. Let's make use of the **DataExplorer** package to visualize it.
 
@@ -209,11 +213,11 @@ plot_missing(mc2_edges, title = "Missing Values in mc2_edges Data")
 ```
 :::
 
-### Further Cleaning
+### Further cleaning of mc2_edges dataframe
 
 After the initial EDA, I will remove columns from `mc2_edges` dataframe that are unnecessary to complete Mini-Challenge 2.
 
-#### Dropping Unnecessary Columns
+#### Dropping unnecessary columns from mc2_edges dataframe
 
 ```{r}
 mc2_edges_cleaned <- mc2_edges %>%
@@ -233,7 +237,7 @@ Before moving to the next task, it would be wise to save the tidied `mc2_edges_c
 The code chunk below will be used to save `mc2_edges_cleaned` into R **rds** file format.
 
 ::: callout-warning
-Since the file is going to be saved into the `rds` sub-folder, the `rds` folder must first exist within the `data` folder. If it does not, it needs to be created first.
+Since the file will be saved in the `rds` sub-folder within the `data` folder, ensure that the `rds` folder exists. If it does not, it needs to be created first.
 :::
 
 ```{r}
@@ -246,36 +250,62 @@ The next step is to clean and prepare the *nodes* dataframe of `mc2_data`.
 
 ### Wrangling and tidying *nodes* dataframe
 
-#### Extracting Nodes and Removing Duplicates
+#### Extracting *nodes* and removing duplicates
+
+The code chunk below extracts the *nodes* dataframe from `mc2_data`, parses it as a tibble dataframe called `mc2_nodes`, and removes duplicate rows using the `distinct()` function.
 
 ```{r}
 mc2_nodes <- as_tibble(mc2_data$nodes) %>%
   distinct()
-
-glimpse(mc2_nodes)
-
 ```
 
-This converts the nodes data to a tibble and removes duplicate rows, then displays the structure of the data using glimpse().
-
-I plan to make use of the date column, but since it is in character format, I will convert it first into date format using lubridate package and glimpse it again to verify the changes.
+Next, the code chunk below uses the `glimpse()` function to reveal the data structure of the `mc2_nodes` tibble dataframe.
 
 ```{r}
-
-mc2_nodes <- mc2_nodes %>% 
-  mutate(date = as_date(date)) 
-
 glimpse(mc2_nodes)
-
 ```
+
+::: {.callout-tip title="Observation"}
+From the table above, the following data issues can be identified:
+
+-   The column `date` data type is not in the correct format.
+
+-   The values in Activities and fish_species_present fields are in **list** data type, which will affect the ability to process and to analyse the data.
+
+-   As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e. removing c(““)).
+:::
+
+#### **Correcting date data type from mc2_nodes dataframe**
+
+In the code chunk below, `as_datetime()` of **lubridate** package is used to convert date fields with character date into **POSIXt** format.
+
+```{r}
+mc2_nodes$date <- as_datetime(mc2_nodes$date)
+```
+
+Next, `glimpse()` will be used again to confirm if the process have been performed correctly.
+
+```{r}
+glimpse(mc2_nodes)
+```
+
+::: {.callout-tip title="Observation"}
+As we can see now, the time and date columns have been converted to datetime format.
+:::
 
 There are two more additional data issues can be observed. They are:
 
-The values in Activities and fish_species_present fields are in list data type, which will affect the ability to process and to analyse the data. As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e. removing c(““)).
+The values in `Activities` and `fish_species_present` columns are in list data type, which will affect the ability to process and to analyze the data.
 
-Tidying text field In the code chunk below, mutate() of dplyr and gsub() of Base R are used to perform the data tidying task.
+As shown in the screenshot below, some values in the `Activities` and `fish_species_present`column are not ready to be analyze without further tidying (i.e. removing c(““)).
 
-This cleans up the Activities and fish_species_present columns by removing unnecessary characters.
+![](images/clipboard-2425530968.png)
+
+#### Tidying Text Field
+
+In the code chunk below, `mutate()` from `dplyr` and `gsub()` from Base R are used to perform the data tidying task.
+
+This cleans up the `Activities` and `fish_species_present` columns by removing unnecessary characters.
 
 ```{r}
 
@@ -290,7 +320,13 @@ mc2_nodes <- mc2_nodes %>%
   mutate(fish_species_present = gsub("[)]", "", fish_species_present)) 
 ```
 
-Now, lets use DataExplorer package again to visualize it
+After executing the code chunk above, we can see from the screenshot below, that the text field in `Activities` and `fish_species_present` columns have been tidied.
+
+![](images/clipboard-3517877848.png)
+
+### **INITIAL EDA of mc2_nodes dataframe**
+
+Now, let's use the DataExplorer package again to visualize the `mc2_nodes` dataframe in a similar manner as was done above for the `mc2_edges` dataframe.
 
 ::: panel-tabset
 ## The plot
@@ -308,6 +344,8 @@ plot_intro(mc2_nodes, title = "Introduction of mc2_nodes Data")
 ```
 :::
 
+The `plot_str` function below generates a plot that visualizes the structure of `mc2_nodes` dataframe, showing the relationships between different columns and their types.
+
 ::: panel-tabset
 ## The plot
 
@@ -322,6 +360,8 @@ plot_str(mc2_nodes)
 
 ```
 :::
+
+The `plot_missing` function below generates a visualization that helps to identify and understand the distribution of missing values within `mc2_nodes` dataframe.
 
 ::: panel-tabset
 ## The plot
@@ -338,24 +378,36 @@ plot_missing(mc2_nodes, title = "Missing Values in mc2_nodes Data")
 ```
 :::
 
-#### Dropping unnecessary Columns
+### **FURTHER CLEANING of mc2_nodes dataframe**
+
+After the initial EDA, I will remove columns from `mc2_nodes` dataframe that are unnecessary to complete Mini-Challenge 2.
+
+#### Dropping unnecessary Columns from mc2_nodes dataframe
 
 ```{r}
 mc2_nodes_cleaned <- mc2_nodes %>%
   select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `style`))
-glimpse(mc2_nodes_cleaned)
 ```
 
-Removes additional unneeded columns from the nodes data frame.
+The code above removes unnecessary columns from `mc2_nodes` that are not needed for analysis, and then assigns the cleaned-up version to a new dataframe called `mc2_nodes_cleaned`.
+
+Next, let’s use `glimpse()` to check what `mc2_nodes_cleaned` looks like.
 
 ```{r}
-
-# Inspect the edges dataframe
-glimpse(mc2_edges_cleaned)
-
-# Inspect the nodes dataframe
 glimpse(mc2_nodes_cleaned)
 ```
+
+The tidied mc2_nodes_cleaned dataframe will then be saved into a physical file for future use. By doing so, repeating the steps above will not be necessary.
+
+The code chunk below will be used to save mc2_nodes_cleaned into R rds file format.
+
+```{r}
+write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
+```
+
+This completes the data preparation process for the *nodes* dataframe of `mc2_data`, which is now stored in the `mc2_nodes_cleaned` dataframe and saved as a physical `mc2_nodes_cleaned.rds` file.
+
+The next step is to
 
 Let's investigate further on what is in the `type` column from mc2_nodes_cleaned dataframe.
 
