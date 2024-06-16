@@ -407,24 +407,20 @@ write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
 
 This completes the data preparation process for the *nodes* dataframe of `mc2_data`, which is now stored in the `mc2_nodes_cleaned` dataframe and saved as a physical `mc2_nodes_cleaned.rds` file.
 
-The next step is to
+## Data Analysis
 
-Let's investigate further on what is in the `type` column from mc2_nodes_cleaned dataframe.
+After completing the data preparation process, the next step is to perform the analysis required to complete Mini-Challenge 2. From the background information above, we know that "SouthSeafood Express Corp" has been caught fishing illegally. Now, let's see what we can discover from the available data regarding their illegal behavior.
+
+#### Investigate 'type' column from the nodes data
+
+Next, I will use the `unique()` function from the base R package to see all the distinct entries in the `type` column of the `mc2_nodes_cleaned` dataframe.
 
 ```{r}
 unique(mc2_nodes_cleaned$type)
 ```
 
-```{r}
-vessel_type_counts <- mc2_nodes_cleaned %>%
-  group_by(type) %>%
-  summarise(count = n())
-
-# Display the result
-print(vessel_type_counts)
-```
-
-This particular column contains variety of different data, some of them seems interesting and useful for analysis, they are:
+::: {.callout-tip title="Observation"}
+The `type` column from the nodes data seems to contain a mix of information. Some of the entries appear interesting and useful for analysis, including:
 
 -   Entity.Commodity.Fish
 
@@ -440,31 +436,95 @@ This particular column contains variety of different data, some of them seems in
 
 -   Entity.Vessel.FishingVessel
 
-The others seems unnecessary.
+The other entries seem useless.
+:::
 
-I will try to make separate dataframe for each of them.
+Next, I will try to find out the count of each entry. The code chunk below allows me to see the count of unique value in each entry.
 
-Here I can see the type of vessel and how many of each are recorded in the dataframe.
+```{r}
+nodes_type_counts <- mc2_nodes_cleaned %>%
+  group_by(type) %>%
+  summarise(count = n())
 
-I'm only interested in the fishing vessel and the cargo vessel, and apparently there 178 fishing vessels and 100 cargo vessels, next so I will try to filter all the rows that only contain fishing vessels and cargo vessels
+# Display the result
+print(nodes_type_counts)
+```
 
-Filter all the rows containing fishing_vessel
+::: {.callout-tip title="Observation"}
+Based on the table above, we can see that there are:
+
+-   10 Fish Commodities.
+
+-   5307 Delivery Reports.
+
+-   6 City Names
+
+-   12 Point Locations
+
+-   6 Region Locations
+
+-   100 Cargo Vessels.
+
+-   178 Fishing Vessels.
+:::
 
 ```{r}
 # Filter fishing vessels and rename specific columns while keeping all others
 fishing_vessel <- mc2_nodes_cleaned %>%
   filter(type %in% c("Entity.Vessel.FishingVessel")) %>%
   rename(
-    vessel_type = type,
     fishing_vessel_id = id,
     fishing_vessel_name = Name
   )
 ```
 
+```{r}
+glimpse(fishing_vessel)
+```
+
+After creating a new dataframe called fishing_vessel to isolate fishing vessel information, I want to find out which of these fishing vessels are registered under "SouthSeafood Express Corp".
+
+```{r}
+# Filter fishing vessels registered under "SouthSeafood Express Corp"
+southseafood_fishing_vessels <- fishing_vessel %>%
+  filter(company == "SouthSeafood Express Corp")
+
+# Display the result
+print(southseafood_fishing_vessels)
+```
+
+::: {.callout-tip title="Observation"}
+The fishing vessels belonging to "SouthSeafood Express Corp" are:
+
+-   Snapper Snatcher (`snappersnatcher7be`)
+
+-   Roach Robber (`roachrobberdb6`)
+:::
+
 Now I want to find out all the companies that own these fishing vessels
 
 ```{r}
-unique(fishing_vessel$company)
+#unique(fishing_vessel$fishing_vessel_name)
+```
+
+```{r}
+# Filter fishing vessels and rename specific columns while keeping all others
+fish_species <- mc2_nodes_cleaned %>%
+  filter(type %in% c("Entity.Commodity.Fish")) %>%
+  rename(
+    fish_name = name,
+    fish_id = id
+  )
+```
+
+
+Continue from here
+
+
+Now I want to find out all the companies that own these fishing vessels
+
+```{r}
+unique(fish_species$fish_name)
 ```
 
 From the result above I see "SouthSeafood Express Corp" is listed, now I want to isolate all the fishing vessels belong to "SouthSeafood Express Corp".
@@ -514,7 +574,7 @@ harbor_report <- mc2_edges_cleaned %>%
 ```
 
 ```{r}
-unique(mc2_edges_cleaned$source)
+#unique(mc2_edges_cleaned$source)
 ```
 
 ```{r}
@@ -562,7 +622,7 @@ cargo_vessel <- mc2_nodes_cleaned %>%
 ```
 
 ```{r}
-unique(fishing_vessel$company)
+#unique(fishing_vessel$company)
 ```
 
 ```{r}
