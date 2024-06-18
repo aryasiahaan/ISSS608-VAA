@@ -407,9 +407,164 @@ write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
 
 This completes the data preparation process for the *nodes* dataframe of `mc2_data`, which is now stored in the `mc2_nodes_cleaned` dataframe and saved as a physical `mc2_nodes_cleaned.rds` file.
 
+### Importing Geographical Data in geojson format
+
+Next I need to import geographical data. The data is in the form of GEOJSON file. GEOJSON is an open standard format designed for representing simple geographical features, along with their non-spatial attributes. It is based on the JSON format. I will import this using the `sf` package.
+
+In the code chunk below, `st_read()` of **sf** package is used to import a geographical file in [geojson](https://en.wikipedia.org/wiki/GeoJSON) format into R.
+
+```{r}
+oceanusgeography = st_read("data/OceanusGeography.geojson") %>%
+  st_transform(crs = 4326)
+```
+
+::: {.callout-note title="Thing to learn from the code chunk above"}
+`st_transform()` is used to assign wgs84 (i.e. 4326) coordinates system to the output object.
+:::
+
+The output R object (i.e. oceanusgeography) is an sf data.frame as shown below. Actually sf stand for simple feature.
+
+```{r}
+class(oceanusgeography)
+```
+
+Next, `glimpse()` is used to display the structure of *oceanusgeography* sf data.frame.
+
+```{r}
+glimpse(oceanusgeography)
+```
+
+::: callout-note
+The geometry column indicate the simple feature geometry is multipolygon. However, if the dataframe is examined closely, we can see that the geographical data are captured in polygon and point features.
+:::
+
+#### Visualising Geographical Data with ggplot2
+
+It is always a good practice to visualize the sf data.frame in a map.
+
+In the code chunk below, geom_sf() of ggplot2 package is used to plot the sf data.frame in R.
+
+```{r}
+ggplot(data = oceanusgeography) +
+  geom_sf()
+```
+
+Before moving on to next section, let’s save oceanusgeography into rds format for future use by using the code chunk below.
+
+```{r}
+write_rds(oceanusgeography, "data/rds/oceanusgeography.rds")
+```
+
+This completes the data preparation process for the *`oceanusgeography`* dataframe, which is now stored in the `oceanusgeography` dataframe and saved as a physical `oceanusgeography.rds` file.
+
+#### Importing Geographical Data in ESRI shapefile format
+
+In the code chunk below, `st_read()` of **sf** package is used to import a geographical file in [ESRI shapefile](#0) format into R.
+
+```{r}
+oceanuslocations <- st_read(dsn = "data/shp",
+  layer = "Oceanus Geography")
+```
+
+Next `class()` is used verify if the *OceanusLocations* is indeed in sf data.frame.
+
+```{r}
+class(oceanuslocations)
+```
+
+Similarly, `glimpse()` is used to reveal the structure of *OceanusLocation* data.frame.
+
+```{r}
+glimpse(oceanuslocations)
+```
+
+Let's visualize the geographical data by using `geom_sf()` of ggplot2 as shown in the code chunk below.
+
+```{r}
+ggplot(data = oceanuslocations) +
+  geom_sf()
+```
+
+Before moving on to the next section, the code chunk below is used to save *oceanuslocations* into an rds file format.
+
+```{r}
+write_rds(oceanuslocations, 
+  "data/rds/oceanuslocations.rds")
+```
+
+This completes the data preparation process for the *oceanuslocations*, which is now stored in the `oceanuslocations` dataframe and saved as a physical `oceanuslocations.rds` file.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
 ## Data Analysis
 
 After completing the data preparation process, the next step is to perform the analysis required to complete Mini-Challenge 2. From the background information above, we know that "SouthSeafood Express Corp" has been caught fishing illegally. Now, let's see what we can discover from the available data regarding their illegal behavior.
+
+#### Importing Edges Data
+
+Now it is time to bring mc2_edges_cleaned.rds into R
+
+```{r}
+mc2_edges_cleaned <- read_rds("data/rds/mc2_edges_cleaned.rds")
+```
+
+Next, `unique()` is used to list the unique classes in *event3* column of *mc2_edges* data.frame.
+
+```{r}
+unique(mc2_edges$event3)
+```
+
+The output above shows that there are two unique classes in the event3. They are: *TransponderPing* and NA.
+
+#### Extract Vessel Movement Data
+
+The code chunk below is used to extract vessel movement data from mc2_edges.
+
+::: {.callout-note title="Thing to learn from the code chunk above"}
+-   `filter()` is used to select records with event3 is TransponderPing, and
+
+-   `select()` is used to fields that are needed to be saved
+:::
+
+```{r}
+vessel_movement_data <- mc2_edges %>%
+  filter(event3 == "TransponderPing") %>%
+  select(time, dwell, source, target)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 #### Investigate 'type' column from the nodes data
 
@@ -453,7 +608,7 @@ print(nodes_type_counts)
 ::: {.callout-tip title="Observation"}
 Based on the table above, we can see that there are:
 
--   10 Fish Commodities.
+-   10 Fish Types.
 
 -   5307 Delivery Reports.
 
@@ -501,6 +656,74 @@ The fishing vessels belonging to "SouthSeafood Express Corp" are:
 -   Roach Robber (`roachrobberdb6`)
 :::
 
+### Further Data Subsetting and Renaming
+
+#### Creating Subset Data
+
+Let's try to create a new dataframe from the mc2_edges_cleaned dataframe, filtering only the transponderping information
+
+```{r}
+transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+```
+
+```{r}
+unique(transponderping$source)
+```
+
+The unique values contained in the source column from transponderping dataframe seems to contain information regarding fishing grounds and ports
+
+```{r}
+#unique(transponderping$target)
+```
+
+The target column seems to contain fishing vessel ID
+
+```{r}
+unique(mc2_nodes_cleaned$kind)
+```
+
+```{r}
+unique(mc2_nodes_cleaned$kind)
+```
+
+```{r}
+fishing_ground <- subset(mc2_nodes_cleaned, kind == "Fishing Ground")
+```
+
+Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.
+
+```{r}
+transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+transaction <- subset(mc2_edges_cleaned, event2 == "Transaction")
+harbor_report <- subset(mc2_edges_cleaned,  event2 == "HarborReport")
+```
+
+```{r}
+mc2_nodes_type_counts <- mc2_nodes %>%
+  group_by(type) %>%
+  summarise(count = n())
+
+# Display the result
+print(mc2_nodes_type_counts)
+```
+
+```{r}
+mc2_nodes_name_counts <- mc2_nodes %>%
+  group_by(name) %>%
+  summarise(count = n())
+
+# Display the result
+print(mc2_nodes_name_counts)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
 Now I want to find out all the companies that own these fishing vessels
 
 ```{r}
@@ -517,9 +740,7 @@ fish_species <- mc2_nodes_cleaned %>%
   )
 ```
 
-
 Continue from here
-
 
 Now I want to find out all the companies that own these fishing vessels
 
@@ -622,7 +843,7 @@ cargo_vessel <- mc2_nodes_cleaned %>%
 ```
 
 ```{r}
-#unique(fishing_vessel$company)
+# unique(fishing_vessel$company)
 ```
 
 ```{r}
@@ -842,48 +1063,6 @@ write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
 
 ```{r}
 
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-### Further Data Subsetting and Renaming
-
-#### Creating Subset Data
-
-```{r}
-transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
-```
-
-Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.
-
-```{r}
-transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
-transaction <- subset(mc2_edges_cleaned, event2 == "Transaction")
-harbor_report <- subset(mc2_edges_cleaned,  event2 == "HarborReport")
-```
-
-```{r}
-mc2_nodes_type_counts <- mc2_nodes %>%
-  group_by(type) %>%
-  summarise(count = n())
-
-# Display the result
-print(mc2_nodes_type_counts)
-```
-
-```{r}
-mc2_nodes_name_counts <- mc2_nodes %>%
-  group_by(name) %>%
-  summarise(count = n())
-
-# Display the result
-print(mc2_nodes_name_counts)
 ```
 
 ```{r}

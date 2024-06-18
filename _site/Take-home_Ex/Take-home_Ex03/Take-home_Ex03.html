@@ -295,6 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#wrangling-and-tidying-nodes-dataframe" id="toc-wrangling-and-tidying-nodes-dataframe" class="nav-link" data-scroll-target="#wrangling-and-tidying-nodes-dataframe">Wrangling and tidying <em>nodes</em> dataframe</a></li>
   <li><a href="#initial-eda-of-mc2_nodes-dataframe" id="toc-initial-eda-of-mc2_nodes-dataframe" class="nav-link" data-scroll-target="#initial-eda-of-mc2_nodes-dataframe"><strong>INITIAL EDA of mc2_nodes dataframe</strong></a></li>
   <li><a href="#further-cleaning-of-mc2_nodes-dataframe" id="toc-further-cleaning-of-mc2_nodes-dataframe" class="nav-link" data-scroll-target="#further-cleaning-of-mc2_nodes-dataframe"><strong>FURTHER CLEANING of mc2_nodes dataframe</strong></a></li>
+  <li><a href="#importing-geographical-data-in-geojson-format" id="toc-importing-geographical-data-in-geojson-format" class="nav-link" data-scroll-target="#importing-geographical-data-in-geojson-format">Importing Geographical Data in geojson format</a></li>
   </ul></li>
   <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis">Data Analysis</a>
   <ul class="collapse">
@@ -333,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 16, 2024</p>
+      <p class="date-modified">June 18, 2024</p>
     </div>
   </div>
     
@@ -856,15 +857,203 @@ $ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL
 <p>This completes the data preparation process for the <em>nodes</em> dataframe of <code>mc2_data</code>, which is now stored in the <code>mc2_nodes_cleaned</code> dataframe and saved as a physical <code>mc2_nodes_cleaned.rds</code> file.</p>
 </section>
 </section>
+<section id="importing-geographical-data-in-geojson-format" class="level3">
+<h3 class="anchored" data-anchor-id="importing-geographical-data-in-geojson-format">Importing Geographical Data in geojson format</h3>
+<p>Next I need to import geographical data. The data is in the form of GEOJSON file. GEOJSON is an open standard format designed for representing simple geographical features, along with their non-spatial attributes. It is based on the JSON format. I will import this using the <code>sf</code> package.</p>
+<p>In the code chunk below, <code>st_read()</code> of <strong>sf</strong> package is used to import a geographical file in <a href="https://en.wikipedia.org/wiki/GeoJSON">geojson</a> format into R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>oceanusgeography <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/OceanusGeography.geojson"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `OceanusGeography' from data source 
+  `C:\aryasiahaan\ISSS608-VAA\Take-home_Ex\Take-home_Ex03\data\OceanusGeography.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 29 features and 7 fields
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: -167.0654 ymin: 38.07452 xmax: -163.2723 ymax: 40.67775
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Thing to learn from the code chunk above">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Thing to learn from the code chunk above
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>st_transform()</code> is used to assign wgs84 (i.e.&nbsp;4326) coordinates system to the output object.</p>
+</div>
+</div>
+<p>The output R object (i.e.&nbsp;oceanusgeography) is an sf data.frame as shown below. Actually sf stand for simple feature.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(oceanusgeography)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+</div>
+<p>Next, <code>glimpse()</code> is used to display the structure of <em>oceanusgeography</em> sf data.frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(oceanusgeography)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 29
+Columns: 8
+$ Name                 &lt;chr&gt; "Suna Island", "Thalassa Retreat", "Makara Shoal"…
+$ Description          &lt;chr&gt; "Large island of Oceanus", "Smaller island of Oce…
+$ X.note               &lt;chr&gt; "Suna is 'sand' or 'gritty' in Japanese", "Thalas…
+$ type                 &lt;chr&gt; "Entity.Location.Region", "Entity.Location.Region…
+$ X.Kind               &lt;chr&gt; "Island", "Island", "Island", "Island", "Fishing …
+$ Activities           &lt;list&gt; "Residential", "Residential", "Recreation", &lt;"To…
+$ fish_species_present &lt;list&gt; &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;"Cod/Gadus n.specificatae", "Bi…
+$ geometry             &lt;GEOMETRY [°]&gt; MULTIPOLYGON (((-166.0111 3..., MULTIPOL…</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The geometry column indicate the simple feature geometry is multipolygon. However, if the dataframe is examined closely, we can see that the geographical data are captured in polygon and point features.</p>
+</div>
+</div>
+<section id="visualising-geographical-data-with-ggplot2" class="level4">
+<h4 class="anchored" data-anchor-id="visualising-geographical-data-with-ggplot2">Visualising Geographical Data with ggplot2</h4>
+<p>It is always a good practice to visualize the sf data.frame in a map.</p>
+<p>In the code chunk below, geom_sf() of ggplot2 package is used to plot the sf data.frame in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> oceanusgeography) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Before moving on to next section, let’s save oceanusgeography into rds format for future use by using the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(oceanusgeography, <span class="st">"data/rds/oceanusgeography.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This completes the data preparation process for the <em><code>oceanusgeography</code></em> dataframe, which is now stored in the <code>oceanusgeography</code> dataframe and saved as a physical <code>oceanusgeography.rds</code> file.</p>
+</section>
+<section id="importing-geographical-data-in-esri-shapefile-format" class="level4">
+<h4 class="anchored" data-anchor-id="importing-geographical-data-in-esri-shapefile-format">Importing Geographical Data in ESRI shapefile format</h4>
+<p>In the code chunk below, <code>st_read()</code> of <strong>sf</strong> package is used to import a geographical file in <a href="#0">ESRI shapefile</a> format into R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>oceanuslocations <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/shp"</span>,</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">layer =</span> <span class="st">"Oceanus Geography"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `Oceanus Geography' from data source 
+  `C:\aryasiahaan\ISSS608-VAA\Take-home_Ex\Take-home_Ex03\data\shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 27 features and 7 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -167.0654 ymin: 38.07452 xmax: -163.2723 ymax: 40.67775
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+<p>Next <code>class()</code> is used verify if the <em>OceanusLocations</em> is indeed in sf data.frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(oceanuslocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+</div>
+<p>Similarly, <code>glimpse()</code> is used to reveal the structure of <em>OceanusLocation</em> data.frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(oceanuslocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 27
+Columns: 8
+$ Name       &lt;chr&gt; "Haacklee", "Port Grove", "Lomark", "Himark", "Paackland", …
+$ Descriptio &lt;chr&gt; NA, NA, NA, NA, NA, "Adimistrative seat of Oceanus", NA, NA…
+$ X.note     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ Activities &lt;chr&gt; "Tourism,Local shipping", "Tourism,Research", "Deep sea fis…
+$ type       &lt;chr&gt; "Entity.Location.City", "Entity.Location.City", "Entity.Loc…
+$ X.Kind     &lt;chr&gt; "city", "city", "city", "city", "city", "city", "city", "bu…
+$ fish_speci &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ geometry   &lt;POINT [°]&gt; POINT (-165.6908 39.03215), POINT (-165.8855 39.10005…</code></pre>
+</div>
+</div>
+<p>Let’s visualize the geographical data by using <code>geom_sf()</code> of ggplot2 as shown in the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> oceanuslocations) <span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Before moving on to the next section, the code chunk below is used to save <em>oceanuslocations</em> into an rds file format.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(oceanuslocations, </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/rds/oceanuslocations.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This completes the data preparation process for the <em>oceanuslocations</em>, which is now stored in the <code>oceanuslocations</code> dataframe and saved as a physical <code>oceanuslocations.rds</code> file.</p>
+</section>
+</section>
 </section>
 <section id="data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis">Data Analysis</h2>
 <p>After completing the data preparation process, the next step is to perform the analysis required to complete Mini-Challenge 2. From the background information above, we know that “SouthSeafood Express Corp” has been caught fishing illegally. Now, let’s see what we can discover from the available data regarding their illegal behavior.</p>
+<section id="importing-edges-data" class="level4">
+<h4 class="anchored" data-anchor-id="importing-edges-data">Importing Edges Data</h4>
+<p>Now it is time to bring mc2_edges_cleaned.rds into R</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mc2_edges_cleaned <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/mc2_edges_cleaned.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, <code>unique()</code> is used to list the unique classes in <em>event3</em> column of <em>mc2_edges</em> data.frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mc2_edges<span class="sc">$</span>event3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "TransponderPing" NA               </code></pre>
+</div>
+</div>
+<p>The output above shows that there are two unique classes in the event3. They are: <em>TransponderPing</em> and NA.</p>
+</section>
+<section id="extract-vessel-movement-data" class="level4">
+<h4 class="anchored" data-anchor-id="extract-vessel-movement-data">Extract Vessel Movement Data</h4>
+<p>The code chunk below is used to extract vessel movement data from mc2_edges.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Thing to learn from the code chunk above">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Thing to learn from the code chunk above
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p><code>filter()</code> is used to select records with event3 is TransponderPing, and</p></li>
+<li><p><code>select()</code> is used to fields that are needed to be saved</p></li>
+</ul>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(time, dwell, source, target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="investigate-type-column-from-the-nodes-data" class="level4">
 <h4 class="anchored" data-anchor-id="investigate-type-column-from-the-nodes-data">Investigate ‘type’ column from the nodes data</h4>
 <p>Next, I will use the <code>unique()</code> function from the base R package to see all the distinct entries in the <code>type</code> column of the <code>mc2_nodes_cleaned</code> dataframe.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mc2_nodes_cleaned<span class="sc">$</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mc2_nodes_cleaned<span class="sc">$</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "Entity.Commodity.Fish"          "Entity.Location.City"          
  [3] "Entity.Document.DeliveryReport" "Entity.Vessel.FishingVessel"   
@@ -899,12 +1088,12 @@ Observation
 </div>
 <p>Next, I will try to find out the count of each entry. The code chunk below allows me to see the count of unique value in each entry.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 2
    type                           count
@@ -935,7 +1124,7 @@ Observation
 <div class="callout-body-container callout-body">
 <p>Based on the table above, we can see that there are:</p>
 <ul>
-<li><p>10 Fish Commodities.</p></li>
+<li><p>10 Fish Types.</p></li>
 <li><p>5307 Delivery Reports.</p></li>
 <li><p>6 City Names</p></li>
 <li><p>12 Point Locations</p></li>
@@ -946,16 +1135,16 @@ Observation
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels and rename specific columns while keeping all others</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>fishing_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.FishingVessel"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fishing_vessel_id =</span> id,</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fishing_vessel_name =</span> Name</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels and rename specific columns while keeping all others</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>fishing_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.FishingVessel"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fishing_vessel_id =</span> id,</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fishing_vessel_name =</span> Name</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(fishing_vessel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(fishing_vessel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 178
 Columns: 14
@@ -977,12 +1166,12 @@ $ fish_species_present &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL", "NULL
 </div>
 <p>After creating a new dataframe called fishing_vessel to isolate fishing vessel information, I want to find out which of these fishing vessels are registered under “SouthSeafood Express Corp”.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels registered under "SouthSeafood Express Corp"</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>southseafood_fishing_vessels <span class="ot">&lt;-</span> fishing_vessel <span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(company <span class="sc">==</span> <span class="st">"SouthSeafood Express Corp"</span>)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(southseafood_fishing_vessels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels registered under "SouthSeafood Express Corp"</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>southseafood_fishing_vessels <span class="ot">&lt;-</span> fishing_vessel <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(company <span class="sc">==</span> <span class="st">"SouthSeafood Express Corp"</span>)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(southseafood_fishing_vessels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 14
   type  name  fishing_vessel_id fishing_vessel_name Description Activities kind 
@@ -1011,212 +1200,17 @@ Observation
 </ul>
 </div>
 </div>
-<p>Now I want to find out all the companies that own these fishing vessels</p>
+</section>
+<section id="further-data-subsetting-and-renaming" class="level3">
+<h3 class="anchored" data-anchor-id="further-data-subsetting-and-renaming">Further Data Subsetting and Renaming</h3>
+<section id="creating-subset-data" class="level4">
+<h4 class="anchored" data-anchor-id="creating-subset-data">Creating Subset Data</h4>
+<p>Let’s try to create a new dataframe from the mc2_edges_cleaned dataframe, filtering only the transponderping information</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unique(fishing_vessel$fishing_vessel_name)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels and rename specific columns while keeping all others</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fish_species <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Commodity.Fish"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fish_name =</span> name,</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fish_id =</span> id</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Continue from here</p>
-<p>Now I want to find out all the companies that own these fishing vessels</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(fish_species<span class="sc">$</span>fish_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "Cod/Gadus n.specificatae"  "Birdseye/Pisces frigus"   
- [3] "Sockfish/Pisces foetida"   "Wrasse/Labridae n.refert" 
- [5] "Beauvoir/Habeas pisces"    "Harland/Piscis sapidum"   
- [7] "Tuna/Thunnini n.vera"      "Offidiaa/Piscis osseus"   
- [9] "Salmon/Oncorhynchus rosea" "Helenaa/Pisces satis"     </code></pre>
-</div>
-</div>
-<p>From the result above I see “SouthSeafood Express Corp” is listed, now I want to isolate all the fishing vessels belong to “SouthSeafood Express Corp”.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels owned by "SouthSeafood Express Corp"</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>southseafood_fishing_vessels <span class="ot">&lt;-</span> fishing_vessel <span class="sc">%&gt;%</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(company <span class="sc">==</span> <span class="st">"SouthSeafood Express Corp"</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(southseafood_fishing_vessels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 14
-  type  name  fishing_vessel_id fishing_vessel_name Description Activities kind 
-  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;               &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;
-1 Enti… &lt;NA&gt;  snappersnatcher7… Snapper Snatcher    &lt;NA&gt;        NULL       &lt;NA&gt; 
-2 Enti… &lt;NA&gt;  roachrobberdb6    Roach Robber        &lt;NA&gt;        NULL       &lt;NA&gt; 
-# ℹ 7 more variables: qty_tons &lt;dbl&gt;, date &lt;dttm&gt;, flag_country &lt;chr&gt;,
-#   company &lt;chr&gt;, tonnage &lt;int&gt;, length_overall &lt;int&gt;,
-#   fish_species_present &lt;chr&gt;</code></pre>
-</div>
-</div>
-<p>So the vessels belong to “SouthSeafood Express Corp” are</p>
-<ul>
-<li><p>Snapper Snatcher (snappersnatcher7be)</p></li>
-<li><p>Roach Robber (roachrobberdb6)</p></li>
-</ul>
-<p>After identifying the name of the fishing vessels belong to “SouthSeafood Express Corp”, I need to check whether this information is also contained in the mc2_edges_cleaned dataframe.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if specific values are in the source column</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>values_exist <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"snappersnatcher7be"</span>, <span class="st">"roachrobberdb6"</span>) <span class="sc">%in%</span> mc2_edges_cleaned<span class="sc">$</span>source</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(values_exist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE TRUE</code></pre>
-</div>
-</div>
-<p>The output [1] TRUE TRUE indicates that both identifiers “snappersnatcher7be” and “roachrobberdb6” are present in the source column of mc2_edges_cleaned dataframe.</p>
-<p>The next steps will involve deeper analysis and visualization to understand the activities and patterns associated with these vessels.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract relevant data for the specified vessels</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>southseafood_activities <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"snappersnatcher7be"</span>, <span class="st">"roachrobberdb6"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(southseafood_activities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 15
-Columns: 7
-$ time   &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
-$ dwell  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
-$ source &lt;chr&gt; "snappersnatcher7be", "snappersnatcher7be", "snappersnatcher7b…
-$ target &lt;chr&gt; "City of Lomark", "City of Lomark", "City of Paackland", "City …
-$ date   &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
-$ event2 &lt;chr&gt; "HarborReport", "HarborReport", "HarborReport", "HarborReport",…
-$ event3 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unique(mc2_edges_cleaned$source)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter cargo vessels and select specific columns with renaming</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>cargo_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.CargoVessel"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">vessel_type =</span> type,</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">cargo_vessel_id =</span> id,</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cargo_vessel_name =</span> Name,</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    company</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unique(fishing_vessel$company)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>OceanusGeography <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/OceanusGeography.geojson"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `OceanusGeography' from data source 
-  `C:\aryasiahaan\ISSS608-VAA\Take-home_Ex\Take-home_Ex03\data\OceanusGeography.geojson' 
-  using driver `GeoJSON'
-Simple feature collection with 29 features and 7 fields
-Geometry type: GEOMETRY
-Dimension:     XY
-Bounding box:  xmin: -167.0654 ymin: 38.07452 xmax: -163.2723 ymax: 40.67775
-Geodetic CRS:  WGS 84</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(OceanusGeography)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "sf"         "data.frame"</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(OceanusGeography)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 29
-Columns: 8
-$ Name                 &lt;chr&gt; "Suna Island", "Thalassa Retreat", "Makara Shoal"…
-$ Description          &lt;chr&gt; "Large island of Oceanus", "Smaller island of Oce…
-$ X.note               &lt;chr&gt; "Suna is 'sand' or 'gritty' in Japanese", "Thalas…
-$ type                 &lt;chr&gt; "Entity.Location.Region", "Entity.Location.Region…
-$ X.Kind               &lt;chr&gt; "Island", "Island", "Island", "Island", "Fishing …
-$ Activities           &lt;list&gt; "Residential", "Residential", "Recreation", &lt;"To…
-$ fish_species_present &lt;list&gt; &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;"Cod/Gadus n.specificatae", "Bi…
-$ geometry             &lt;GEOMETRY [°]&gt; MULTIPOLYGON (((-166.0111 3..., MULTIPOL…</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> OceanusGeography) <span class="sc">+</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(OceanusGeography, <span class="st">"data/rds/OceanusGeography.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/shp"</span>,</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">layer =</span> <span class="st">"Oceanus Geography"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `Oceanus Geography' from data source 
-  `C:\aryasiahaan\ISSS608-VAA\Take-home_Ex\Take-home_Ex03\data\shp' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 27 features and 7 fields
-Geometry type: POINT
-Dimension:     XY
-Bounding box:  xmin: -167.0654 ymin: 38.07452 xmax: -163.2723 ymax: 40.67775
-Geodetic CRS:  WGS 84</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(OceanusLocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "sf"         "data.frame"</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(OceanusLocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 27
-Columns: 8
-$ Name       &lt;chr&gt; "Haacklee", "Port Grove", "Lomark", "Himark", "Paackland", …
-$ Descriptio &lt;chr&gt; NA, NA, NA, NA, NA, "Adimistrative seat of Oceanus", NA, NA…
-$ X.note     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ Activities &lt;chr&gt; "Tourism,Local shipping", "Tourism,Research", "Deep sea fis…
-$ type       &lt;chr&gt; "Entity.Location.City", "Entity.Location.City", "Entity.Loc…
-$ X.Kind     &lt;chr&gt; "city", "city", "city", "city", "city", "city", "city", "bu…
-$ fish_speci &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-$ geometry   &lt;POINT [°]&gt; POINT (-165.6908 39.03215), POINT (-165.8855 39.10005…</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> OceanusLocations) <span class="sc">+</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(OceanusLocations, </span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/rds/OceanusLocations.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(time, dwell, source, target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(vessel_movement_data<span class="sc">$</span>source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(transponderping<span class="sc">$</span>source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "City of Haacklee"        "City of Lomark"         
  [3] "City of Himark"          "City of Paackland"      
@@ -1232,89 +1226,191 @@ $ geometry   &lt;POINT [°]&gt; POINT (-165.6908 39.03215), POINT (-165.8855 39.
 [23] "Don Limpet Preserve"     "Tuna Shelf"             </code></pre>
 </div>
 </div>
+<p>The unique values contained in the source column from transponderping dataframe seems to contain information regarding fishing grounds and ports</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(OceanusLocations<span class="sc">$</span>Name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(transponderping<span class="sc">$</span>target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "Haacklee"            "Port Grove"          "Lomark"             
- [4] "Himark"              "Paackland"           "Centralia"          
- [7] "South Paackland"     "Exit West"           "Nav 3"              
-[10] "Nav D"               "Nav B"               "Nav A"              
-[13] "Nav C"               "Nav 2"               "Nav 1"              
-[16] "Exit East"           "Exit South"          "Exit North"         
-[19] "Nav E"               "Don Limpet Preserve" "Tuna Shelf"         
-[22] "Makara Shoal"        "Silent Sanctuary"    "Cod Table"          
-[25] "Ghoti Preserve"      "Wrasse Beds"         "Nemo Reef"          </code></pre>
+<pre><code>  [1] "perchplundererbc0"             "wavewranglerc2d"              
+  [3] "pacificcodcapturer81c"         "europeanseabassbuccaneer777"  
+  [5] "wavewarrior5d7"                "squidsquad7fd"                
+  [7] "bluegillbandita5f"             "herringhunter30b"             
+  [9] "pompanoplunderere5d"           "yellowfintunataker08b"        
+ [11] "skipjacktunatakerf85"          "nauticalnomada36"             
+ [13] "brooktroutbuccaneerc0b"        "marinemarauder8c9"            
+ [15] "europeanperchpirated9b"        "bonefishbaiter565"            
+ [17] "arcticgraylingangler094"       "deepseadrifter9f2"            
+ [19] "bluefishbandit8ec"             "oceanreaper44a"               
+ [21] "soleseeker47a"                 "welscatfishwrangler6ae"       
+ [23] "groupergrabber60d"             "yellowperchpiratec59"         
+ [25] "turbottakerd86"                "halibuthero9b9"               
+ [27] "longnosesuckerseeker6ab"       "brownbullheadbriganded2"      
+ [29] "halibuthunterd84"              "ladyfishlooter7ea"            
+ [31] "aquaticpursuitf31"             "whitefishwrangler7df"         
+ [33] "bluemarlinbandit292"           "anchovyassaulterb1c"          
+ [35] "flukefinder28d"                "musselmaster8d8"              
+ [37] "eelensnarerd3a"                "plaiceplundererba1"           
+ [39] "herringharpooner843"           "chainpickerelplunderer039"    
+ [41] "venerable89c"                  "stout369"                     
+ [43] "sturdyd7f"                     "webigailba7"                  
+ [45] "inquisitive8c0"                "shipmatrix9b4"                
+ [47] "oceanicoasis15f6"              "harborhalo9dd6"               
+ [49] "transpacificed8"               "freightfirm27f"               
+ [51] "seawayservicesc71"             "vesselvictoryafd"             
+ [53] "seasentry1d3"                  "transglobal607c"              
+ [55] "freightflux254"                "cargocentric443e"             
+ [57] "seawaysage5ce"                 "nauticalnexus6cc"             
+ [59] "cargocatalyst39a7"             "oceanicomnipotenta4a"         
+ [61] "vesselvertexa2e"               "oceanicoracle2bf2"            
+ [63] "seasovereignc6e"               "oceanicoasisd3f"              
+ [65] "vesselventure46e5"             "seasanctuary505"              
+ [67] "freightfrequency5f65"          "harborhavenf91"               
+ [69] "freightfusion141"              "aquatransit6bc"               
+ [71] "vesselventuresc7e"             "cargocrestb7c"                
+ [73] "seasentry2e28"                 "maritimemomentum8d12"         
+ [75] "maritimemastersd93"            "transglobal266"               
+ [77] "vesselvortex355"               "harborhorizon10ecb"           
+ [79] "nauticalnucleusc5a"            "vesselvictory3738"            
+ [81] "seasentinel1c4b"               "seasphere38e"                 
+ [83] "maritimemover13f"              "cargocosmoscde"               
+ [85] "nauticalnomad11356"            "oceanicodyssey11207"          
+ [87] "freightfountaind90"            "transpacific5ada"             
+ [89] "nauticalnexus1a5d"             "maritimemagnitude2e9"         
+ [91] "bulkcarriers6cd"               "harborharmonyfc9"             
+ [93] "oceanicoverturec58"            "maritimematrix7755"           
+ [95] "transatlantic77d"              "transatlantic47a9"            
+ [97] "harborhorizon6c6"              "blueharbor2c1"                
+ [99] "cargocircuit545"               "maritimematrix51a"            
+[101] "maritimemaelstromc5d"          "seawaysynergy8489"            
+[103] "vesselvanguard5d06"            "freightfrontiers7134"         
+[105] "vesselvistad0c"                "nauticalnirvana874"           
+[107] "oceanicoracle9da"              "freightfrequencyfea"          
+[109] "seawaysavvy9847"               "oceanicodyssey5dd"            
+[111] "seawaysurgeb1c"                "cargocynosure29d"             
+[113] "seawaysynergybaf"              "transpolar2a4"                
+[115] "seasolutions4d5"               "freightfortef0d"              
+[117] "harborhelios585"               "nauticalnimbusa99"            
+[119] "seasystem3e22"                 "nauticalnucleus107c4"         
+[121] "cargocentric4d0"               "transoceane48"                
+[123] "harborhelix456"                "cargocatalystb02"             
+[125] "oceanicline3de"                "freightforte6f28"             
+[127] "harborholdings797"             "vesselventuredfa"             
+[129] "freightfrontiers1bc"           "maritimemomentumfab"          
+[131] "maritimemajesticeb7"           "vesselvanguardbf2"            
+[133] "nauticalnetworks865"           "seawayspectrumca2"            
+[135] "maritimemiraclef85"            "albacoreangler47d"            
+[137] "atlanticcodcatcherca6"         "swordfishsaboteur22f"         
+[139] "whitesuckerwrangler0b3"        "bigeyetunabuccaneera16"       
+[141] "fishfinderb9d"                 "roachrobberdb6"               
+[143] "whitemarlinwranglerbac"        "codfather685"                 
+[145] "clamcatcherfb3"                "seabassbandit9ad"             
+[147] "kingfishcapturerbe7"           "trawlertriumph31f"            
+[149] "prawnpredator5d7"              "perchpursuer982"              
+[151] "catfishcapturer7a8"            "cohosalmoncapturera7b"        
+[153] "muskellungemastere7c"          "largemouthbasslooterf95"      
+[155] "tautogtaker867"                "carpcapturer993"              
+[157] "skipjacktunaseeker76c"         "gurnardgrabberd9a"            
+[159] "oceanoracle1d0"                "stripedbassseeker80c"         
+[161] "amberjackassaulterd52"         "spanishmackerelmaster037"     
+[163] "opheliacac"                    "seaserpent4b4"                
+[165] "graylinggrabber802"            "saltyskippera9e"              
+[167] "seahunter56b"                  "salmonsnatcher19d"            
+[169] "pollockpirate212"              "crappiecapturer875"           
+[171] "salmonseeker630"               "haddockhawkb7c"               
+[173] "snappersnatcher7be"            "squidsquasherda9"             
+[175] "whitingwrangler842"            "rainbowtroutraider4d0"        
+[177] "catchcruisera94"               "malta8cc"                     
+[179] "kingsalmonking5b4"             "lobsterlooterd41"             
+[181] "sharkshooterd66"               "hooklinesinkera2d"            
+[183] "steelheadstalkera87"           "trouttracker43b"              
+[185] "sailfishswindlerb4f"           "tenchtaker595"                
+[187] "fishtracker03e"                "tunataker80c"                 
+[189] "brillbandit0a1"                "carpcatcher3f4"               
+[191] "redfinpickerelraider744"       "northernpikepirated97"        
+[193] "chumsalmoncatcher41e"          "codcatcher04c"                
+[195] "tigermuskellungemaster012"     "crabcatcher1aa"               
+[197] "sockeyesalmonseekerb95"        "bluecatfishcatcher468"        
+[199] "browntroutbandite67"           "whelkwrangler9ac"             
+[201] "fishflingere29"                "pinksalmonpirate2a3"          
+[203] "respectable717"                "dewie961"                     
+[205] "oceanoptimum9f4"               "cargocircuit26cc"             
+[207] "seasentinel24e"                "nauticalnavigatorabd"         
+[209] "transcontinentalcf3"           "seasystem375"                 
+[211] "harborhalo603"                 "posiedonsparadise7e6"         
+[213] "swimmingsafely92d"             "honorablea6e"                 
+[215] "hewey2ef"                      "himarkroyal032"               
+[217] "seawayspectra490"              "seawaysavvy102"               
+[219] "roachraider7ce"                "whitemarlinmasterfa1"         
+[221] "wahoowrangler016"              "albacoreassaulter482"         
+[223] "seabreamseekerd8b"             "channelcatfishcapturer175"    
+[225] "pikeplunderer0ca"              "barracudabandit836"           
+[227] "sardineseeker62e"              "marlinmaster8ab"              
+[229] "walleyewranglerda0"            "laketroutlooter534"           
+[231] "grasspickerelgangster7d1"      "flatheadcatfishfindera51"     
+[233] "burbotbandit7bf"               "zanderzealotb23"              
+[235] "clamclaimer13d"                "haddockhunter1a7"             
+[237] "marinersmate8ee"               "mackerelmaster0a5"            
+[239] "breambanditc85"                "muskellungemarauder78c"       
+[241] "neptunesnete8c"                "mahimahimaster04f"            
+[243] "shrimpshooter91c"              "wahoowarriord42"              
+[245] "aquaticangler5c3"              "barracudabaiter8b3"           
+[247] "brinebuccaneer9fd"             "tarpontaker6cd"               
+[249] "blackbullheadbandit801"        "redfishraider677"             
+[251] "seasirenf43"                   "snooksnatcherbdb"             
+[253] "eelenthusiast8c6"              "swordfishswindler37b"         
+[255] "sailfishseeker8d5"             "goldfishgrabber270"           
+[257] "bigeyetunabanditb73"           "mackerelmarauder2d4"          
+[259] "baitedbreath538"               "weakfishwranglerd3c"          
+[261] "speckledtroutsaboteur509"      "europeaneelenthusiastf9f"     
+[263] "tidetamerbe1"                  "costasmeraldaac7"             
+[265] "tunatrawlerafd"                "atlanticbluemarlinmarauder0b4"
+[267] "bluefintunabandit177"          "huron1b3"                     
+[269] "dolphindasher004"              "cutthroattroutcatchere2b"     
+[271] "musselmaraudere9b"             "yellowbullheadbuccaneer968"   
+[273] "oysteropener442"               "plaicepirate8c6"              
+[275] "kingfisher87d"                 "bassbaiterb9f"                
+[277] "ruddraiderced"                 "whitefishwhisperer6df"        
+[279] "mackerelmariner70c"            "bassbandit0d5"                
+[281] "longfintunalooterf32"          "cobiacapturere5e"             
+[283] "pikepirate89a"                 "seaswindler255"               
+[285] "americaneelenthusiastcfa"      "blackdrumbanditc5b"           
+[287] "flounderfinderd64"             "goldentroutgrabber7f6"        
+[289] "louieda4"                      "spiritofoceanus404"           
+[291] "athenad34"                     "louietheii3e0"                
+[293] "heartofoceanusf11"             "manatee17ea"                  
+[295] "clownfishe3d"                  "mrray9c4"                     </code></pre>
 </div>
 </div>
+<p>The target column seems to contain fishing vessel ID</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> vessel_movement_data <span class="sc">%&gt;%</span></span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="fu">gsub</span>(<span class="st">"^City of"</span>, <span class="st">""</span>, source)) <span class="sc">%&gt;%</span></span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">s+"</span>, <span class="st">""</span>, source))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(vessel_movement_data<span class="sc">$</span>source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mc2_nodes_cleaned<span class="sc">$</span>kind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "Haacklee"            "Lomark"              "Himark"             
- [4] "Paackland"           "South Paackland"     "Port Grove"         
- [7] "Exit West"           "Nav 3"               "Nav D"              
-[10] "Nav B"               "Nav A"               "Nav C"              
-[13] "Nav 2"               "Nav 1"               "Exit East"          
-[16] "Exit South"          "Exit North"          "Nav E"              
-[19] "Cod Table"           "Ghoti Preserve"      "Wrasse Beds"        
-[22] "Nemo Reef"           "Don Limpet Preserve" "Tuna Shelf"         </code></pre>
+<pre><code>[1] NA                    "city"                "buoy"               
+[4] "Fishing Ground"      "Ecological Preserve"</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(OceanusLocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df <span class="ot">&lt;-</span> OceanusLocations <span class="sc">%&gt;%</span></span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df<span class="sc">$</span>XCOORD <span class="ot">&lt;-</span> coords[, <span class="st">"X"</span>]</span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df<span class="sc">$</span>YCOORD <span class="ot">&lt;-</span> coords[, <span class="st">"Y"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(OceanusLocations_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(mc2_nodes_cleaned<span class="sc">$</span>kind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "data.frame"</code></pre>
+<pre><code>[1] NA                    "city"                "buoy"               
+[4] "Fishing Ground"      "Ecological Preserve"</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df <span class="ot">&lt;-</span> OceanusLocations_df <span class="sc">%&gt;%</span></span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Name, X.Kind, XCOORD, YCOORD) <span class="sc">%&gt;%</span></span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Loc_Type =</span> X.Kind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> vessel_movement_data <span class="sc">%&gt;%</span></span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(OceanusLocations_df,</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"source"</span> <span class="ot">=</span> <span class="st">"Name"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(vessel_movement_data, <span class="st">"data/rds/vessel_movement_data.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="further-data-subsetting-and-renaming" class="level3">
-<h3 class="anchored" data-anchor-id="further-data-subsetting-and-renaming">Further Data Subsetting and Renaming</h3>
-<section id="creating-subset-data" class="level4">
-<h4 class="anchored" data-anchor-id="creating-subset-data">Creating Subset Data</h4>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>fishing_ground <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_nodes_cleaned, kind <span class="sc">==</span> <span class="st">"Fishing Ground"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned,  event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>transponderping <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>transaction <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned, event2 <span class="sc">==</span> <span class="st">"Transaction"</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> <span class="fu">subset</span>(mc2_edges_cleaned,  event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_type_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_type_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 2
    type                           count
@@ -1334,12 +1430,12 @@ $ geometry   &lt;POINT [°]&gt; POINT (-165.6908 39.03215), POINT (-165.8855 39.
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_name_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_name_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>mc2_nodes_name_counts <span class="ot">&lt;-</span> mc2_nodes <span class="sc">%&gt;%</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the result</span></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mc2_nodes_name_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 2
    name                      count
@@ -1356,6 +1452,289 @@ $ geometry   &lt;POINT [°]&gt; POINT (-165.6908 39.03215), POINT (-165.8855 39.
 10 Wrasse/Labridae n.refert      1
 11 &lt;NA&gt;                       5627</code></pre>
 </div>
+</div>
+<p>Now I want to find out all the companies that own these fishing vessels</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unique(fishing_vessel$fishing_vessel_name)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels and rename specific columns while keeping all others</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>fish_species <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Commodity.Fish"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fish_name =</span> name,</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fish_id =</span> id</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Continue from here</p>
+<p>Now I want to find out all the companies that own these fishing vessels</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(fish_species<span class="sc">$</span>fish_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Cod/Gadus n.specificatae"  "Birdseye/Pisces frigus"   
+ [3] "Sockfish/Pisces foetida"   "Wrasse/Labridae n.refert" 
+ [5] "Beauvoir/Habeas pisces"    "Harland/Piscis sapidum"   
+ [7] "Tuna/Thunnini n.vera"      "Offidiaa/Piscis osseus"   
+ [9] "Salmon/Oncorhynchus rosea" "Helenaa/Pisces satis"     </code></pre>
+</div>
+</div>
+<p>From the result above I see “SouthSeafood Express Corp” is listed, now I want to isolate all the fishing vessels belong to “SouthSeafood Express Corp”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter fishing vessels owned by "SouthSeafood Express Corp"</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>southseafood_fishing_vessels <span class="ot">&lt;-</span> fishing_vessel <span class="sc">%&gt;%</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(company <span class="sc">==</span> <span class="st">"SouthSeafood Express Corp"</span>)</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(southseafood_fishing_vessels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 14
+  type  name  fishing_vessel_id fishing_vessel_name Description Activities kind 
+  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;               &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;
+1 Enti… &lt;NA&gt;  snappersnatcher7… Snapper Snatcher    &lt;NA&gt;        NULL       &lt;NA&gt; 
+2 Enti… &lt;NA&gt;  roachrobberdb6    Roach Robber        &lt;NA&gt;        NULL       &lt;NA&gt; 
+# ℹ 7 more variables: qty_tons &lt;dbl&gt;, date &lt;dttm&gt;, flag_country &lt;chr&gt;,
+#   company &lt;chr&gt;, tonnage &lt;int&gt;, length_overall &lt;int&gt;,
+#   fish_species_present &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>So the vessels belong to “SouthSeafood Express Corp” are</p>
+<ul>
+<li><p>Snapper Snatcher (snappersnatcher7be)</p></li>
+<li><p>Roach Robber (roachrobberdb6)</p></li>
+</ul>
+<p>After identifying the name of the fishing vessels belong to “SouthSeafood Express Corp”, I need to check whether this information is also contained in the mc2_edges_cleaned dataframe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if specific values are in the source column</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>values_exist <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"snappersnatcher7be"</span>, <span class="st">"roachrobberdb6"</span>) <span class="sc">%in%</span> mc2_edges_cleaned<span class="sc">$</span>source</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(values_exist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE TRUE</code></pre>
+</div>
+</div>
+<p>The output [1] TRUE TRUE indicates that both identifiers “snappersnatcher7be” and “roachrobberdb6” are present in the source column of mc2_edges_cleaned dataframe.</p>
+<p>The next steps will involve deeper analysis and visualization to understand the activities and patterns associated with these vessels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract relevant data for the specified vessels</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>southseafood_activities <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"snappersnatcher7be"</span>, <span class="st">"roachrobberdb6"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(southseafood_activities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 15
+Columns: 7
+$ time   &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ dwell  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ source &lt;chr&gt; "snappersnatcher7be", "snappersnatcher7be", "snappersnatcher7b…
+$ target &lt;chr&gt; "City of Lomark", "City of Lomark", "City of Paackland", "City …
+$ date   &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ event2 &lt;chr&gt; "HarborReport", "HarborReport", "HarborReport", "HarborReport",…
+$ event3 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>harbor_report <span class="ot">&lt;-</span> mc2_edges_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event2 <span class="sc">==</span> <span class="st">"HarborReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unique(mc2_edges_cleaned$source)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter cargo vessels and select specific columns with renaming</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>cargo_vessel <span class="ot">&lt;-</span> mc2_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Entity.Vessel.CargoVessel"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">vessel_type =</span> type,</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">cargo_vessel_id =</span> id,</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cargo_vessel_name =</span> Name,</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>    company</span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># unique(fishing_vessel$company)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>OceanusGeography <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/OceanusGeography.geojson"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `OceanusGeography' from data source 
+  `C:\aryasiahaan\ISSS608-VAA\Take-home_Ex\Take-home_Ex03\data\OceanusGeography.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 29 features and 7 fields
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: -167.0654 ymin: 38.07452 xmax: -163.2723 ymax: 40.67775
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(OceanusGeography)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(OceanusGeography)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 29
+Columns: 8
+$ Name                 &lt;chr&gt; "Suna Island", "Thalassa Retreat", "Makara Shoal"…
+$ Description          &lt;chr&gt; "Large island of Oceanus", "Smaller island of Oce…
+$ X.note               &lt;chr&gt; "Suna is 'sand' or 'gritty' in Japanese", "Thalas…
+$ type                 &lt;chr&gt; "Entity.Location.Region", "Entity.Location.Region…
+$ X.Kind               &lt;chr&gt; "Island", "Island", "Island", "Island", "Fishing …
+$ Activities           &lt;list&gt; "Residential", "Residential", "Recreation", &lt;"To…
+$ fish_species_present &lt;list&gt; &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;"Cod/Gadus n.specificatae", "Bi…
+$ geometry             &lt;GEOMETRY [°]&gt; MULTIPOLYGON (((-166.0111 3..., MULTIPOL…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> OceanusGeography) <span class="sc">+</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-87-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(OceanusGeography, <span class="st">"data/rds/OceanusGeography.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/shp"</span>,</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">layer =</span> <span class="st">"Oceanus Geography"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `Oceanus Geography' from data source 
+  `C:\aryasiahaan\ISSS608-VAA\Take-home_Ex\Take-home_Ex03\data\shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 27 features and 7 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -167.0654 ymin: 38.07452 xmax: -163.2723 ymax: 40.67775
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(OceanusLocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(OceanusLocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 27
+Columns: 8
+$ Name       &lt;chr&gt; "Haacklee", "Port Grove", "Lomark", "Himark", "Paackland", …
+$ Descriptio &lt;chr&gt; NA, NA, NA, NA, NA, "Adimistrative seat of Oceanus", NA, NA…
+$ X.note     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ Activities &lt;chr&gt; "Tourism,Local shipping", "Tourism,Research", "Deep sea fis…
+$ type       &lt;chr&gt; "Entity.Location.City", "Entity.Location.City", "Entity.Loc…
+$ X.Kind     &lt;chr&gt; "city", "city", "city", "city", "city", "city", "city", "bu…
+$ fish_speci &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ geometry   &lt;POINT [°]&gt; POINT (-165.6908 39.03215), POINT (-165.8855 39.10005…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> OceanusLocations) <span class="sc">+</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-92-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(OceanusLocations, </span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/rds/OceanusLocations.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> mc2_edges <span class="sc">%&gt;%</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(event3 <span class="sc">==</span> <span class="st">"TransponderPing"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(time, dwell, source, target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(vessel_movement_data<span class="sc">$</span>source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "City of Haacklee"        "City of Lomark"         
+ [3] "City of Himark"          "City of Paackland"      
+ [5] "City of South Paackland" "City of Port Grove"     
+ [7] "Exit West"               "Nav 3"                  
+ [9] "Nav D"                   "Nav B"                  
+[11] "Nav A"                   "Nav C"                  
+[13] "Nav 2"                   "Nav 1"                  
+[15] "Exit East"               "Exit South"             
+[17] "Exit North"              "Nav E"                  
+[19] "Cod Table"               "Ghoti Preserve"         
+[21] "Wrasse Beds"             "Nemo Reef"              
+[23] "Don Limpet Preserve"     "Tuna Shelf"             </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(OceanusLocations<span class="sc">$</span>Name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Haacklee"            "Port Grove"          "Lomark"             
+ [4] "Himark"              "Paackland"           "Centralia"          
+ [7] "South Paackland"     "Exit West"           "Nav 3"              
+[10] "Nav D"               "Nav B"               "Nav A"              
+[13] "Nav C"               "Nav 2"               "Nav 1"              
+[16] "Exit East"           "Exit South"          "Exit North"         
+[19] "Nav E"               "Don Limpet Preserve" "Tuna Shelf"         
+[22] "Makara Shoal"        "Silent Sanctuary"    "Cod Table"          
+[25] "Ghoti Preserve"      "Wrasse Beds"         "Nemo Reef"          </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> vessel_movement_data <span class="sc">%&gt;%</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="fu">gsub</span>(<span class="st">"^City of"</span>, <span class="st">""</span>, source)) <span class="sc">%&gt;%</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">s+"</span>, <span class="st">""</span>, source))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(vessel_movement_data<span class="sc">$</span>source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Haacklee"            "Lomark"              "Himark"             
+ [4] "Paackland"           "South Paackland"     "Port Grove"         
+ [7] "Exit West"           "Nav 3"               "Nav D"              
+[10] "Nav B"               "Nav A"               "Nav C"              
+[13] "Nav 2"               "Nav 1"               "Exit East"          
+[16] "Exit South"          "Exit North"          "Nav E"              
+[19] "Cod Table"           "Ghoti Preserve"      "Wrasse Beds"        
+[22] "Nemo Reef"           "Don Limpet Preserve" "Tuna Shelf"         </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(OceanusLocations)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df <span class="ot">&lt;-</span> OceanusLocations <span class="sc">%&gt;%</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df<span class="sc">$</span>XCOORD <span class="ot">&lt;-</span> coords[, <span class="st">"X"</span>]</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df<span class="sc">$</span>YCOORD <span class="ot">&lt;-</span> coords[, <span class="st">"Y"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(OceanusLocations_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>OceanusLocations_df <span class="ot">&lt;-</span> OceanusLocations_df <span class="sc">%&gt;%</span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Name, X.Kind, XCOORD, YCOORD) <span class="sc">%&gt;%</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Loc_Type =</span> X.Kind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>vessel_movement_data <span class="ot">&lt;-</span> vessel_movement_data <span class="sc">%&gt;%</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(OceanusLocations_df,</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"source"</span> <span class="ot">=</span> <span class="st">"Name"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(vessel_movement_data, <span class="st">"data/rds/vessel_movement_data.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
