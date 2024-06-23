@@ -10,7 +10,7 @@ execute:
   freeze: true
 ---
 
-# **31  Information Dashboard Design: R methods**
+# **31 Information Dashboard Design: R methods**
 
 ## **31.1 Overview**
 
@@ -44,10 +44,6 @@ reactablefmtr, gt, gtExtras, tidyverse)
 
 -   [reactablefmtr](https://kcuilla.github.io/reactablefmtr/) provides various features to streamline and enhance the styling of interactive reactable tables with easy-to-use and highly-customizable functions and themes.
 
-```{r}
-#| code-fold: true
-
-```
 
 ## **31.3 Importing Microsoft Access database**
 

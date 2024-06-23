@@ -74,11 +74,11 @@ The output is called *`mc2_data`*. It is a large list R object.
 
 ## Data Preparation
 
-### Wrangling and tidying *edges* dataframe
+### Wrangling and tidying *edges* data.frame
 
 #### Extracting *edges* and removing duplicates
 
-The code chunk below extracts the *links* dataframe from `mc2_data` and saves it as a tibble dataframe called `mc2_edges`. The `distinct()` function is used to remove duplicates.
+The code chunk below extracts the *links* data.frame from `mc2_data` and saves it as a tibble data.frame called `mc2_edges`. The `distinct()` function is used to remove duplicates.
 
 ```{r}
 # Wrangling and tidying edges
@@ -100,7 +100,7 @@ From the table above, the following data issues can be identified:
 -   The column `type` also seems to contain three different types of information, namely: 'Event', 'TransportEvent', 'TransponderPing'.
 :::
 
-#### **Correcting time and date data type from mc2_edges_dataframe**
+#### **Correcting time and date data type from mc2_edges data.frame**
 
 In the code chunk below, `as_datetime()` of **lubridate** package is used to convert fields with character date into **POSIXt** format.
 
@@ -125,7 +125,7 @@ As we can see now, the `time` and `date` columns have been converted to **dateti
 
 From the table above, we can see that the text in the `type` column is not tidy. I will tidy the `type` column by splitting it into three new separate columns called `event1`, `event2`, and `event3`. However, I will only keep the columns containing the values 'TransportEvent' and 'TransponderPing', which will be `event2` and `event3`.
 
-#### Splitting and Tidying the 'type' Column from mc2_edges dataframe
+#### Splitting and Tidying the 'type' Column from mc2_edges data.frame
 
 ```{r}
 word_list <- strsplit(mc2_edges$type, "\\.")
@@ -149,19 +149,19 @@ mc2_edges <- mc2_edges %>%
   cbind(word_df)
 ```
 
-This code splits the `type` column into multiple components, pads shorter entries with NAs, and integrates them back into the `mc2_edges` dataframe as new columns.
+This code splits the `type` column into multiple components, pads shorter entries with NAs, and integrates them back into the `mc2_edges` data.frame as new columns.
 
 ![](images/clipboard-2806146328.png)
 
 ::: {.callout-tip title="Observation"}
-As we can see here, two new columns, `event2` and `event3`, have been created and appended to the `mc2_edges` dataframe.
+As we can see here, two new columns, `event2` and `event3`, have been created and appended to the `mc2_edges` data.frame.
 :::
 
-### Initial EDA of mc2_edges dataframe
+### Initial EDA of mc2_edges data.frame
 
-After cleaning and preparing the `mc2_edges` dataframe, I want to understand how the newly formed structure looks. Let's make use of the **DataExplorer** package to visualize it.
+After cleaning and preparing the `mc2_edges` data.frame, I want to understand how the newly formed structure looks. Let's make use of the **DataExplorer** package to visualize it.
 
-The code below uses the `plot_intro` function, which is part of the **DataExplorer** package. This function provides a high-level summary of the `mc2_edges` dataframe, offering insights into its structure and content.
+The code below uses the `plot_intro` function, which is part of the **DataExplorer** package. This function provides a high-level summary of the `mc2_edges` data.frame, offering insights into its structure and content.
 
 ::: panel-tabset
 ## The plot
@@ -179,7 +179,7 @@ plot_intro(mc2_edges, title = "Introduction of mc2_edges Data")
 ```
 :::
 
-The `plot_str` function below generates a plot that visualizes the structure of `mc2_edges` dataframe, showing the relationships between different columns and their types.
+The `plot_str` function below generates a plot that visualizes the structure of `mc2_edges` data.frame, showing the relationships between different columns and their types.
 
 ::: panel-tabset
 ## The plot
@@ -196,7 +196,7 @@ plot_str(mc2_edges)
 ```
 :::
 
-The `plot_missing` function below generates a visualization that helps to identify and understand the distribution of missing values within `mc2_edges` dataframe.
+The `plot_missing` function below generates a visualization that helps to identify and understand the distribution of missing values within `mc2_edges` data.frame.
 
 ::: panel-tabset
 ## The plot
@@ -213,18 +213,18 @@ plot_missing(mc2_edges, title = "Missing Values in mc2_edges Data")
 ```
 :::
 
-### Further cleaning of mc2_edges dataframe
+### Further cleaning of mc2_edges data.frame
 
-After the initial EDA, I will remove columns from `mc2_edges` dataframe that are unnecessary to complete Mini-Challenge 2.
+After the initial EDA, I will remove columns from `mc2_edges` data.frame that are unnecessary to complete Mini-Challenge 2.
 
-#### Dropping unnecessary columns from mc2_edges dataframe
+#### Dropping unnecessary columns from mc2_edges data.frame
 
 ```{r}
 mc2_edges_cleaned <- mc2_edges %>%
   select(-c(`type`, `_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `key`,  `data_author`, `aphorism`, `holiday_greeting`, `wisdom`, `saying of the sea`))
 ```
 
-The code above removes unnecessary columns from `mc2_edges` that are not needed for analysis, and then assigns the cleaned-up version to a new dataframe called `mc2_edges_cleaned`.
+The code above removes unnecessary columns from `mc2_edges` that are not needed for analysis, and then assigns the cleaned-up version to a new data.frame called `mc2_edges_cleaned`.
 
 Next, let's use `glimpse()` to check what `mc2_edges_cleaned` looks like.
 
@@ -232,7 +232,7 @@ Next, let's use `glimpse()` to check what `mc2_edges_cleaned` looks like.
 glimpse(mc2_edges_cleaned)
 ```
 
-Before moving to the next task, it would be wise to save the tidied `mc2_edges_cleaned` dataframe into a physical file for future use. By doing so, repeating the steps above will not be necessary.
+Before moving to the next task, it would be wise to save the tidied `mc2_edges_cleaned` data.frame into a physical file for future use. By doing so, repeating the steps above will not be necessary.
 
 The code chunk below will be used to save `mc2_edges_cleaned` into R **rds** file format.
 
@@ -244,28 +244,28 @@ Since the file will be saved in the `rds` sub-folder within the `data` folder, e
 write_rds(mc2_edges_cleaned, "data/rds/mc2_edges_cleaned.rds")
 ```
 
-This completes the data preparation process for the *links* dataframe of `mc2_data`, which is now stored in the `mc2_edges_cleaned` dataframe and saved as a physical `mc2_edges_cleaned.rds` file.
+This completes the data preparation process for the *links* data.frame of `mc2_data`, which is now stored in the `mc2_edges_cleaned` data.frame and saved as a physical `mc2_edges_cleaned.rds` file.
 
-The next step is to clean and prepare the *nodes* dataframe of `mc2_data`.
+The next step is to clean and prepare the *nodes* data.frame of `mc2_data`.
 
-### Wrangling and tidying *nodes* dataframe
+### Wrangling and tidying *nodes* data.frame
 
 #### Extracting *nodes* and removing duplicates
 
-The code chunk below extracts the *nodes* dataframe from `mc2_data`, parses it as a tibble dataframe called `mc2_nodes`, and removes duplicate rows using the `distinct()` function.
+The code chunk below extracts the *nodes* data.frame from `mc2_data`, parses it as a tibble data.frame called `mc2_nodes`, and removes duplicate rows using the `distinct()` function.
 
 ```{r}
 mc2_nodes <- as_tibble(mc2_data$nodes) %>%
   distinct()
 ```
 
-Next, the code chunk below uses the `glimpse()` function to reveal the data structure of the `mc2_nodes` tibble dataframe.
+Next, the code chunk below uses the `glimpse()` function to reveal the data structure of the `mc2_nodes` tibble data.frame.
 
 ```{r}
 glimpse(mc2_nodes)
 ```
 
-::: {.callout-tip title="Observation"}
+::: callout-note
 From the table above, the following data issues can be identified:
 
 -   The column `date` data type is not in the correct format.
@@ -275,7 +275,7 @@ From the table above, the following data issues can be identified:
 -   As shown in the screenshot below, some values in the Activities field are not ready to be analyse without further tidying (i.e. removing c(““)).
 :::
 
-#### **Correcting date data type from mc2_nodes dataframe**
+#### **Correcting date data type from mc2_nodes data.frame**
 
 In the code chunk below, `as_datetime()` of **lubridate** package is used to convert date fields with character date into **POSIXt** format.
 
@@ -324,9 +324,9 @@ After executing the code chunk above, we can see from the screenshot below, that
 
 ![](images/clipboard-3517877848.png)
 
-### **INITIAL EDA of mc2_nodes dataframe**
+### **INITIAL EDA of mc2_nodes data.frame**
 
-Now, let's use the DataExplorer package again to visualize the `mc2_nodes` dataframe in a similar manner as was done above for the `mc2_edges` dataframe.
+Now, let's use the DataExplorer package again to visualize the `mc2_nodes` data.frame in a similar manner as was done above for the `mc2_edges` data.frame.
 
 ::: panel-tabset
 ## The plot
@@ -344,7 +344,7 @@ plot_intro(mc2_nodes, title = "Introduction of mc2_nodes Data")
 ```
 :::
 
-The `plot_str` function below generates a plot that visualizes the structure of `mc2_nodes` dataframe, showing the relationships between different columns and their types.
+The `plot_str` function below generates a plot that visualizes the structure of `mc2_nodes` data.frame, showing the relationships between different columns and their types.
 
 ::: panel-tabset
 ## The plot
@@ -361,7 +361,7 @@ plot_str(mc2_nodes)
 ```
 :::
 
-The `plot_missing` function below generates a visualization that helps to identify and understand the distribution of missing values within `mc2_nodes` dataframe.
+The `plot_missing` function below generates a visualization that helps to identify and understand the distribution of missing values within `mc2_nodes` data.frame.
 
 ::: panel-tabset
 ## The plot
@@ -378,18 +378,18 @@ plot_missing(mc2_nodes, title = "Missing Values in mc2_nodes Data")
 ```
 :::
 
-### **FURTHER CLEANING of mc2_nodes dataframe**
+### **FURTHER CLEANING of mc2_nodes data.frame**
 
-After the initial EDA, I will remove columns from `mc2_nodes` dataframe that are unnecessary to complete Mini-Challenge 2.
+After the initial EDA, I will remove columns from `mc2_nodes` data.frame that are unnecessary to complete Mini-Challenge 2.
 
-#### Dropping unnecessary Columns from mc2_nodes dataframe
+#### Dropping unnecessary Columns from mc2_nodes data.frame
 
 ```{r}
 mc2_nodes_cleaned <- mc2_nodes %>%
   select(-c(`_last_edited_by`, `_date_added`, `_last_edited_date`, `_raw_source`, `_algorithm`, `style`))
 ```
 
-The code above removes unnecessary columns from `mc2_nodes` that are not needed for analysis, and then assigns the cleaned-up version to a new dataframe called `mc2_nodes_cleaned`.
+The code above removes unnecessary columns from `mc2_nodes` that are not needed for analysis, and then assigns the cleaned-up version to a new data.frame called `mc2_nodes_cleaned`.
 
 Next, let’s use `glimpse()` to check what `mc2_nodes_cleaned` looks like.
 
@@ -397,7 +397,7 @@ Next, let’s use `glimpse()` to check what `mc2_nodes_cleaned` looks like.
 glimpse(mc2_nodes_cleaned)
 ```
 
-The tidied mc2_nodes_cleaned dataframe will then be saved into a physical file for future use. By doing so, repeating the steps above will not be necessary.
+The tidied mc2_nodes_cleaned data.frame will then be saved into a physical file for future use. By doing so, repeating the steps above will not be necessary.
 
 The code chunk below will be used to save mc2_nodes_cleaned into R rds file format.
 
@@ -405,7 +405,7 @@ The code chunk below will be used to save mc2_nodes_cleaned into R rds file form
 write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
 ```
 
-This completes the data preparation process for the *nodes* dataframe of `mc2_data`, which is now stored in the `mc2_nodes_cleaned` dataframe and saved as a physical `mc2_nodes_cleaned.rds` file.
+This completes the data preparation process for the *nodes* data.frame of `mc2_data`, which is now stored in the `mc2_nodes_cleaned` data.frame and saved as a physical `mc2_nodes_cleaned.rds` file.
 
 ### Importing Geographical Data in geojson format
 
@@ -418,7 +418,7 @@ oceanusgeography = st_read("data/OceanusGeography.geojson") %>%
   st_transform(crs = 4326)
 ```
 
-::: {.callout-note title="Thing to learn from the code chunk above"}
+::: {.callout-tip title="Thing to learn from the code chunk above"}
 `st_transform()` is used to assign wgs84 (i.e. 4326) coordinates system to the output object.
 :::
 
@@ -435,7 +435,7 @@ glimpse(oceanusgeography)
 ```
 
 ::: callout-note
-The geometry column indicate the simple feature geometry is multipolygon. However, if the dataframe is examined closely, we can see that the geographical data are captured in polygon and point features.
+The geometry column indicate the simple feature geometry is multipolygon. However, if the data.frame is examined closely, we can see that the geographical data are captured in polygon and point features.
 :::
 
 #### Visualising Geographical Data with ggplot2
@@ -455,7 +455,7 @@ Before moving on to next section, let’s save oceanusgeography into rds format 
 write_rds(oceanusgeography, "data/rds/oceanusgeography.rds")
 ```
 
-This completes the data preparation process for the *`oceanusgeography`* dataframe, which is now stored in the `oceanusgeography` dataframe and saved as a physical `oceanusgeography.rds` file.
+This completes the data preparation process for the *`oceanusgeography`* data.frame, which is now stored in the `oceanusgeography` data.frame and saved as a physical `oceanusgeography.rds` file.
 
 #### Importing Geographical Data in ESRI shapefile format
 
@@ -492,7 +492,7 @@ write_rds(oceanuslocations,
   "data/rds/oceanuslocations.rds")
 ```
 
-This completes the data preparation process for the *oceanuslocations*, which is now stored in the `oceanuslocations` dataframe and saved as a physical `oceanuslocations.rds` file.
+This completes the data preparation process for the *oceanuslocations*, which is now stored in the `oceanuslocations` data.frame and saved as a physical `oceanuslocations.rds` file.
 
 ```{r}
 
@@ -533,7 +533,7 @@ mc2_edges_cleaned <- read_rds("data/rds/mc2_edges_cleaned.rds")
 Next, `unique()` is used to list the unique classes in *event3* column of *mc2_edges* data.frame.
 
 ```{r}
-unique(mc2_edges$event3)
+unique(mc2_edges_cleaned$event3)
 ```
 
 The output above shows that there are two unique classes in the event3. They are: *TransponderPing* and NA.
@@ -542,21 +542,100 @@ The output above shows that there are two unique classes in the event3. They are
 
 The code chunk below is used to extract vessel movement data from mc2_edges.
 
-::: {.callout-note title="Thing to learn from the code chunk above"}
+::: {.callout-tip title="Thing to learn from the code chunk above"}
 -   `filter()` is used to select records with event3 is TransponderPing, and
 
 -   `select()` is used to fields that are needed to be saved
 :::
 
 ```{r}
-vessel_movement_data <- mc2_edges %>%
+vessel_movement_data <- mc2_edges_cleaned %>%
   filter(event3 == "TransponderPing") %>%
   select(time, dwell, source, target)
 ```
 
+Next, unique() is used to list unique classes in source field.
+
+```{r}
+unique(vessel_movement_data$source)
+```
+
+as well as oceanuslocation.
+
+```{r}
+unique(oceanuslocations$Name)
+```
+
+::: callout-note
+Because later we are going to append the coordinates values from `oceanuslocations` to `vessel_movement_data`, it is very important for to ensure that the class values in `source` column of `vessel_movement_data` is similar to `Name` column of `oceanuslocations`.
+:::
+
+In the code chunk below, gsub() is used to remove City of from source column. At the same time, gsub() is used to exclude the extra white space in from of the words.
+
+```{r}
+vessel_movement_data <- vessel_movement_data%>%
+  mutate(source = gsub("^City of", "", source)) %>%
+  mutate(source = gsub("^\\s+", "", source))
+```
+
+Notice that the words City of have been remove from all records in `source` column from `vessel_movement_data` data.frame as shown below.
+
+```{r}
+unique(vessel_movement_data$source)
+```
+
+## **Further Data Wrangling**
+
+In the code chunk below, `st_coordinate()` of **sf** package is used to extract coordinates from `oceanuslocations` sf data.frame.
+
+```{r}
+coords <- st_coordinates(oceanuslocations)
+```
+
+Next, code chunk below is used to drop the *`geometry`* column of *`oceanuslocations`* sf data.frame by using `st_drop_geometry()` of **`sf`** package and save the output into a new data.frame called *`oceanuslocations_df`*.
+
+```{r}
+oceanuslocations_df <- oceanuslocations %>%
+  st_drop_geometry()
+```
+
+Then, the code chunk below is to append the x- and y-coodinate values from coords list into the `XCOORD` and `YCOORD` columns of `oceanuslocations_df` respectively.
+
+```{r}
+oceanuslocations_df$XCOORD <- coords[, "X"]
+oceanuslocations_df$YCOORD <- coords[, "Y"]
+```
+
+In the code chunk below, `class()` is used to confirm that the output is indeed a data.frame.
+
+```{r}
+class(oceanuslocations_df)
+```
+Lastly, the code chunk below is used to tidy `oceanuslocations_df` by selecting the necessary columns only and at the same time, rename `X.Kind` to `loc_type`.
+
+
+```{r}
+oceanuslocations_df <- oceanuslocations_df %>%
+  select(Name, X.Kind, XCOORD, YCOORD) %>%
+  rename(loc_type = X.Kind)
+```
+
+In the code chunk below, `left_join()` of `dplyr` package is used to append columns in `oceanuslocations_df` data.frame to `vessel_movement_data` data.frame by using `source` and `Name` of `oceanuslocations_df` and `vessel_movement_data` data.frames respectively.
+
 ```{r}
 
 ```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
 
 ```{r}
 
@@ -568,7 +647,7 @@ vessel_movement_data <- mc2_edges %>%
 
 #### Investigate 'type' column from the nodes data
 
-Next, I will use the `unique()` function from the base R package to see all the distinct entries in the `type` column of the `mc2_nodes_cleaned` dataframe.
+Next, I will use the `unique()` function from the base R package to see all the distinct entries in the `type` column of the `mc2_nodes_cleaned` data.frame.
 
 ```{r}
 unique(mc2_nodes_cleaned$type)
@@ -637,7 +716,7 @@ fishing_vessel <- mc2_nodes_cleaned %>%
 glimpse(fishing_vessel)
 ```
 
-After creating a new dataframe called fishing_vessel to isolate fishing vessel information, I want to find out which of these fishing vessels are registered under "SouthSeafood Express Corp".
+After creating a new data.frame called fishing_vessel to isolate fishing vessel information, I want to find out which of these fishing vessels are registered under "SouthSeafood Express Corp".
 
 ```{r}
 # Filter fishing vessels registered under "SouthSeafood Express Corp"
@@ -660,7 +739,7 @@ The fishing vessels belonging to "SouthSeafood Express Corp" are:
 
 #### Creating Subset Data
 
-Let's try to create a new dataframe from the mc2_edges_cleaned dataframe, filtering only the transponderping information
+Let's try to create a new data.frame from the mc2_edges_cleaned data.frame, filtering only the transponderping information
 
 ```{r}
 transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
@@ -670,7 +749,7 @@ transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
 unique(transponderping$source)
 ```
 
-The unique values contained in the source column from transponderping dataframe seems to contain information regarding fishing grounds and ports
+The unique values contained in the source column from transponderping data.frame seems to contain information regarding fishing grounds and ports
 
 ```{r}
 #unique(transponderping$target)
@@ -763,7 +842,7 @@ So the vessels belong to "SouthSeafood Express Corp" are
 
 -   Roach Robber (roachrobberdb6)
 
-After identifying the name of the fishing vessels belong to "SouthSeafood Express Corp", I need to check whether this information is also contained in the mc2_edges_cleaned dataframe.
+After identifying the name of the fishing vessels belong to "SouthSeafood Express Corp", I need to check whether this information is also contained in the mc2_edges_cleaned data.frame.
 
 ```{r}
 # Check if specific values are in the source column
@@ -774,7 +853,7 @@ print(values_exist)
 
 ```
 
-The output \[1\] TRUE TRUE indicates that both identifiers "snappersnatcher7be" and "roachrobberdb6" are present in the source column of mc2_edges_cleaned dataframe.
+The output \[1\] TRUE TRUE indicates that both identifiers "snappersnatcher7be" and "roachrobberdb6" are present in the source column of mc2_edges_cleaned data.frame.
 
 The next steps will involve deeper analysis and visualization to understand the activities and patterns associated with these vessels.
 
