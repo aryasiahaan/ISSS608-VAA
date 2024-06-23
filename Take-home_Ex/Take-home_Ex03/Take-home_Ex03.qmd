@@ -72,7 +72,7 @@ mc2_data <- fromJSON("data/mc2.json")
 
 The output is called *`mc2_data`*. It is a large list R object.
 
-## Data Preparation
+## DATA PREPARATION
 
 ### Wrangling and tidying *edges* data.frame
 
@@ -324,7 +324,7 @@ After executing the code chunk above, we can see from the screenshot below, that
 
 ![](images/clipboard-3517877848.png)
 
-### **INITIAL EDA of mc2_nodes data.frame**
+### **Initial EDA of mc2_nodes data.frame**
 
 Now, let's use the DataExplorer package again to visualize the `mc2_nodes` data.frame in a similar manner as was done above for the `mc2_edges` data.frame.
 
@@ -378,7 +378,7 @@ plot_missing(mc2_nodes, title = "Missing Values in mc2_nodes Data")
 ```
 :::
 
-### **FURTHER CLEANING of mc2_nodes data.frame**
+### **Further Cleaning of mc2_nodes data.frame**
 
 After the initial EDA, I will remove columns from `mc2_nodes` data.frame that are unnecessary to complete Mini-Challenge 2.
 
@@ -407,7 +407,7 @@ write_rds(mc2_nodes_cleaned, "data/rds/mc2_nodes_cleaned.rds")
 
 This completes the data preparation process for the *nodes* data.frame of `mc2_data`, which is now stored in the `mc2_nodes_cleaned` data.frame and saved as a physical `mc2_nodes_cleaned.rds` file.
 
-### Importing Geographical Data in geojson format
+### Importing Geographical Data in GEOJSON format
 
 Next I need to import geographical data. The data is in the form of GEOJSON file. GEOJSON is an open standard format designed for representing simple geographical features, along with their non-spatial attributes. It is based on the JSON format. I will import this using the `sf` package.
 
@@ -466,13 +466,13 @@ oceanuslocations <- st_read(dsn = "data/shp",
   layer = "Oceanus Geography")
 ```
 
-Next `class()` is used verify if the *OceanusLocations* is indeed in sf data.frame.
+Next `class()` is used verify if the *`oceanuslocations`* is indeed in sf data.frame.
 
 ```{r}
 class(oceanuslocations)
 ```
 
-Similarly, `glimpse()` is used to reveal the structure of *OceanusLocation* data.frame.
+Similarly, `glimpse()` is used to reveal the structure of *`oceanuslocation`*s data.frame.
 
 ```{r}
 glimpse(oceanuslocations)
@@ -494,35 +494,11 @@ write_rds(oceanuslocations,
 
 This completes the data preparation process for the *oceanuslocations*, which is now stored in the `oceanuslocations` data.frame and saved as a physical `oceanuslocations.rds` file.
 
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-## Data Analysis
+## DATA ANALYSIS
 
 After completing the data preparation process, the next step is to perform the analysis required to complete Mini-Challenge 2. From the background information above, we know that "SouthSeafood Express Corp" has been caught fishing illegally. Now, let's see what we can discover from the available data regarding their illegal behavior.
 
-#### Importing Edges Data
+### Importing Edges Data
 
 Now it is time to bring mc2_edges_cleaned.rds into R
 
@@ -538,9 +514,9 @@ unique(mc2_edges_cleaned$event3)
 
 The output above shows that there are two unique classes in the event3. They are: *TransponderPing* and NA.
 
-#### Extract Vessel Movement Data
+### Extract Vessel Movement Data
 
-The code chunk below is used to extract vessel movement data from mc2_edges.
+The code chunk below is used to extract vessel movement data based on TransponderPing from mc2_edges.
 
 ::: {.callout-tip title="Thing to learn from the code chunk above"}
 -   `filter()` is used to select records with event3 is TransponderPing, and
@@ -570,7 +546,7 @@ unique(oceanuslocations$Name)
 Because later we are going to append the coordinates values from `oceanuslocations` to `vessel_movement_data`, it is very important for to ensure that the class values in `source` column of `vessel_movement_data` is similar to `Name` column of `oceanuslocations`.
 :::
 
-In the code chunk below, gsub() is used to remove City of from source column. At the same time, gsub() is used to exclude the extra white space in from of the words.
+In the code chunk below, gsub() is used to remove "City of" from source column. At the same time, `gsub()` is used to exclude the extra white space in from of the words.
 
 ```{r}
 vessel_movement_data <- vessel_movement_data%>%
@@ -578,13 +554,13 @@ vessel_movement_data <- vessel_movement_data%>%
   mutate(source = gsub("^\\s+", "", source))
 ```
 
-Notice that the words City of have been remove from all records in `source` column from `vessel_movement_data` data.frame as shown below.
+Notice that the words "City of" have been remove from all records in `source` column from `vessel_movement_data` data.frame as shown below.
 
 ```{r}
 unique(vessel_movement_data$source)
 ```
 
-## **Further Data Wrangling**
+### **Further Data Wrangling**
 
 In the code chunk below, `st_coordinate()` of **sf** package is used to extract coordinates from `oceanuslocations` sf data.frame.
 
@@ -611,39 +587,64 @@ In the code chunk below, `class()` is used to confirm that the output is indeed 
 ```{r}
 class(oceanuslocations_df)
 ```
-Lastly, the code chunk below is used to tidy `oceanuslocations_df` by selecting the necessary columns only and at the same time, rename `X.Kind` to `loc_type`.
 
+Lastly, the code chunk below is used to tidy `oceanuslocations_df` by selecting the necessary columns only and at the same time, rename `X.Kind` to `loc_type`.
 
 ```{r}
 oceanuslocations_df <- oceanuslocations_df %>%
-  select(Name, X.Kind, XCOORD, YCOORD) %>%
+  select(Name, type, X.Kind, XCOORD, YCOORD) %>%
   rename(loc_type = X.Kind)
 ```
 
-In the code chunk below, `left_join()` of `dplyr` package is used to append columns in `oceanuslocations_df` data.frame to `vessel_movement_data` data.frame by using `source` and `Name` of `oceanuslocations_df` and `vessel_movement_data` data.frames respectively.
+In the code chunk below, `left_join()` of `dplyr` package is used to append columns in `oceanuslocations_df` data.frame to `vessel_movement_data` data.frame by matching the `source` column `vessel_movement_data` data.frame and the `Name` column from `oceanuslocations_df` data.frame.
 
 ```{r}
-
+vessel_movement_data <- vessel_movement_data %>%
+  left_join(oceanuslocations_df,
+            by = c("source" = "Name"))
 ```
 
+Next, this newly updated `vessel_movement_data` data.frame will be saved to a physical `vessel_movement_data.rds` file
 
 ```{r}
-
+write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
 ```
 
+### Creating Vessel Trajectory Data
+
+Now it is time to convert the *vessel movement data* into *vessel trajectory data*. A trajectory is a sequence of observations in time and space, for examples, the path formed by fishing vessels.
+
+In the code chunk below, `st_as_sf()` of **sf** package is used to convert *`vessel_movement_data`* data.frame into `sf` point data.frame by using values in `XCOORD` and `YCOORD` columns. The output is an `sf` data.frame called *`vessel_movement_sf`*.
 
 ```{r}
-
+vessel_movement_sf <- vessel_movement_data %>%
+  st_as_sf(coords = c("XCOORD", "YCOORD"), 
+           crs = 4326)
 ```
 
+Next `arrange()` is used to sort the records according to the vessels’ name (i.e. target) and navigation time (i.e. time)
 
 ```{r}
+vessel_movement_sf <- vessel_movement_sf %>%
+  arrange(target, time)
+```
 
+Lastly, `st_cast()` of **sf** package is used to convert *vessel_movement_sf* from point features into linestring features called *vessel_trajectory*.
+
+```{r}
+vessel_trajectory <- vessel_movement_sf %>%
+  group_by(target) %>%
+  summarize(do_union = FALSE) %>%
+  st_cast("LINESTRING")
 ```
 
 ```{r}
-
+glimpse(vessel_trajectory)
 ```
+
+Now that I have the required vessel trajectory data, I need to find out which vessels belong to "SouthSeafood Express Corp".
+
+## Let's begin the investigation!
 
 #### Investigate 'type' column from the nodes data
 
@@ -716,7 +717,7 @@ fishing_vessel <- mc2_nodes_cleaned %>%
 glimpse(fishing_vessel)
 ```
 
-After creating a new data.frame called fishing_vessel to isolate fishing vessel information, I want to find out which of these fishing vessels are registered under "SouthSeafood Express Corp".
+After creating a new data.frame called `fishing_vessel` to isolate fishing vessel information, I want to find out which of these fishing vessels are registered under "SouthSeafood Express Corp".
 
 ```{r}
 # Filter fishing vessels registered under "SouthSeafood Express Corp"
@@ -735,382 +736,89 @@ The fishing vessels belonging to "SouthSeafood Express Corp" are:
 -   Roach Robber (`roachrobberdb6`)
 :::
 
-### Further Data Subsetting and Renaming
+### Visualising the Geo-Temporal Patterns of the Vessels
 
-#### Creating Subset Data
+After identifying the vessels belonging to "SouthSeafood Express Corp," I will visualize the geo-temporal patterns of the vessels "Snapper Snatcher" and "Roach Robber."
 
-Let's try to create a new data.frame from the mc2_edges_cleaned data.frame, filtering only the transponderping information
+Let's start with "Snapper Snatcher." The code chunk below selects and isolates the appropriate data records belonging to "Snapper Snatcher" using their vessel ID, `snappersnatcher7be`, located within the target column in the `vessel_trajectory` data.frame. The result will be stored in a new data.frame called `snapsnatch_trajectory`.
 
 ```{r}
-transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
+snapsnatch_trajectory <- vessel_trajectory %>%
+  filter(target == "snappersnatcher7be")
 ```
 
-```{r}
-unique(transponderping$source)
-```
-
-The unique values contained in the source column from transponderping data.frame seems to contain information regarding fishing grounds and ports
-
-```{r}
-#unique(transponderping$target)
-```
-
-The target column seems to contain fishing vessel ID
-
-```{r}
-unique(mc2_nodes_cleaned$kind)
-```
-
-```{r}
-unique(mc2_nodes_cleaned$kind)
-```
-
-```{r}
-fishing_ground <- subset(mc2_nodes_cleaned, kind == "Fishing Ground")
-```
-
-Creates subsets of data for different types of events: transponder pings, transactions, and harbor reports, facilitating focused analysis.
-
-```{r}
-transponderping <- subset(mc2_edges_cleaned, event3 == "TransponderPing")
-transaction <- subset(mc2_edges_cleaned, event2 == "Transaction")
-harbor_report <- subset(mc2_edges_cleaned,  event2 == "HarborReport")
-```
-
-```{r}
-mc2_nodes_type_counts <- mc2_nodes %>%
-  group_by(type) %>%
-  summarise(count = n())
-
-# Display the result
-print(mc2_nodes_type_counts)
-```
-
-```{r}
-mc2_nodes_name_counts <- mc2_nodes %>%
-  group_by(name) %>%
-  summarise(count = n())
-
-# Display the result
-print(mc2_nodes_name_counts)
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-Now I want to find out all the companies that own these fishing vessels
-
-```{r}
-#unique(fishing_vessel$fishing_vessel_name)
-```
-
-```{r}
-# Filter fishing vessels and rename specific columns while keeping all others
-fish_species <- mc2_nodes_cleaned %>%
-  filter(type %in% c("Entity.Commodity.Fish")) %>%
-  rename(
-    fish_name = name,
-    fish_id = id
-  )
-```
-
-Continue from here
-
-Now I want to find out all the companies that own these fishing vessels
-
-```{r}
-unique(fish_species$fish_name)
-```
-
-From the result above I see "SouthSeafood Express Corp" is listed, now I want to isolate all the fishing vessels belong to "SouthSeafood Express Corp".
-
-```{r}
-# Filter fishing vessels owned by "SouthSeafood Express Corp"
-southseafood_fishing_vessels <- fishing_vessel %>%
-  filter(company == "SouthSeafood Express Corp")
-print(southseafood_fishing_vessels)
-```
-
-So the vessels belong to "SouthSeafood Express Corp" are
-
--   Snapper Snatcher (snappersnatcher7be)
-
--   Roach Robber (roachrobberdb6)
-
-After identifying the name of the fishing vessels belong to "SouthSeafood Express Corp", I need to check whether this information is also contained in the mc2_edges_cleaned data.frame.
-
-```{r}
-# Check if specific values are in the source column
-values_exist <- c("snappersnatcher7be", "roachrobberdb6") %in% mc2_edges_cleaned$source
-
-# Print results
-print(values_exist)
-
-```
-
-The output \[1\] TRUE TRUE indicates that both identifiers "snappersnatcher7be" and "roachrobberdb6" are present in the source column of mc2_edges_cleaned data.frame.
-
-The next steps will involve deeper analysis and visualization to understand the activities and patterns associated with these vessels.
-
-```{r}
-# Extract relevant data for the specified vessels
-southseafood_activities <- mc2_edges_cleaned %>%
-  filter(source %in% c("snappersnatcher7be", "roachrobberdb6")) 
-
-```
-
-```{r}
-glimpse(southseafood_activities)
-```
-
-```{r}
-harbor_report <- mc2_edges_cleaned %>%
-  filter(event2 == "HarborReport")
-```
-
-```{r}
-#unique(mc2_edges_cleaned$source)
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-# Filter cargo vessels and select specific columns with renaming
-cargo_vessel <- mc2_nodes_cleaned %>%
-  filter(type %in% c("Entity.Vessel.CargoVessel")) %>%
-  select(
-    vessel_type = type,
-    cargo_vessel_id = id,
-    cargo_vessel_name = Name,
-    company
-  )
-```
-
-```{r}
-# unique(fishing_vessel$company)
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-OceanusGeography = st_read("data/OceanusGeography.geojson") %>%
-  st_transform(crs = 4326)
-```
-
-```{r}
-class(OceanusGeography)
-```
-
-```{r}
-glimpse(OceanusGeography)
-```
-
-```{r}
-ggplot(data = OceanusGeography) +
-  geom_sf()
-```
-
-```{r}
-write_rds(OceanusGeography, "data/rds/OceanusGeography.rds")
-```
-
-```{r}
-OceanusLocations <- st_read(dsn = "data/shp",
-  layer = "Oceanus Geography")
-```
-
-```{r}
-class(OceanusLocations)
-```
-
-```{r}
-glimpse(OceanusLocations)
-```
-
-```{r}
-ggplot(data = OceanusLocations) +
-  geom_sf()
-```
-
-```{r}
-write_rds(OceanusLocations, 
-  "data/rds/OceanusLocations.rds")
-```
-
-```{r}
-vessel_movement_data <- mc2_edges %>%
-  filter(event3 == "TransponderPing") %>%
-  select(time, dwell, source, target)
-```
-
-```{r}
-unique(vessel_movement_data$source)
-```
-
-```{r}
-unique(OceanusLocations$Name)
-```
-
-```{r}
-vessel_movement_data <- vessel_movement_data %>%
-  mutate(source = gsub("^City of", "", source)) %>%
-  mutate(source = gsub("^\\s+", "", source))
-```
-
-```{r}
-unique(vessel_movement_data$source)
-```
-
-```{r}
-coords <- st_coordinates(OceanusLocations)
-```
-
-```{r}
-OceanusLocations_df <- OceanusLocations %>%
-  st_drop_geometry()
-```
-
-```{r}
-OceanusLocations_df$XCOORD <- coords[, "X"]
-OceanusLocations_df$YCOORD <- coords[, "Y"]
-```
-
-```{r}
-class(OceanusLocations_df)
-```
-
-```{r}
-OceanusLocations_df <- OceanusLocations_df %>%
-  select(Name, X.Kind, XCOORD, YCOORD) %>%
-  rename(Loc_Type = X.Kind)
-```
-
-```{r}
-vessel_movement_data <- vessel_movement_data %>%
-  left_join(OceanusLocations_df,
-            by = c("source" = "Name"))
-```
-
-```{r}
-write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
-```
-
-```{r}
-
-```
+Next, the appropriate functions of `ggplot2` is used to plot the selected vessel "Snapper Snatcher" trajectories by using the code chunk below.
 
 ```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
+# Plot the data
+ggplot() +
+  
+  # Plot the base map using oceanusgeography
+  geom_sf(data = oceanusgeography) +
+  
+   # Plot the trajectory as LINESTRING for the selected vessel
+  geom_sf(data = snapsnatch_trajectory, 
+          aes(color = factor(target)), 
+          size = 1) +
+  theme_minimal() +
+  
+  # Plot the individual points for the selected vessel
+  geom_sf(data = vessel_movement_sf %>% filter(target == "snappersnatcher7be"), 
+          aes(color = factor(target)), 
+          size = 2) +
+  
+  # Add labels to the individual points
+  geom_sf_text(data = vessel_movement_sf %>% filter(target == "snappersnatcher7be"), 
+               aes(label = source, geometry = geometry), 
+               size = 3, 
+               color = "black") +
+  labs(title = "Trajectories of Snapper Snatcher", 
+  x = "Longitude", y = "Latitude", color = "ID")
 ```
 
-```{r}
+::: {.callout-tip title="Observation"}
+From the observations above, it is evident that Snapper Snatcher visited and dwelled at Ghoti Preserve, an ecological site not intended for fishing. This behavior is definitely suspicious.
+:::
 
-```
+Now let's do the same for the second "SouthSeafood Express Corp" vessel, which is "Roach Robber" with the vessel ID `roachrobberdb6` and store the data in `roachrob_trajectory` data.frame.
 
 ```{r}
-
+roachrob_trajectory <- vessel_trajectory %>%
+  filter(target == "roachrobberdb6")
 ```
 
-```{r}
-
-```
+Next, the appropriate functions of `ggplot2` is used to plot the selected vessel "Roach Robber" trajectories by using the code chunk below.
 
 ```{r}
-
+# Plot the data
+ggplot() +
+  
+  # Plot the base map using oceanusgeography
+  geom_sf(data = oceanusgeography) +
+  
+   # Plot the trajectory as LINESTRING for the selected vessel
+  geom_sf(data = roachrob_trajectory, 
+          aes(color = factor(target)), 
+          size = 1) +
+  theme_minimal() +
+  
+  # Plot the individual points for the selected vessel
+  geom_sf(data = vessel_movement_sf %>% filter(target == "roachrobberdb6"), 
+          aes(color = factor(target)), 
+          size = 2) +
+  
+  # Add labels to the individual points
+  geom_sf_text(data = vessel_movement_sf %>% filter(target == "roachrobberdb6"), 
+               aes(label = source, geometry = geometry), 
+               size = 3, 
+               color = "black") +
+  labs(title = "Trajectories of Roach Robber", 
+  x = "Longitude", y = "Latitude", color = "ID")
 ```
 
-```{r}
-
-```
+::: {.callout-tip title="Observation"}
+From the observations above, it is appears that Roach Robber does not frequent any of the ecological preserve. No suspicious activity can be found.
+:::
 
 ```{r}
 
@@ -1143,11 +851,9 @@ write_rds(vessel_movement_data, "data/rds/vessel_movement_data.rds")
 ```{r}
 
 ```
-
-```{r}
 
-```
+## **Reference**
 
-```{r}
+-   Prof. Kam. [**Kickstarter2**](https://isss608-ay2023-24apr.netlify.app/vast/kickstarter2)
 
-```
+-   Prof. Kam. [**Kickstarter3**](https://isss608-ay2023-24apr.netlify.app/vast/kickstarter3)
