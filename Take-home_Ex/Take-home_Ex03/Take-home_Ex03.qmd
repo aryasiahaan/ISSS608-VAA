@@ -642,6 +642,10 @@ vessel_trajectory <- vessel_movement_sf %>%
 glimpse(vessel_trajectory)
 ```
 
+```{r}
+glimpse(vessel_trajectory)
+```
+
 Now that I have the required vessel trajectory data, I need to find out which vessels belong to "SouthSeafood Express Corp".
 
 ## Let's begin the investigation!
@@ -820,37 +824,13 @@ ggplot() +
 From the observations above, it is appears that Roach Robber does not frequent any of the ecological preserve. No suspicious activity can be found.
 :::
 
-```{r}
 
-```
 
-```{r}
 
-```
 
-```{r}
 
-```
 
-```{r}
 
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
 
 ## **Reference**
 
